@@ -16,7 +16,7 @@
 #' @examples
 #'
 #'
-assign_groups <- function(sample_size, prob0, prob1, K, seed) {
+assign_groups <- function(sample_size, prob0, prob1, seed) {
 
   set.seed(seed)
 
@@ -24,6 +24,7 @@ assign_groups <- function(sample_size, prob0, prob1, K, seed) {
   n_null <- sum(y==0)
   n_intervene <- sample_size-n_null
   x <- rep(1, sample_size)
+  K <- length(prob0)
 
   x[y==0] <- sample(1:K, n_null, replace=TRUE, prob=prob0)
   x[y==1] <- sample(1:K, n_intervene, replace=TRUE, prob=prob1)

@@ -39,7 +39,7 @@ run_simulations <- function(sample_size, settings, niter) {
 
     initial_groups <- assign_groups(sample_size = sample_size,
                                     prob0 = prob0, prob1 = prob1,
-                                    K = K, seed = i)
+                                    seed = i)
 
     # Need to write a stop or error condition for really small values of n just to be safe. For some seeds, values are only assigned to one of the possible groups (control or treatment, var `y`) which doesn't play nice with, at minimum, the chi.square() function (but also probably is true for any nominal outcome var). I guess write a check that there's at least one person in each of the two groups?
 
