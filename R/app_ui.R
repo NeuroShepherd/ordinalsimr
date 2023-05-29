@@ -9,8 +9,54 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("SyntheticParameters")
+    navbarPage(
+      # h1("SyntheticParameters")
+      title = "Synthetic Paremeters",
+
+
+      tabPanel(title = "Data Input",
+               fluidPage(
+                 sidebarLayout(
+                   sidebarPanel(
+                     selectInput("status", label = "Status of Purchase:",
+                                 choices = c("Purchased", "Cancelled")),
+                   ),
+                   mainPanel(
+                     p("There will be plot here")
+                   )
+                 )
+               )),
+
+
+
+      tabPanel(title = "Stat Specs",
+               fluidPage(
+                 sidebarLayout(
+                   sidebarPanel(
+                     selectInput("status", label = "Status of Purchase:",
+                                 choices = c("Purchased", "Cancelled")),
+                   ),
+                   mainPanel(
+                     p("There will be plot here")
+                   )
+                 )
+               )),
+
+
+      tabPanel(title = "Run Simulations",
+               fluidPage(
+                 sidebarLayout(
+                   sidebarPanel(
+                     selectInput("status", label = "Status of Purchase:",
+                                 choices = c("Purchased", "Cancelled")),
+                   ),
+                   mainPanel(
+                     p("There will be plot here")
+                   )
+                 )
+               ))
+
+
     )
   )
 }
