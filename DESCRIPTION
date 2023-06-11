@@ -1,5 +1,5 @@
 Package: SyntheticParameters
-Title: An Amazing Shiny App
+Title: Ordinal Endpoint Comparisons
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Pat",
@@ -7,7 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "patricktcallahan18@gmail.com",
            comment = c(ORCID = "0000-0003-1769-7580"))
-Description: What the package does (one paragraph).
+Description: Simultaneously evaluate multiple ordinal outcome measures.
 License: What license is it under?
 Imports: 
     config (>= 0.3.1),
@@ -16,3 +16,5 @@ Imports:
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
+URL: https://github.com/NeuroShepherd/SyntheticParameters
+BugReports: https://github.com/NeuroShepherd/SyntheticParameters/issues
