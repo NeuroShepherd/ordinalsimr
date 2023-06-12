@@ -9,8 +9,14 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("SyntheticParameters")
+    navbarPage(
+      # h1("SyntheticParameters")
+      title = "Synthetic Paremeters",
+
+      mod_data_entry_ui("data_entry_1"),
+      tabPanel("Empty Page")
+
+
     )
   )
 }
