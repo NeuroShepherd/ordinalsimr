@@ -35,7 +35,7 @@ mod_data_entry_server <- function(id){
     probability_data = reactive({
 
       if (!is.null(input$hottable)) {
-        DF = rhandsontable::hot_to_r(input$hottable)
+        entered_data = rhandsontable::hot_to_r(input$hottable)
       } else {
         if (is.null(values[["entered_data"]])) {
 
@@ -56,9 +56,9 @@ mod_data_entry_server <- function(id){
     })
 
     output$hottable <- rhandsontable::renderRHandsontable({
-      DF = probability_data()
-      if (!is.null(DF))
-        rhandsontable::rhandsontable(DF, stretchH = "all")
+      entered_data = probability_data()
+      if (!is.null(entered_data))
+        rhandsontable::rhandsontable(entered_data, stretchH = "all")
     })
 
 
