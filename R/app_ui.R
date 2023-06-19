@@ -14,7 +14,8 @@ app_ui <- function(request) {
       title = "Synthetic Paremeters",
 
       mod_data_entry_ui("data_entry_1"),
-      tabPanel("Empty Page")
+      tabPanel("Empty Page",
+               mod_test_pass_data_ui("test_pass_data_1"))
 
 
     )
