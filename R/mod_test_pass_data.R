@@ -20,7 +20,7 @@ mod_test_pass_data_ui <- function(id){
 mod_test_pass_data_server <- function(id, prob_data){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-    output$hello_there <- shiny::renderDataTable(prob_data = probability_data())
+    output$hello_there <- shiny::renderDataTable(prob_data())
   })
 }
 
