@@ -31,38 +31,39 @@ mod_data_entry_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-
     values = reactiveValues()
 
-    data = reactive({
+    probability_data = reactive({
 
       if (!is.null(input$hottable)) {
-        DF = rhandsontable::hot_to_r(input$hottable)
+        entered_data = rhandsontable::hot_to_r(input$hottable)
       } else {
-        if (is.null(values[["DF"]])) {
+        if (is.null(values[["entered_data"]])) {
+
 
           # create a placehodler for generating the number of rows in the data table
           # which will be based on the number of possible outcomes
           # table_row_number <- input$number_of_outcomes
 
-          DF = data.frame(`Null Group Probabilities` = rep(0,10),
+          entered_data = data.frame(`Null Group Probabilities` = rep(0,10),
                           `Intervention Group Probs.` = rep(0,10),
                           check.names = FALSE)
         } else
-          DF = values[["DF"]]
+          entered_data = values[["entered_data"]]
       }
 
-      values[["DF"]] = DF
-      DF
+      values[["entered_data"]] = entered_data
+      entered_data
 
     })
 
     output$hottable <- rhandsontable::renderRHandsontable({
-      DF = data()
-      if (!is.null(DF))
-        rhandsontable::rhandsontable(DF, stretchH = "all")
+      entered_data = probability_data()
+      if (!is.null(entered_data))
+        rhandsontable::rhandsontable(entered_data, stretchH = "all")
     })
 
+    return(probability_data)
 
 
   })
