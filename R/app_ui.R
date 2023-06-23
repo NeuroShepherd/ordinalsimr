@@ -13,48 +13,8 @@ app_ui <- function(request) {
       # h1("SyntheticParameters")
       title = "Synthetic Paremeters",
 
-
-      tabPanel(title = "Data Input",
-               fluidPage(
-                 sidebarLayout(
-                   sidebarPanel(
-                     selectInput("status", label = "Status of Purchase:",
-                                 choices = c("Purchased", "Cancelled")),
-                   ),
-                   mainPanel(
-                     p("There will be plot here")
-                   )
-                 )
-               )),
-
-
-
-      tabPanel(title = "Stat Specs",
-               fluidPage(
-                 sidebarLayout(
-                   sidebarPanel(
-                     selectInput("status", label = "Status of Purchase:",
-                                 choices = c("Purchased", "Cancelled")),
-                   ),
-                   mainPanel(
-                     p("There will be plot here")
-                   )
-                 )
-               )),
-
-
-      tabPanel(title = "Run Simulations",
-               fluidPage(
-                 sidebarLayout(
-                   sidebarPanel(
-                     selectInput("status", label = "Status of Purchase:",
-                                 choices = c("Purchased", "Cancelled")),
-                   ),
-                   mainPanel(
-                     p("There will be plot here")
-                   )
-                 )
-               ))
+      mod_data_entry_ui("data_entry_1"),
+      tabPanel("Empty Page")
 
 
     )
