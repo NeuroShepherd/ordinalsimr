@@ -9,7 +9,7 @@
 #' @importFrom shiny NS tagList
 mod_test_pass_data_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  tabPanel(title = "Hello There",
     shiny::dataTableOutput(ns("hello_there"))
   )
 }
