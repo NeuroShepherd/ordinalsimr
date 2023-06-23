@@ -27,17 +27,25 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
     parameters <- reactive({
         list(
         null_probs = dplyr::pull(probability_data(), "Null Group Probabilities"),
-        int_probs = dplyr::pull(probability_data(), "Intervention Group Probs.")
-        #, iterations = iterations()
+        int_probs = dplyr::pull(probability_data(), "Intervention Group Probs."),
+        iterations = iterations()
         #, sample_size = sample_size()
         )
       })
 
-    # usage example: paraemeters()$null_probs
+
+    # usage example: parameters()$null_probs
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
 
-    output$testing <- shiny::renderText({ c(parameters()$null_probs, parameters()$int_probs) })
+    output$testing <- shiny::renderText({
+      c(
+        # parameters()$null_probs,
+        # parameters()$int_probs,
+        parameters()$iterations
+        )
+      })
+
 
   })
 }
