@@ -14,7 +14,6 @@ app_ui <- function(request) {
       title = "Synthetic Paremeters",
 
       mod_data_entry_ui("data_entry_1"),
-      mod_test_pass_data_ui("test_pass_data_1"),
       mod_stats_calculations_ui("stats_calculations_1")
 
 
