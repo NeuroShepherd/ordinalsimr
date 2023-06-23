@@ -13,7 +13,19 @@ app_ui <- function(request) {
       # h1("SyntheticParameters")
       title = "Synthetic Paremeters",
 
-      mod_data_entry_ui("data_entry_1"),
+
+      tabPanel(title = "Data Input",
+               fluidPage(
+                 sidebarLayout(
+                   sidebarPanel(
+                     # something here? data upload option?
+                     mod_iterations_ui("iterations_1")
+                   ),
+                   mainPanel(
+                     mod_data_entry_ui("data_entry_1")
+                   )
+                 )
+               )),
       mod_stats_calculations_ui("stats_calculations_1")
 
 

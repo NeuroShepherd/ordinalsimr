@@ -10,17 +10,9 @@
 mod_data_entry_ui <- function(id){
   ns <- NS(id)
 
-    tabPanel(title = "Data Input",
-             fluidPage(
-               sidebarLayout(
-                 sidebarPanel(
-                   # something here? data upload option?
-                 ),
-                 mainPanel(
-                   rhandsontable::rHandsontableOutput(ns("hottable"))
-                 )
-               )
-             ))
+  tagList(
+   rhandsontable::rHandsontableOutput(ns("hottable"))
+   )
 
 }
 
