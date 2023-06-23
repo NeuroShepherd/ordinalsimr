@@ -13,6 +13,7 @@ app_ui <- function(request) {
       # h1("SyntheticParameters")
       title = "Synthetic Paremeters",
 
+
       tabPanel(title = "Data Input",
                fluidPage(
                  sidebarLayout(

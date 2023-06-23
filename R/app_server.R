@@ -11,6 +11,7 @@ app_server <- function(input, output, session) {
   data_entered_probs <- mod_data_entry_server("data_entry_1")
   data_entered_iters <- mod_iterations_server("iterations_1")
 
+
   # Pass collected data to stats calculations
   mod_stats_calculations_server("stats_calculations_1",
                                 probability_data = data_entered_probs,

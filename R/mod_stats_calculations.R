@@ -33,6 +33,7 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
         )
       })
 
+
     # usage example: parameters()$null_probs
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
@@ -44,6 +45,7 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
         parameters()$iterations
         )
       })
+
 
   })
 }
