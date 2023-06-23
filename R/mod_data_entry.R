@@ -31,6 +31,7 @@ mod_data_entry_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    values = reactiveValues()
 
     probability_data = reactive({
 
@@ -61,7 +62,7 @@ mod_data_entry_server <- function(id){
         rhandsontable::rhandsontable(entered_data, stretchH = "all")
     })
 
-
+    return(probability_data)
 
   })
 }
