@@ -40,6 +40,7 @@ mod_data_entry_server <- function(id){
       } else {
         if (is.null(values[["entered_data"]])) {
 
+
           # create a placehodler for generating the number of rows in the data table
           # which will be based on the number of possible outcomes
           # table_row_number <- input$number_of_outcomes
@@ -63,6 +64,7 @@ mod_data_entry_server <- function(id){
     })
 
     return(probability_data)
+
 
   })
 }
