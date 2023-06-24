@@ -10,8 +10,7 @@
 mod_iterations_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shiny::numericInput(ns("iterations"), "Number of Iterations", 1, min = 1, max = Inf),
-    shiny::textOutput(ns("iter_out"))
+    shiny::numericInput(ns("iterations"), "Number of Iterations", 1, min = 1, max = Inf)
   )
 }
 
