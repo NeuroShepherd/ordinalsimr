@@ -12,10 +12,10 @@ run_simulations <- function(sample_size, settings, niter) {
   }
 
   # Check probabilities for both groups sum to 1
-  if (sum(prob0) != 1){
+  if (!dplyr::near(sum(prob0), 1)){
     stop("Probability vector of the null group must sum to 1")
   }
-  if (sum(prob1) != 1){
+  if (!dplyr::near(sum(prob1), 1)){
     stop("Probability vector of the interventional group must sum to 1")
   }
 
@@ -35,9 +35,11 @@ run_simulations <- function(sample_size, settings, niter) {
     )
 
 
+  initial_groups <- list()
+
   for (i in 1:niter) {
 
-    initial_groups <- assign_groups(sample_size = sample_size,
+    initial_groups[[i]] <- assign_groups(sample_size = sample_size,
                                     prob0 = prob0, prob1 = prob1,
                                     seed = i)
 
@@ -56,9 +58,9 @@ run_simulations <- function(sample_size, settings, niter) {
     # # the exact independence test is really slow, and Anne-Laure's code excludes it for n>100. I should do the same. I think this was actually the real bottleneck in my code.
     # p_values[i,7] <- coin::pvalue(coin::independence_test(x~y, ytrafo=coin::rank_trafo, distribution="exact"))
 
-    p_values <- ordinal_tests(x = initial_groups$x, y = initial_groups$y,
-                               sample_size = initial_groups$sample_size,
-                               K = initial_groups$K)
+    p_values[i, ] <- ordinal_tests(x = initial_groups[[i]]$x, y = initial_groups[[i]]$y,
+                                   sample_size = initial_groups[[i]]$sample_size,
+                                   K = initial_groups[[i]]$K)
 
   }
   p_values
