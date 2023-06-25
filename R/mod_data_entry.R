@@ -52,7 +52,9 @@ mod_data_entry_server <- function(id){
     output$hottable <- rhandsontable::renderRHandsontable({
       entered_data = probability_data()
       if (!is.null(entered_data))
-        rhandsontable::rhandsontable(entered_data, stretchH = "all")
+        rhandsontable::rhandsontable(entered_data, stretchH = "all") %>%
+        rhandsontable::hot_col("Null Group Probabilities", format = "0.00000") %>%
+        rhandsontable::hot_col("Intervention Group Probs.", format = "0.00000")
     })
 
     return(probability_data)
