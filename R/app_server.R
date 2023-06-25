@@ -14,12 +14,13 @@ app_server <- function(input, output, session) {
 
 
   # Pass collected data to stats calculations
-  mod_stats_calculations_server("stats_calculations_1",
+  results_output <- mod_stats_calculations_server("stats_calculations_1",
                                 probability_data = data_entered_probs,
                                 iterations = data_entered_iters,
                                 sample_size = data_entered_sample_size)
 
   # PLACEHOLDER: pass results to output options such as .Rdata/.csv
   # and any other enhanced functionality
+  mod_save_data_server("save_data_1", data = results_output)
 
 }
