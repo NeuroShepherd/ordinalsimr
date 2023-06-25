@@ -10,8 +10,18 @@
 mod_stats_calculations_ui <- function(id){
   ns <- NS(id)
   tabPanel(
-    title = "New Data Entries",
-    textOutput(ns("testing"))
+    title = "Run Tests",
+    fluidPage(
+      sidebarLayout(
+        sidebarPanel(
+          # action button
+          actionButton(ns("run_button"), "Run Tests")
+        ),
+        mainPanel(
+          DT::dataTableOutput(ns("results_table"))
+        )
+      )
+    )
 
   )
 }
@@ -26,8 +36,8 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
     # collect parameters in a reactive list
     parameters <- reactive({
       list(
-        null_probs = dplyr::pull(probability_data(), "Null Group Probabilities"),
-        int_probs = dplyr::pull(probability_data(), "Intervention Group Probs."),
+        prob0 = dplyr::pull(probability_data(), "Null Group Probabilities"),
+        prob1 = dplyr::pull(probability_data(), "Intervention Group Probs."),
         iterations = iterations(),
         sample_size = sample_size()
         )
@@ -38,18 +48,15 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
     # calling reactivity
     # usage example: parameters()$null_probs
 
+    results <- eventReactive(input$run_button, {
+      run_simulations(parameters()$sample_size,
+                      settings = parameters(),
+                      niter = parameters()$iterations)
+    })
 
-    output$testing <- shiny::renderText({
-      c(
-        parameters()$null_probs,
-        parameters()$int_probs,
-        parameters()$iterations,
-        parameters()$sample_size
-        )
-      })
+    output$results_table <- DT::renderDataTable( as.data.frame(results()) )
 
-
-
+    return(results)
   })
 }
 
