@@ -15,7 +15,7 @@ mod_save_data_ui <- function(id){
       sidebarLayout(
         sidebarPanel(
           # action button
-          downloadButton(ns("save_button"), "Hello Kenobi")
+          downloadButton(ns("save_button"), "Save Results")
         )
         ,mainPanel()
       )
