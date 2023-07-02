@@ -56,10 +56,18 @@ mod_data_entry_server <- function(id){
 
       # https://stackoverflow.com/questions/58746194/shiny-and-rhandsontable-conditional-cell-column-formatting-based-on-column-sum
       # not sure why I need to start at 1 and decrement from there, but it works...
-      col_highlight_1 <- 1 - unname(which(colSums(entered_data[c(1)]) == 1))
+      col_highlight_1 <- entered_data[c(1)] %>%
+        colSums() %>%
+        dplyr::near(., 1) %>%
+        which() %>%
+        unname() %>%
+        {1 - .}
 
-      col_highlight_2 <- unname(which(colSums(entered_data[c(2)]) == 1))
-
+      col_highlight_2 <- entered_data[c(2)] %>%
+        colSums() %>%
+        dplyr::near(., 1) %>%
+        which() %>%
+        unname()
 
       if (!is.null(entered_data)) {
         entered_data %>%
