@@ -17,7 +17,7 @@ ordinal_tests <- function(x, y, sample_size, K) {
     # maxselE = exactmaxsel2::maxsel.test(x=x,y=y,statistic="chi2")@maxsel_p_value,
       # ^ packages not currently on CRAN--future uncertain
     wilcox = stats::wilcox.test(x[y==0],x[y==1])$p.value,
-    fisher = stats::fisher.test(x,y,simulate.p.value=FALSE)$p.value,
+    fisher = stats::fisher.test(x,y,simulate.p.value=TRUE)$p.value,
     chi_sq_false = stats::chisq.test(x, y, correct=FALSE)$p.value,
     chi_sq_true = stats::chisq.test(x, y, correct=TRUE)$p.value,
     # prop.trend.test(my.tab[,2],rowSums(my.tab))$p.value,

@@ -12,6 +12,12 @@ app_ui <- function(request) {
     navbarPage(
       # h1("SyntheticParameters")
       title = "Synthetic Paremeters",
+      theme = bslib::bs_theme(version = 5,
+                              bg = "#FFFFFF",
+                              fg = "#000000",
+                              primary = "#9fe01d",
+                              secondary = "#0199F8",
+                              base_font = "Maven Pro"),
 
 
       tabPanel(title = "Data Input",
