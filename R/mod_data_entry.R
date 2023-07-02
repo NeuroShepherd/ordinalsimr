@@ -37,8 +37,9 @@ mod_data_entry_server <- function(id){
           # which will be based on the number of possible outcomes
           # table_row_number <- input$number_of_outcomes
 
-          entered_data = data.frame(`Null Group Probabilities` = rep(0,10),
-                          `Intervention Group Probs.` = rep(0,10),
+          rows <- 6
+          entered_data = data.frame(`Null Group Probabilities` = rep(0,rows),
+                          `Intervention Group Probs.` = rep(0,rows),
                           check.names = FALSE)
         } else
           entered_data = values[["entered_data"]]
@@ -50,9 +51,47 @@ mod_data_entry_server <- function(id){
     })
 
     output$hottable <- rhandsontable::renderRHandsontable({
+
       entered_data = probability_data()
-      if (!is.null(entered_data))
-        rhandsontable::rhandsontable(entered_data, stretchH = "all")
+
+      # https://stackoverflow.com/questions/58746194/shiny-and-rhandsontable-conditional-cell-column-formatting-based-on-column-sum
+      # not sure why I need to start at 1 and decrement from there, but it works...
+      col_highlight_1 <- 1 - unname(which(colSums(entered_data[c(1)]) == 1))
+
+      col_highlight_2 <- unname(which(colSums(entered_data[c(2)]) == 1))
+
+
+      if (!is.null(entered_data)) {
+        entered_data %>%
+          rhandsontable::rhandsontable(stretchH = "all",
+                                       col_highlight_1 = col_highlight_1,
+                                       col_highlight_2 = col_highlight_2) %>%
+          rhandsontable::hot_col("Null Group Probabilities", format = "0.00000") %>%
+          rhandsontable::hot_col("Intervention Group Probs.", format = "0.00000") %>%
+          rhandsontable::hot_cols(.,
+            renderer = "function(instance, td, row, col, prop, value, cellProperties) {
+              Handsontable.renderers.NumericRenderer.apply(this, arguments);
+
+
+              if (instance.params) {
+                    hcols_1 = instance.params.col_highlight_1;
+                    hcols_1 = hcols_1 instanceof Array ? hcols_1 : [hcols_1];
+
+                    hcols_2 = instance.params.col_highlight_2;
+                    hcols_2 = hcols_2 instanceof Array ? hcols_2 : [hcols_2];
+                }
+
+
+              if (instance.params && hcols_1.includes(col)) {
+                    td.style.background = '#aef0a8';
+              }
+              if (instance.params && hcols_2.includes(col)) {
+                    td.style.background = '#aef0a8';
+              }
+                return td;
+          }")
+        }
+
     })
 
     return(probability_data)
