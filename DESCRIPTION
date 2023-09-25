@@ -14,6 +14,7 @@ Imports:
     config (>= 0.3.1),
     dplyr,
     golem (>= 0.4.0),
+    magrittr,
     rhandsontable,
     rms,
     shiny (>= 1.7.4),
