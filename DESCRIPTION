@@ -10,10 +10,14 @@ Authors@R:
 Description: Simultaneously evaluate multiple ordinal outcome measures.
 License: What license is it under?
 Imports: 
+    coin,
     config (>= 0.3.1),
+    dplyr,
     golem (>= 0.4.0),
     rhandsontable,
-    shiny (>= 1.7.4)
+    rms,
+    shiny (>= 1.7.4),
+    stats
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
