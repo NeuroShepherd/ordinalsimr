@@ -50,11 +50,12 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
 
     results <- eventReactive(input$run_button, {
       run_simulations(parameters()$sample_size,
-                      settings = parameters(),
+                      prob0 = parameters()$prob0,
+                      prob1 = parameters()$prob1,
                       niter = parameters()$iterations)
     })
 
-    output$results_table <- DT::renderDataTable( as.data.frame(results()) )
+    output$results_table <- DT::renderDataTable( as.data.frame(results()$p_values) )
 
     return(results)
   })

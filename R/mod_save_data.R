@@ -45,7 +45,7 @@ mod_save_data_server <- function(id, data, input, output, session){
         paste("data-",Sys.Date(), ".Rdata", sep="")
       },
       content = function(file) {
-        saveRDS(results_data(), file)
+        save(results_data(), file)
       }
     )
 

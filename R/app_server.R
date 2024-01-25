@@ -21,6 +21,6 @@ app_server <- function(input, output, session) {
 
   # PLACEHOLDER: pass results to output options such as .Rdata/.csv
   # and any other enhanced functionality
-  mod_save_data_server("save_data_1", data = results_output)
+  mod_save_data_server("save_data_1", data = results_output()$p_values)
 
 }
