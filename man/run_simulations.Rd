@@ -4,7 +4,7 @@
 \alias{run_simulations}
 \title{Run Simulations}
 \usage{
-run_simulations(sample_size, prob0, prob1, niter)
+run_simulations(sample_size, sample_prob, prob0, prob1, niter)
 }
 \arguments{
 \item{sample_size}{Total number of trial participants}

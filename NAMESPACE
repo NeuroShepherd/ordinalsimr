@@ -3,6 +3,7 @@
 export("%>%")
 export(assign_groups)
 export(ordinal_tests)
+export(parse_ratio_text)
 export(run_app)
 export(run_simulations)
 import(shiny)

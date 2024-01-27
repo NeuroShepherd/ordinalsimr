@@ -26,7 +26,8 @@ app_ui <- function(request) {
                    sidebarPanel(
                      # something here? data upload option?
                      mod_iterations_ui("iterations_1"),
-                     mod_sample_size_ui("sample_size_1")
+                     mod_sample_size_ui("sample_size_1"),
+                     mod_sample_probabilities_ui("sample_probabilities_1")
                    ),
                    mainPanel(
                      mod_data_entry_ui("data_entry_1")

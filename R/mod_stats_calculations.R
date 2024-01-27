@@ -29,7 +29,7 @@ mod_stats_calculations_ui <- function(id){
 #' stats_calculations Server Functions
 #'
 #' @noRd
-mod_stats_calculations_server <- function(id, probability_data, iterations, sample_size){
+mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -38,6 +38,7 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
       list(
         prob0 = dplyr::pull(probability_data(), "Null Group Probabilities"),
         prob1 = dplyr::pull(probability_data(), "Intervention Group Probs."),
+        sample_prob = sample_prob(),
         iterations = iterations(),
         sample_size = sample_size()
         )
@@ -51,6 +52,7 @@ mod_stats_calculations_server <- function(id, probability_data, iterations, samp
     results <- eventReactive(input$run_button, {
       run_simulations(parameters()$sample_size,
                       prob0 = parameters()$prob0,
+                      sample_prob = parameters()$sample_prob,
                       prob1 = parameters()$prob1,
                       niter = parameters()$iterations)
     })

@@ -4,7 +4,7 @@
 \alias{assign_groups}
 \title{Randomly assign groups}
 \usage{
-assign_groups(sample_size, prob0, prob1, seed)
+assign_groups(sample_size, sample_prob, prob0, prob1, seed)
 }
 \arguments{
 \item{sample_size}{total number of people under observation.}
