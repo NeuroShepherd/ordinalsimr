@@ -13,7 +13,6 @@
 #' @return list of group assignments
 #' @export
 #'
-#' @examples
 #'
 #'
 assign_groups <- function(sample_size, prob0, prob1, seed) {
