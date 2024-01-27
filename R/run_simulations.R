@@ -1,5 +1,16 @@
 
-
+#' Run Simulations
+#'
+#' @param sample_size Total number of trial participants
+#' @param prob0 Vector of probabilities for control group
+#' @param prob1 Vector of probabilities for intervention group
+#' @param niter Number of simulation iterations to complete
+#'
+#' @return list with elements `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
+#' @export
+#'
+#'
+#'
 run_simulations <- function(sample_size, prob0, prob1, niter) {
 
   # Check equal vector lengths
@@ -12,7 +23,7 @@ run_simulations <- function(sample_size, prob0, prob1, niter) {
   K <- length(prob0)
   p_values <- matrix(NA,niter,7)
   colnames(p_values) <- c("wilcox", "fisher", "chisqFALSE", "chisqTRUE",
-    "lrm", "coinasymp","coinexact")
+    "lrm", "kruskal", "coinasymp")
 
 
   initial_groups <- list()

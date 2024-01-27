@@ -4,11 +4,27 @@
 \alias{ordinal_tests}
 \title{Ordinal outcome tests}
 \usage{
-ordinal_tests(x, y, sample_size, K)
+ordinal_tests(x, y, ...)
 }
 \arguments{
-\item{y}{}
+\item{x}{Group one}
+
+\item{y}{Group two}
+
+\item{...}{Placeholder for additional arguments to functions}
+}
+\value{
+A named vector of probabilities for each test
 }
 \description{
-(Description. Mention the individual tests used here.)
+A metafunction that runs the statistical tests listed below, and returns the p-values as a named vector.
+}
+\details{
+* `stats::wilcox.test()`
+* `stats::fisher.test()`
+* `stats::chisq.test(correct = FALSE)`
+* `stats::chisq.test(correct = TRUE)`
+* `rms::lrm()`
+* `stats.kruskal.test()`
+* `coin::independence_test(ytrafo = coin::rank_trafo)`
 }
