@@ -15,13 +15,15 @@ Imports:
     config (>= 0.3.1),
     dplyr,
     DT,
+    ggplot2,
     glue,
     golem (>= 0.4.0),
     magrittr,
     rhandsontable,
     rms,
     shiny (>= 1.7.4),
-    stats
+    stats,
+    tidyr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3

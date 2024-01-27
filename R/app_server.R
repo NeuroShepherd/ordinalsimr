@@ -19,6 +19,10 @@ app_server <- function(input, output, session) {
                                 iterations = data_entered_iters,
                                 sample_size = data_entered_sample_size)
 
+  # Plot the distribution of values
+  mod_plot_distributions_server("plot_distributions_1",
+                                p_value_table = results_output()$p_values)
+
   # PLACEHOLDER: pass results to output options such as .Rdata/.csv
   # and any other enhanced functionality
   mod_save_data_server("save_data_1", data = results_output())

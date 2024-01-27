@@ -34,6 +34,7 @@ app_ui <- function(request) {
                  )
                )),
       mod_stats_calculations_ui("stats_calculations_1"),
+      mod_plot_distributions_ui("plot_distributions_1"),
       mod_save_data_ui("save_data_1")
 
 
