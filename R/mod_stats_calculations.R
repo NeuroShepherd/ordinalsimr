@@ -9,21 +9,21 @@
 #' @importFrom shiny NS tagList
 mod_stats_calculations_ui <- function(id){
   ns <- NS(id)
-  tabPanel(
-    title = "Run Tests",
-    fluidPage(
-      sidebarLayout(
-        sidebarPanel(
-          # action button
-          actionButton(ns("run_button"), "Run Tests")
-        ),
-        mainPanel(
-          DT::dataTableOutput(ns("results_table"))
-        )
-      )
-    )
 
+  tagList(
+    box(
+      width = 3,
+      column(12, align = "center", actionButton(ns("run_button"), "Run Tests"))
+    ),
+    box(
+      width = 9,
+      DT::dataTableOutput(ns("results_table"))
+    ),
+    box(width = 9
+
+    )
   )
+
 }
 
 #' stats_calculations Server Functions
@@ -57,7 +57,11 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                       niter = parameters()$iterations)
     })
 
-    output$results_table <- DT::renderDataTable( as.data.frame(results()$p_values) )
+    output$results_table <- DT::renderDataTable(
+      DT::datatable(data = as.data.frame(results()$p_values),
+                    options = list(scrollX = TRUE)
+      )
+    )
 
     return(results)
   })

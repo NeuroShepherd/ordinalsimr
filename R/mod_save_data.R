@@ -9,18 +9,8 @@
 #' @importFrom shiny NS tagList
 mod_save_data_ui <- function(id){
   ns <- NS(id)
-  tabPanel(
-    title = "Save Data",
-    fluidPage(
-      sidebarLayout(
-        sidebarPanel(
-          # action button
-          downloadButton(ns("save_button"), "Save Results")
-        )
-        ,mainPanel()
-      )
-    )
-
+  tagList(
+    downloadButton(ns("save_button"), "Save Results")
   )
 }
 

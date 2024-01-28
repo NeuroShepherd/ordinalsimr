@@ -22,6 +22,7 @@ Imports:
     rhandsontable,
     rms,
     shiny (>= 1.7.4),
+    shinydashboardPlus,
     stats,
     tidyr
 Encoding: UTF-8

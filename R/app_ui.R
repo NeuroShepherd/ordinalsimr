@@ -9,34 +9,44 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    navbarPage(
-      # h1("SyntheticParameters")
-      title = "Synthetic Paremeters",
-      theme = bslib::bs_theme(version = 5,
-                              bg = "#FFFFFF",
-                              fg = "#000000",
-                              primary = "#9fe01d",
-                              secondary = "#0199F8",
-                              base_font = "Maven Pro"),
+    dashboardPage(
 
+      dashboardHeader(),
 
-      tabPanel(title = "Data Input",
-               fluidPage(
-                 sidebarLayout(
-                   sidebarPanel(
-                     # something here? data upload option?
-                     mod_iterations_ui("iterations_1"),
-                     mod_sample_size_ui("sample_size_1"),
-                     mod_sample_probabilities_ui("sample_probabilities_1")
-                   ),
-                   mainPanel(
-                     mod_data_entry_ui("data_entry_1")
-                   )
-                 )
-               )),
-      mod_stats_calculations_ui("stats_calculations_1"),
-      mod_plot_distributions_ui("plot_distributions_1"),
-      mod_save_data_ui("save_data_1")
+      dashboardSidebar(
+        sidebarMenu(
+          menuItem("Simulation", tabName = "simulation_page", icon = icon("sliders")),
+          menuItem("Distributions", tabName = "distributions_page", icon = icon("chart-simple")),
+          menuItem("Report", tabName = "report_page", icon = icon("book"))
+        )
+      ),
+
+      dashboardBody(
+        tabItems(
+          tabItem(tabName = "simulation_page",
+                  fluidRow(
+                    box(width = 3,
+                        mod_iterations_ui("iterations_1"),
+                        mod_sample_size_ui("sample_size_1"),
+                        mod_sample_probabilities_ui("sample_probabilities_1")),
+                    box(width = 9,
+                        mod_data_entry_ui("data_entry_1"))
+                  ),
+                  fluidRow(
+                    mod_stats_calculations_ui("stats_calculations_1")
+                  )
+          ),
+
+          tabItem(tabName = "distributions_page",
+                  mod_plot_distributions_ui("plot_distributions_1")
+                  ),
+
+          tabItem(tabName = "report_page",
+                  mod_save_data_ui("save_data_1")
+                  )
+
+        )
+      )
 
 
     )

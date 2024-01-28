@@ -9,21 +9,16 @@
 #' @importFrom shiny NS tagList
 mod_plot_distributions_ui <- function(id){
   ns <- NS(id)
-  tabPanel(
-    title = "Plot Results",
-    fluidPage(
-      sidebarLayout(
-        sidebarPanel(
-          # action button
-          sliderInput(ns("remove_outlier_percentage"), "Filter out top % of observations",
-                      min = 0, max = 100, value = 10, round = TRUE)
-        ),
-        mainPanel(
-          plotOutput(ns("distribution_plot_results"))
-        )
-      )
+  tagList(
+    box(
+      width = 3,
+      sliderInput(ns("remove_outlier_percentage"), "Filter out top % of observations",
+                  min = 0, max = 100, value = 10, round = TRUE)
+    ),
+    box(
+      width = 9,
+      plotOutput(ns("distribution_plot_results"))
     )
-
   )
 }
 
