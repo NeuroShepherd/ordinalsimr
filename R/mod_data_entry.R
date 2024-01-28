@@ -11,7 +11,10 @@ mod_data_entry_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-   rhandsontable::rHandsontableOutput(ns("hottable"))
+   rhandsontable::rHandsontableOutput(ns("hottable")),
+   br(),
+   actionButton(ns("add_rows"), "Add Row"),
+   actionButton(ns("delete_rows"), "Delete Row")
    )
 
 }
