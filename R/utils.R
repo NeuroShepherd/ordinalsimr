@@ -8,6 +8,8 @@
 #' @return Numeric vector of length 2
 #' @export
 #'
+#' @import stringr
+#'
 #' @examples
 #'
 #' parse_ratio_text("70:30")
@@ -26,4 +28,87 @@ parse_ratio_text <- function(text) {
   c(pre_value/100, post_value/100)
 
 }
+
+
+
+
+
+
+
+#' Calculate Hypothesis Test Parameters
+#'
+#' This function calculates the power, Type II error, and Type I error of tests given p-values
+#'
+#' @param df Data frame where each column is a vector of p-values from a statistical test
+#' @param alpha Numeric significance level; defaults to 0.05
+#'
+#' @return A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
+#' @export
+#'
+calculate_hypothesis_params <- function(df, alpha = 0.05) {
+
+  df %>%
+    summarize(
+      across(everything(),
+             list(t1_error = ~mean(.x),
+                  power = ~mean(.x < alpha),
+                  t2_error = ~1-mean(.x < alpha)
+             ),
+             .names = "{.col}_{.fn}"
+      )
+    ) %>%
+    # can't figure out how to format this correctly just off
+    # pivot longer so need to separate and then pivot wider
+    # again to get 3 separate columns for results
+    pivot_longer(cols = everything(),
+                 names_to = "test",
+                 values_to = "value") %>%
+    separate(
+      col = test,
+      into = c("name", "statistic"),
+      sep = "_",
+      extra = "merge",
+      remove = F
+    ) %>%
+    select(-test) %>%
+    pivot_wider(
+      names_from = statistic,
+      names_glue = "{statistic}_{.value}",
+      values_from = value
+    ) %>%
+    mutate(across(where(is.numeric), ~round(.x, 5)))
+
+
+}
+
+
+
+
+#' Plot Distribution
+#'
+#' This function takes a wide table of p-values (i.e. one column for each statistical test), converts it to long format, and creates a density plot of the p-values by each test.
+#'
+#' @param df data frame of p-values
+#' @param alpha significance level
+#' @param outlier_removal top x proportion of observations to filter out of table
+#'
+#' @return ggplot object
+#' @importFrom rlang .data
+#' @export
+#'
+plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
+
+  df %>%
+    pivot_longer(cols = everything(),names_to = "test_name") %>%
+    slice_min(order_by = value, prop = outlier_removal ) %>%
+    ggplot(aes(x = .data[["value"]], fill = .data[["test_name"]] )) +
+    geom_density(alpha = 0.5, color = "black") +
+    geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
+    theme_bw()
+
+}
+
+
+
+
 

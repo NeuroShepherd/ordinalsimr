@@ -3,17 +3,18 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import shinydashboard
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    dashboardPage(
+    shinydashboardPlus::dashboardPage(
 
-      dashboardHeader(),
+      shinydashboardPlus::dashboardHeader(),
 
-      dashboardSidebar(
+      shinydashboardPlus::dashboardSidebar(
         sidebarMenu(
           menuItem("Simulation", tabName = "simulation_page", icon = icon("sliders")),
           menuItem("Distributions", tabName = "distributions_page", icon = icon("chart-simple")),

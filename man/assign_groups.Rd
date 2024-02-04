@@ -9,6 +9,8 @@ assign_groups(sample_size, sample_prob, prob0, prob1, seed)
 \arguments{
 \item{sample_size}{total number of people under observation.}
 
+\item{sample_prob}{a vector of probability weights for obtaining the elements of the vector being sampled.}
+
 \item{prob0}{vector probability of each possible outcome for the null group}
 
 \item{prob1}{vector probability of each possible outcome for the intervention group}

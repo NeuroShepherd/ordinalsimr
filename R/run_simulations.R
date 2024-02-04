@@ -2,13 +2,15 @@
 #' Run Simulations
 #'
 #' @param sample_size Total number of trial participants
+#' @param sample_prob a vector of probability weights for obtaining the elements of the vector being sampled.
 #' @param prob0 Vector of probabilities for control group
 #' @param prob1 Vector of probabilities for intervention group
-#' @param niter Number of simulation iterations to complete
-#'
+#' @param niter Number of simulation iterations to complete#'
 #' @return list with elements `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
-#' @export
 #'
+#' @import assertthat
+#'
+#' @export
 #'
 #'
 run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter) {

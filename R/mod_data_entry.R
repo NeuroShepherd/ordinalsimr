@@ -13,8 +13,8 @@ mod_data_entry_ui <- function(id){
   tagList(
    rhandsontable::rHandsontableOutput(ns("hottable")),
    br(),
-   actionButton(ns("add_rows"), "Add Row"),
-   actionButton(ns("delete_rows"), "Delete Row")
+   actionButton(ns("add_row"), "Add Row"),
+   actionButton(ns("delete_row"), "Delete Row")
    )
 
 }
@@ -28,6 +28,7 @@ mod_data_entry_server <- function(id){
 
     values = reactiveValues()
 
+
     probability_data = reactive({
 
       if (!is.null(input$hottable)) {
@@ -40,9 +41,15 @@ mod_data_entry_server <- function(id){
           # which will be based on the number of possible outcomes
           # table_row_number <- input$number_of_outcomes
 
-          rows <- 6
-          entered_data = data.frame(`Null Group Probabilities` = rep(0,rows),
-                          `Intervention Group Probs.` = rep(0,rows),
+          rv <- reactiveVal(5)
+          observeEvent(input$add_row, {
+            rv(rv() + 1)
+          })
+
+          rows <- reactive( rv() )
+
+          entered_data = data.frame(`Null Group Probabilities` = rep(0,rows()),
+                          `Intervention Group Probs.` = rep(0,rows()),
                           check.names = FALSE)
         } else
           entered_data = values[["entered_data"]]
@@ -116,3 +123,16 @@ mod_data_entry_server <- function(id){
 
 ## To be copied in the server
 # mod_data_entry_server("data_entry_1")
+
+
+
+
+
+
+
+
+# Replace rhandsontable with DT. Use these links below for a reactive, editable
+# table and for info on add/remove rows
+# https://thatdatatho.com/r-shiny-data-table-proxy-replace-data/
+# https://community.rstudio.com/t/how-do-i-create-an-editable-table-to-allow-user-input-draw-scatterplot-and-fit-a-curve-through-those-points/83802/2
+# https://www.google.com/search?q=r+datatable+data+entry+shiny&client=firefox-b-d&sca_esv=602165150&ei=CXe2ZYDcKauoxc8PtKG62Ac&ved=0ahUKEwjAhP6Ot4CEAxUrVPEDHbSQDnsQ4dUDCBA&uact=5&oq=r+datatable+data+entry+shiny&gs_lp=Egxnd3Mtd2l6LXNlcnAiHHIgZGF0YXRhYmxlIGRhdGEgZW50cnkgc2hpbnkyBRAhGKABMgUQIRigATIFECEYoAFIoQZQjwFYgAVwAXgBkAEAmAGVAaABvgWqAQMxLjW4AQPIAQD4AQHCAgoQABhHGNYEGLAD4gMEGAAgQYgGAZAGCA&sclient=gws-wiz-serp

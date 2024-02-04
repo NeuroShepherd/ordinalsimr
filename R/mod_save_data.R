@@ -17,11 +17,9 @@ mod_save_data_ui <- function(id){
 #' save_data Server Functions
 #'
 #' @noRd
-mod_save_data_server <- function(id, data, input, output, session){
+mod_save_data_server <- function(id, .data, input, output, session){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-
-    results_data <- reactive({ data })
 
 
     # volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
@@ -35,7 +33,7 @@ mod_save_data_server <- function(id, data, input, output, session){
         glue::glue("data-{Sys.Date()}-{session$token}.rds")
       },
       content = function(file) {
-        saveRDS(results_data(), file)
+        saveRDS(.data(), file)
       }
     )
 
