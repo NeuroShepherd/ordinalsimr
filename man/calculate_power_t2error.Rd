@@ -4,12 +4,19 @@
 \alias{calculate_power_t2error}
 \title{Calculate Hypothesis Test Parameters}
 \usage{
-calculate_power_t2error(df, alpha = 0.05, n = NA_real_)
+calculate_power_t2error(
+  df,
+  alpha = 0.05,
+  power_confidence_int = 95,
+  n = NA_real_
+)
 }
 \arguments{
 \item{df}{Data frame where each column is a vector of p-values from a statistical test}
 
 \item{alpha}{Numeric significance level; defaults to 0.05}
+
+\item{power_confidence_int}{confidence interval}
 
 \item{n}{Numeric value of sample size; repeated for convenience}
 }

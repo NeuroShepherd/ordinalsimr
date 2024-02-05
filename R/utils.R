@@ -41,6 +41,7 @@ parse_ratio_text <- function(text) {
 #'
 #' @param df Data frame where each column is a vector of p-values from a statistical test
 #' @param alpha Numeric significance level; defaults to 0.05
+#' @param power_confidence_int confidence interval
 #' @param n Numeric value of sample size; repeated for convenience
 #'
 #' @return A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
@@ -52,46 +53,47 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
   ci_label <- glue::glue("{power_confidence_int}% CI Interval")
 
   df %>%
-    summarize(
-      across(everything(),
-             list(lower_power_se = ~mean(.x < alpha) - z_score*sqrt(mean(.x < alpha)*(1-mean(.x < alpha)))/length(.x),
-                  upper_power_se = ~mean(.x < alpha) + z_score*sqrt(mean(.x < alpha)*(1-mean(.x < alpha)))/length(.x),
-                  power = ~mean(.x < alpha),
-                  t2_error = ~1-mean(.x < alpha)
-             ),
-             .names = "{.col}_{.fn}"
-      )
+    pivot_longer(cols = everything(), names_to = "test", values_to = "value") %>%
+    group_by(test) %>%
+    summarize(lower_power_bound = mean(value < alpha) - z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
+              upper_power_bound = mean(value < alpha) + z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
+             power = mean(value < alpha),
+             !!ci_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
+             t2_error = 1-power
     ) %>%
-    # can't figure out how to format this correctly just off
-    # pivot longer so need to separate and then pivot wider
-    # again to get 3 separate columns for results
-    # Solution(?): pivot_longer before summarize, group_by test,
-    # and then calculate summary scores again?
-    pivot_longer(cols = everything(),
-                 names_to = "test",
-                 values_to = "value") %>%
-    separate(
-      col = test,
-      into = c("name", "statistic"),
-      sep = "_",
-      extra = "merge",
-      remove = F
-    ) %>%
-    select(-test) %>%
-    pivot_wider(
-      names_from = statistic,
-      names_glue = "{statistic}_{.value}",
-      values_from = value
-    ) %>%
-    mutate("Sample Size" = n) %>%
-    mutate(
-      !!ci_label := glue::glue("[{round(lower_power_se_value, 4)}, {round(upper_power_se_value, 4)}]"),
-      .after = power_value
-    )
-
+    mutate("Sample Size" = n)
 
 }
 
+
+
+
+#' Calculate Type 1 Error
+#'
+#' @param df data frame
+#' @param alpha significance level
+#' @param t1_error_confidence_int confidence interval
+#' @param n optional numeric input of
+#'
+#' @return data frame
+#' @export
+#'
+calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
+
+  z_score <- qnorm((100+t1_error_confidence_int)/200)
+  ci_label <- glue::glue("{t1_error_confidence_int}% CI Interval")
+
+  df %>%
+    pivot_longer(cols = everything(), names_to = "test", values_to = "value") %>%
+    group_by(test) %>%
+    summarize(lower_t1_bound = mean(value < alpha) - z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
+              upper_t1_bound = mean(value < alpha) + z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
+              t1_error = mean(value < alpha),
+              !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]")
+    ) %>%
+    mutate("Sample Size" = n)
+
+}
 
 
 
