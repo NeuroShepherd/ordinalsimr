@@ -41,16 +41,21 @@ parse_ratio_text <- function(text) {
 #'
 #' @param df Data frame where each column is a vector of p-values from a statistical test
 #' @param alpha Numeric significance level; defaults to 0.05
+#' @param n Numeric value of sample size; repeated for convenience
 #'
 #' @return A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
 #' @export
 #'
-calculate_hypothesis_params <- function(df, alpha = 0.05) {
+calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
+
+  z_score <- qnorm((100+power_confidence_int)/200)
+  ci_label <- glue::glue("{power_confidence_int}% CI Interval")
 
   df %>%
     summarize(
       across(everything(),
-             list(t1_error = ~mean(.x),
+             list(lower_power_se = ~mean(.x < alpha) - z_score*sqrt(mean(.x < alpha)*(1-mean(.x < alpha)))/length(.x),
+                  upper_power_se = ~mean(.x < alpha) + z_score*sqrt(mean(.x < alpha)*(1-mean(.x < alpha)))/length(.x),
                   power = ~mean(.x < alpha),
                   t2_error = ~1-mean(.x < alpha)
              ),
@@ -60,6 +65,8 @@ calculate_hypothesis_params <- function(df, alpha = 0.05) {
     # can't figure out how to format this correctly just off
     # pivot longer so need to separate and then pivot wider
     # again to get 3 separate columns for results
+    # Solution(?): pivot_longer before summarize, group_by test,
+    # and then calculate summary scores again?
     pivot_longer(cols = everything(),
                  names_to = "test",
                  values_to = "value") %>%
@@ -76,7 +83,11 @@ calculate_hypothesis_params <- function(df, alpha = 0.05) {
       names_glue = "{statistic}_{.value}",
       values_from = value
     ) %>%
-    mutate(across(where(is.numeric), ~round(.x, 5)))
+    mutate("Sample Size" = n) %>%
+    mutate(
+      !!ci_label := glue::glue("[{round(lower_power_se_value, 4)}, {round(upper_power_se_value, 4)}]"),
+      .after = power_value
+    )
 
 
 }

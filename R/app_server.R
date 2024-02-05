@@ -23,7 +23,8 @@ app_server <- function(input, output, session) {
 
   # Plot the distribution of values
   mod_plot_distributions_server("plot_distributions_1",
-                                p_value_table = results_output)
+                                p_value_table = results_output,
+                                n = data_entered_sample_size)
 
   # PLACEHOLDER: pass results to output options such as .Rdata/.csv
   # and any other enhanced functionality

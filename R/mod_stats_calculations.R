@@ -33,8 +33,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     # collect parameters in a reactive list
     parameters <- reactive({
       list(
-        prob0 = dplyr::pull(probability_data(), "Null Group Probabilities"),
-        prob1 = dplyr::pull(probability_data(), "Intervention Group Probs."),
+        prob0 = dplyr::pull(probability_data(), "Group 1 Probabilities"),
+        prob1 = dplyr::pull(probability_data(), "Group 2 Probabilities"),
         sample_prob = sample_prob(),
         iterations = iterations(),
         sample_size = sample_size()
