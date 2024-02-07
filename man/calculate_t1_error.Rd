@@ -24,5 +24,5 @@ calculate_t1_error(
 data frame
 }
 \description{
-Calculate Type 1 Error
+Calculate Type 1 error for a distribution, and the confidence interval around this estimate. Z-score calculated using `qnorm()`, and assumed to be two-sided.
 }
