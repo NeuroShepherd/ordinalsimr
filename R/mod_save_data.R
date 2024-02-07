@@ -9,29 +9,17 @@
 #' @importFrom shiny NS tagList
 mod_save_data_ui <- function(id){
   ns <- NS(id)
-  tabPanel(
-    title = "Save Data",
-    fluidPage(
-      sidebarLayout(
-        sidebarPanel(
-          # action button
-          downloadButton(ns("save_button"), "Save Results")
-        )
-        ,mainPanel()
-      )
-    )
-
+  tagList(
+    downloadButton(ns("save_button"), "Save Results")
   )
 }
 
 #' save_data Server Functions
 #'
 #' @noRd
-mod_save_data_server <- function(id, data, input, output, session){
+mod_save_data_server <- function(id, .data, input, output, session){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-
-    results_data <- reactive({ data() })
 
 
     # volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
@@ -42,10 +30,10 @@ mod_save_data_server <- function(id, data, input, output, session){
         # Use .Rdata extension as it allows saving of multiple objects unlike
         # .rds; this function may save more than just the results in the future.
         # possibly consider using the session token, session$token, in name
-        paste("data-",Sys.Date(), ".Rdata", sep="")
+        glue::glue("data-{Sys.Date()}-{session$token}.rds")
       },
       content = function(file) {
-        saveRDS(results_data(), file)
+        saveRDS(.data(), file)
       }
     )
 

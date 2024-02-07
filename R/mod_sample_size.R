@@ -10,7 +10,8 @@
 mod_sample_size_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shiny::numericInput(ns("sample_n"), "Sample Size", 30, min = 1, max = Inf)
+    shiny::numericInput(ns("sample_n"), "Sample Size",
+                        value = 80, min = 1, max = Inf)
   )
 }
 
