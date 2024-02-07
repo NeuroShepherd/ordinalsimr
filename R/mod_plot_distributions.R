@@ -80,7 +80,9 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int) %>%
         select(-lower_t1_bound, -upper_t1_bound) %>%
         rename(`Statistical Test` = test,
-               `Type I Error (α)` = t1_error)
+               `Type I Error (α)` = t1_error) %>%
+        DT::datatable() %>%
+        formatRound(c(2), 5)
 
     })
 
@@ -91,7 +93,9 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group2_confidence_int)  %>%
         select(-lower_t1_bound, -upper_t1_bound) %>%
         rename(`Statistical Test` = test,
-               `Type I Error (α)` = t1_error)
+               `Type I Error (α)` = t1_error) %>%
+        DT::datatable() %>%
+        formatRound(c(2), 5)
     })
 
   })

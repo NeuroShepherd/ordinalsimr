@@ -37,7 +37,7 @@ parse_ratio_text <- function(text) {
 
 #' Calculate Hypothesis Test Parameters
 #'
-#' This function calculates the power, Type II error, and Type I error of tests given p-values
+#' This function calculates the power, Type II error, and Type I error of tests given p-values. Z-score calculated using `qnorm()`, and assumed to be two-sided.
 #'
 #' @param df Data frame where each column is a vector of p-values from a statistical test
 #' @param alpha Numeric significance level; defaults to 0.05
@@ -69,6 +69,8 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 
 
 #' Calculate Type 1 Error
+#'
+#' Calculate Type 1 error for a distribution, and the confidence interval around this estimate. Z-score calculated using `qnorm()`, and assumed to be two-sided.
 #'
 #' @param df data frame
 #' @param alpha significance level
@@ -114,10 +116,19 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
   df %>%
     pivot_longer(cols = everything(),names_to = "test_name") %>%
     slice_min(order_by = value, prop = outlier_removal ) %>%
-    ggplot(aes(x = .data[["value"]], fill = .data[["test_name"]] )) +
-    geom_density(alpha = 0.5, color = "black") +
+    ggplot(aes(x = .data[["value"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
+    geom_density(alpha = 0.1, size = 2.5) +
     geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
-    theme_bw()
+    title("Density Plot of p-values") +
+    labs(x = "p-value", y = "Density") +
+    theme_bw() +
+    theme(
+      legend.key.size = unit(1, 'cm'),
+      legend.text = element_text(size = 14),
+      legend.title = element_text(face = "bold", size = 16),
+      axis.text = element_text(face = "bold", size = 14),
+      axis.title = element_text(face = "bold", size = 18)
+      )
 
 }
 
