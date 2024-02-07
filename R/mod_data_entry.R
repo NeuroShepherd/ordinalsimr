@@ -36,21 +36,10 @@ mod_data_entry_server <- function(id){
       } else {
         if (is.null(values[["entered_data"]])) {
 
-
-          # create a placehodler for generating the number of rows in the data table
-          # which will be based on the number of possible outcomes
-          # table_row_number <- input$number_of_outcomes
-
-          rv <- reactiveVal(5)
-          observeEvent(input$add_row, {
-            rv(rv() + 1)
-          })
-
-          rows <- reactive( rv() )
-
-          entered_data = data.frame(`Null Group Probabilities` = rep(0,rows()),
-                          `Intervention Group Probs.` = rep(0,rows()),
+          entered_data = data.frame(`Group 1 Probabilities` = rep(0,3),
+                          `Group 2 Probabilities` = rep(0,3),
                           check.names = FALSE)
+
         } else
           entered_data = values[["entered_data"]]
       }
@@ -60,32 +49,34 @@ mod_data_entry_server <- function(id){
 
     })
 
+
+
     output$hottable <- rhandsontable::renderRHandsontable({
 
-      entered_data = probability_data()
+      entered_data_2 = probability_data()
 
       # https://stackoverflow.com/questions/58746194/shiny-and-rhandsontable-conditional-cell-column-formatting-based-on-column-sum
       # not sure why I need to start at 1 and decrement from there, but it works...
-      col_highlight_1 <- entered_data[c(1)] %>%
+      col_highlight_1 <- entered_data_2[c(1)] %>%
         colSums() %>%
         dplyr::near(., 1) %>%
         which() %>%
         unname() %>%
         {1 - .}
 
-      col_highlight_2 <- entered_data[c(2)] %>%
+      col_highlight_2 <- entered_data_2[c(2)] %>%
         colSums() %>%
         dplyr::near(., 1) %>%
         which() %>%
         unname()
 
-      if (!is.null(entered_data)) {
-        entered_data %>%
+      if (!is.null(entered_data_2)) {
+        entered_data_2 %>%
           rhandsontable::rhandsontable(stretchH = "all",
                                        col_highlight_1 = col_highlight_1,
                                        col_highlight_2 = col_highlight_2) %>%
-          rhandsontable::hot_col("Null Group Probabilities", format = "0.00000") %>%
-          rhandsontable::hot_col("Intervention Group Probs.", format = "0.00000") %>%
+          rhandsontable::hot_col("Group 1 Probabilities", format = "0.00000") %>%
+          rhandsontable::hot_col("Group 2 Probabilities", format = "0.00000") %>%
           rhandsontable::hot_cols(.,
             renderer = "function(instance, td, row, col, prop, value, cellProperties) {
               Handsontable.renderers.NumericRenderer.apply(this, arguments);
