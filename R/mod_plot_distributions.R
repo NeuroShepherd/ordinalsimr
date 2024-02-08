@@ -69,7 +69,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
                `Power (1-β)` = power,
                `Type II Error (β)` = t2_error) %>%
         DT::datatable() %>%
-        formatRound(c(2,4), 5)
+        DT::formatRound(c(2,4), 5)
     })
 
 
@@ -82,7 +82,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         rename(`Statistical Test` = test,
                `Type I Error (α)` = t1_error) %>%
         DT::datatable() %>%
-        formatRound(c(2), 5)
+        DT::formatRound(c(2), 5)
 
     })
 
@@ -95,7 +95,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         rename(`Statistical Test` = test,
                `Type I Error (α)` = t1_error) %>%
         DT::datatable() %>%
-        formatRound(c(2), 5)
+        DT::formatRound(c(2), 5)
     })
 
   })
