@@ -17,25 +17,41 @@ mod_save_data_ui <- function(id){
 #' save_data Server Functions
 #'
 #' @noRd
-mod_save_data_server <- function(id, .data, input, output, session){
+mod_save_data_server <- function(id, input_data, processed_data, input, output, session){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
-
 
     # volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
     # shinyFileSave(input, "save_results", roots = "home")
 
+    data_to_save <- reactive({
+      browser()
+      list(
+        comparison_data = format_simulation_data(input_data$comparison_results()) %>%
+          append(list(distribution_statistics = processed_data$distribution_statistics(),
+                      distribution_plot = processed_data$distribution_plot()
+                      )),
+        group1_data = format_simulation_data(input_data$group1_results()) %>%
+          append(list(group1_t1error = processed_data$group1_t1error())),
+        group2_data = format_simulation_data(input_data$group1_results()) %>%
+          append(list(group2_t1error = processed_data$group2_t1error()))
+        )
+      })
+
+
+    download_counter <- reactiveVal(1)
     output$save_button <- downloadHandler(
       filename = function() {
-        # Use .Rdata extension as it allows saving of multiple objects unlike
-        # .rds; this function may save more than just the results in the future.
-        # possibly consider using the session token, session$token, in name
-        glue::glue("data-{Sys.Date()}-{session$token}.rds")
+        # Consider: use .RData in future for flexibility?
+        glue::glue("data-{Sys.Date()}-{session$token}-{download_counter()}.rds")
       },
       content = function(file) {
-        saveRDS(.data(), file)
+        saveRDS(data_to_save(), file)
+        # increment download number
+        download_counter(download_counter() + 1)
       }
     )
+
 
   })
 }
