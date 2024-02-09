@@ -18,8 +18,8 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter) {
   # Check equal vector lengths
   assert_that( length(prob0) == length(prob1) )
   # Check probabilities for both groups sum to 1
-  assert_that( dplyr::near(sum(prob0), 1) )
-  assert_that( dplyr::near(sum(prob1), 1) )
+  assert_that( dplyr::near(sum(prob0), 1), msg = "Probability for Group 1 does not sum to 1." )
+  assert_that( dplyr::near(sum(prob1), 1), msg = "Probability for Group 2 does not sum to 1" )
 
 
   K <- length(prob0)

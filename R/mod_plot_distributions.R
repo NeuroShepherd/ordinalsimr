@@ -53,50 +53,71 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
 
 
     # COMPARISON STATISTICS/GRAPHING
-    output$distribution_plot_results <- renderPlot({
+    # !!!plot!!!
+    distribution_plot <- reactive({
       p_value_reactive_table() %>%
         plot_distribution_results(outlier_removal = outlier_percent_removal(),
-                                  alpha = p_val_threshold())
+                                  alpha = p_val_threshold())})
+    output$distribution_plot_results <- renderPlot({
+      distribution_plot()
     })
+      # ensure evaluation in case user goes directly to downloading the results
+    outputOptions(output, "distribution_plot_results", suspendWhenHidden = FALSE)
 
+    # !!!statistics!!!
+    distribution_statistics <- reactive({p_value_reactive_table() %>%
+      calculate_power_t2error(alpha = p_val_threshold(),
+                              n = n(),
+                              power_confidence_int = input$power_confidence_int)
+      })
     output$distribution_statistics <- DT::renderDataTable({
-      p_value_reactive_table() %>%
-        calculate_power_t2error(alpha = p_val_threshold(),
-                                n = n(),
-                                power_confidence_int = input$power_confidence_int) %>%
+      distribution_statistics() %>%
         select(-lower_power_bound, -upper_power_bound) %>%
         rename(`Statistical Test` = test,
                `Power (1-β)` = power,
                `Type II Error (β)` = t2_error) %>%
         DT::datatable() %>%
-        formatRound(c(2,4), 5)
+        DT::formatRound(c(2,4), 5)
     })
 
 
     # GROUP 1 TYPE 1 ERROR
-    group1_t1_reactive_table <- reactive({ as.data.frame(p_value_table$group1_results()$p_values) })
+    group1_t1_reactive_table <- reactive({ p_value_table$group1_results()$p_values %>%
+        as.data.frame() %>%
+        calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int)
+      })
     output$t1_error_group1 <- DT::renderDataTable({
       group1_t1_reactive_table() %>%
-        calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int) %>%
         select(-lower_t1_bound, -upper_t1_bound) %>%
         rename(`Statistical Test` = test,
                `Type I Error (α)` = t1_error) %>%
         DT::datatable() %>%
-        formatRound(c(2), 5)
+        DT::formatRound(c(2), 5)
 
     })
+
 
     # GROUP 2 TYPE 1 ERROR
-    group2_t1_reactive_table <- reactive({ as.data.frame(p_value_table$group2_results()$p_values) })
+    group2_t1_reactive_table <- reactive({ p_value_table$group2_results()$p_values %>%
+        as.data.frame() %>%
+        calculate_t1_error(t1_error_confidence_int = input$t1_error_group2_confidence_int)
+      })
     output$t1_error_group2 <- DT::renderDataTable({
       group2_t1_reactive_table() %>%
-        calculate_t1_error(t1_error_confidence_int = input$t1_error_group2_confidence_int)  %>%
         select(-lower_t1_bound, -upper_t1_bound) %>%
         rename(`Statistical Test` = test,
                `Type I Error (α)` = t1_error) %>%
         DT::datatable() %>%
-        formatRound(c(2), 5)
+        DT::formatRound(c(2), 5)
     })
+
+
+    return(list(
+      distribution_statistics = distribution_statistics,
+      distribution_plot = distribution_plot,
+      group1_t1error = group1_t1_reactive_table,
+      group2_t1error = group2_t1_reactive_table
+    ))
 
   })
 }
