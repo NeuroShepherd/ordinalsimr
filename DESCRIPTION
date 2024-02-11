@@ -8,7 +8,7 @@ Authors@R:
            email = "patricktcallahan18@gmail.com",
            comment = c(ORCID = "0000-0003-1769-7580"))
 Description: Simultaneously evaluate multiple ordinal outcome measures.
-License: What license is it under?
+License: MIT + file LICENSE
 Imports: 
     assertthat,
     coin,
