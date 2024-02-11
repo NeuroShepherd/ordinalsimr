@@ -19,11 +19,15 @@ Imports:
     glue,
     golem (>= 0.4.0),
     magrittr,
+    purrr,
     rhandsontable,
+    rlang,
     rms,
     shiny (>= 1.7.4),
+    shinydashboard,
     shinydashboardPlus,
     stats,
+    stringr,
     tidyr
 Encoding: UTF-8
 LazyData: true

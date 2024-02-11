@@ -74,8 +74,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
       distribution_statistics() %>%
         select(-lower_power_bound, -upper_power_bound) %>%
         rename(`Statistical Test` = test,
-               `Power (1-β)` = power,
-               `Type II Error (β)` = t2_error) %>%
+               "Power (1-\U03B2)" = power,
+               "Type II Error (\U03B2)" = t2_error) %>%
         DT::datatable() %>%
         DT::formatRound(c(2,4), 5)
     })
@@ -90,7 +90,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
       group1_t1_reactive_table() %>%
         select(-lower_t1_bound, -upper_t1_bound) %>%
         rename(`Statistical Test` = test,
-               `Type I Error (α)` = t1_error) %>%
+               "Type I Error (\U003B1)" = t1_error) %>%
         DT::datatable() %>%
         DT::formatRound(c(2), 5)
 
@@ -106,7 +106,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
       group2_t1_reactive_table() %>%
         select(-lower_t1_bound, -upper_t1_bound) %>%
         rename(`Statistical Test` = test,
-               `Type I Error (α)` = t1_error) %>%
+               "Type I Error (\U003B1)" = t1_error) %>%
         DT::datatable() %>%
         DT::formatRound(c(2), 5)
     })
