@@ -16,8 +16,6 @@ assign_groups(sample_size, sample_prob, prob0, prob1, seed)
 \item{prob1}{vector probability of each possible outcome for the intervention group}
 
 \item{seed}{integer specifying the seed number}
-
-\item{K}{number of possible outcome values in the target variable}
 }
 \value{
 list of group assignments
