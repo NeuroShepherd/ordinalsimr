@@ -45,21 +45,22 @@ parse_ratio_text <- function(text) {
 #' @param n Numeric value of sample size; repeated for convenience
 #'
 #' @return A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
+#' @importFrom rlang :=
 #' @export
 #'
 calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
 
-  z_score <- qnorm((100+power_confidence_int)/200)
+  z_score <- stats::qnorm((100+power_confidence_int)/200)
   ci_label <- glue::glue("{power_confidence_int}% CI Interval")
 
   df %>%
     pivot_longer(cols = everything(), names_to = "test", values_to = "value") %>%
-    group_by(test) %>%
-    summarize(lower_power_bound = mean(value < alpha) - z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
-              upper_power_bound = mean(value < alpha) + z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
-             power = mean(value < alpha),
+    group_by(.data$test) %>%
+    summarize(lower_power_bound = mean(.data$value < alpha) - z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
+              upper_power_bound = mean(.data$value < alpha) + z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
+             power = mean(.data$value < alpha),
              !!ci_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
-             t2_error = 1-power
+             t2_error = 1-.data$power
     ) %>%
     mutate("Sample Size" = n)
 
@@ -78,19 +79,20 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 #' @param n optional numeric input of
 #'
 #' @return data frame
+#' @importFrom rlang :=
 #' @export
 #'
 calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
 
-  z_score <- qnorm((100+t1_error_confidence_int)/200)
+  z_score <- stats::qnorm((100+t1_error_confidence_int)/200)
   ci_label <- glue::glue("{t1_error_confidence_int}% CI Interval")
 
   df %>%
     pivot_longer(cols = everything(), names_to = "test", values_to = "value") %>%
-    group_by(test) %>%
-    summarize(lower_t1_bound = mean(value < alpha) - z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
-              upper_t1_bound = mean(value < alpha) + z_score*sqrt(mean(value < alpha)*(1-mean(value < alpha)))/length(value),
-              t1_error = mean(value < alpha),
+    group_by(.data$test) %>%
+    summarize(lower_t1_bound = mean(.data$value < alpha) - z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
+              upper_t1_bound = mean(.data$value < alpha) + z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
+              t1_error = mean(.data$value < alpha),
               !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]")
     ) %>%
     mutate("Sample Size" = n)
@@ -115,11 +117,11 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
   df %>%
     pivot_longer(cols = everything(),names_to = "test_name") %>%
-    slice_min(order_by = value, prop = outlier_removal ) %>%
+    slice_min(order_by = .data[["value"]], prop = outlier_removal ) %>%
     ggplot(aes(x = .data[["value"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
     geom_density(alpha = 0.1, size = 2.5) +
     geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
-    title("Density Plot of p-values") +
+    ggtitle("Density Plot of p-values") +
     labs(x = "p-value", y = "Density") +
     theme_bw() +
     theme(

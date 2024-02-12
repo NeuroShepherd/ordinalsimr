@@ -8,7 +8,6 @@
 #' @param sample_prob a vector of probability weights for obtaining the elements of the vector being sampled.
 #' @param prob0 vector probability of each possible outcome for the null group
 #' @param prob1 vector probability of each possible outcome for the intervention group
-#' @param K number of possible outcome values in the target variable
 #' @param seed integer specifying the seed number
 #'
 #' @return list of group assignments
