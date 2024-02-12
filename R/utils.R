@@ -50,18 +50,21 @@ parse_ratio_text <- function(text) {
 #'
 calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
 
-  z_score <- stats::qnorm((100+power_confidence_int)/200)
   ci_label <- glue::glue("{power_confidence_int}% CI Interval")
 
   df %>%
-    pivot_longer(cols = everything(), names_to = "test", values_to = "value") %>%
-    group_by(.data$test) %>%
-    summarize(lower_power_bound = mean(.data$value < alpha) - z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
-              upper_power_bound = mean(.data$value < alpha) + z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
-             power = mean(.data$value < alpha),
-             !!ci_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
-             t2_error = 1-.data$power
+    purrr::map(
+      ~{
+        binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int/100)
+        tibble(
+          lower_power_bound = binom_results$conf.int[[1]],
+          upper_power_bound = binom_results$conf.int[[2]],
+          power = binom_results$estimate,
+          !!ci_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
+          t2_error = 1-.data$power)
+      }
     ) %>%
+    purrr::list_rbind(names_to = "test") %>%
     mutate("Sample Size" = n)
 
 }
@@ -84,18 +87,22 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 #'
 calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
 
-  z_score <- stats::qnorm((100+t1_error_confidence_int)/200)
   ci_label <- glue::glue("{t1_error_confidence_int}% CI Interval")
 
   df %>%
-    pivot_longer(cols = everything(), names_to = "test", values_to = "value") %>%
-    group_by(.data$test) %>%
-    summarize(lower_t1_bound = mean(.data$value < alpha) - z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
-              upper_t1_bound = mean(.data$value < alpha) + z_score*sqrt(mean(.data$value < alpha)*(1-mean(.data$value < alpha)))/length(.data$value),
-              t1_error = mean(.data$value < alpha),
-              !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]")
-    ) %>%
+    purrr::map(
+      ~{
+        binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int/100)
+        tibble(
+          lower_t1_bound = binom_results$conf.int[[1]],
+          upper_t1_bound = binom_results$conf.int[[2]],
+          t1_error = binom_results$estimate,
+          !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]"))
+      }
+      ) %>%
+    purrr::list_rbind(names_to = "test") %>%
     mutate("Sample Size" = n)
+
 
 }
 
