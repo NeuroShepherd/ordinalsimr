@@ -24,5 +24,5 @@ calculate_power_t2error(
 A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
 }
 \description{
-This function calculates the power, Type II error, and Type I error of tests given p-values. Z-score calculated using `qnorm()`, and assumed to be two-sided.
+This function calculates the power, Type II error, and Type I error of tests given p-values. Power, Type II error, and confidence intervals calculated using `stats::binom.test()`.
 }

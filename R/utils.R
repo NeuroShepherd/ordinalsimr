@@ -37,7 +37,7 @@ parse_ratio_text <- function(text) {
 
 #' Calculate Hypothesis Test Parameters
 #'
-#' This function calculates the power, Type II error, and Type I error of tests given p-values. Z-score calculated using `qnorm()`, and assumed to be two-sided.
+#' This function calculates the power, Type II error, and Type I error of tests given p-values. Power, Type II error, and confidence intervals calculated using `stats::binom.test()`.
 #'
 #' @param df Data frame where each column is a vector of p-values from a statistical test
 #' @param alpha Numeric significance level; defaults to 0.05
@@ -74,7 +74,7 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 
 #' Calculate Type 1 Error
 #'
-#' Calculate Type 1 error for a distribution, and the confidence interval around this estimate. Z-score calculated using `qnorm()`, and assumed to be two-sided.
+#' Calculate Type 1 error for a distribution, and the confidence interval around this estimate. Type I error and confidence intervals calculated using `stats::binom.test()`.
 #'
 #' @param df data frame
 #' @param alpha significance level

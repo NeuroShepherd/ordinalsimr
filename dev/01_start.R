@@ -19,13 +19,13 @@
 ## to change the name in the app_sys() function in app_config.R /!\
 ##
 golem::fill_desc(
-  pkg_name = "SyntheticParameters", # The Name of the package containing the App
+  pkg_name = "ordinalsimr", # The Name of the package containing the App
   pkg_title = "Ordinal Endpoint Comparisons", # The Title of the package containing the App
   pkg_description = "Simultaneously evaluate multiple ordinal outcome measures.", # The Description of the package containing the App
   author_first_name = "Patrick", # Your First Name
   author_last_name = "Callahan", # Your Last Name
   author_email = "patrick.callahan@campus.lmu.de", # Your Email
-  repo_url = "https://github.com/NeuroShepherd/SyntheticParameters", # The URL of the GitHub Repo (optional),
+  repo_url = "https://github.com/NeuroShepherd/ordinalsimr", # The URL of the GitHub Repo (optional),
   pkg_version = "0.0.0.9000" # The Version of the package containing the App
 )
 

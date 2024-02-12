@@ -46,7 +46,7 @@ usethis::use_test("app")
 # Documentation
 
 ## Vignette ----
-usethis::use_vignette("SyntheticParameters")
+usethis::use_vignette("ordinalsimr")
 devtools::build_vignettes()
 
 ## Code Coverage----
