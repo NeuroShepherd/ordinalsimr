@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(SyntheticParameters)
+library(ordinalsimr)
 
-test_check("SyntheticParameters")
+test_check("ordinalsimr")
