@@ -17,3 +17,33 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(ordinalsimr)
 ```
+
+
+# Shiny App
+
+* Brief description of how to use the app
+* Alternative terminology
+* Notes on future advances
+* Link to bug reports
+
+
+# Using Downloaded Data
+
+* Description of the output data
+* Accessing the elements of the lists
+
+
+# Coding Your Own Simulations
+
+* Describing some of the functions in more detail
+* Showing example output
+* Work through an entire example
+
+## Mapping Over Many Sample Sizes
+
+* Note this is a planned future feature for the app
+* Demonstrate how to do this by using `purrr::map()`
+  * recommend limiting number of runs unless using `furrr::map()` or other parallelization approach
+
+
+
