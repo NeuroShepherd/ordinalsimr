@@ -22,7 +22,7 @@ jobs:
           use-public-rspm: true
 
       - name: Install libgit2-dev
-        shell: sudo apt-get install -y libgit2-dev
+        run: sudo apt-get install -y libgit2-dev
 
       - uses: r-lib/actions/setup-renv@v2
 
