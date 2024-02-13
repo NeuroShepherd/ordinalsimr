@@ -25,7 +25,6 @@ mod_save_data_server <- function(id, input_data, processed_data, input, output, 
     # shinyFileSave(input, "save_results", roots = "home")
 
     data_to_save <- reactive({
-      browser()
       list(
         comparison_data = format_simulation_data(input_data$comparison_results()) %>%
           append(list(distribution_statistics = processed_data$distribution_statistics(),
