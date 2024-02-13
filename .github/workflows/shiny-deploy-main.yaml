@@ -34,7 +34,7 @@ jobs:
         env:
           # Provide your app name, account name, and server to be deployed below
           APPNAME: ordinalsimr
-          # ACCOUNT: your-account-name
+          ACCOUNT: 6fcd1k-pat
           SERVER: shinyapps.io # server to deploy
         run: |
           rsconnect::setAccountInfo("${{ secrets.RSCONNECT_USER }}", "${{ secrets.RSCONNECT_TOKEN }}", "${{ secrets.RSCONNECT_SECRET }}")
