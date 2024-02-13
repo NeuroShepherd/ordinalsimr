@@ -21,7 +21,7 @@ mod_stats_calculations_ui <- function(id){
     ),
     box(
       width = 9,
-      DT::dataTableOutput(ns("results_table"))
+      shinycssloaders::withSpinner(DT::dataTableOutput(ns("results_table")), type = 8)
     )
   )
 
