@@ -65,8 +65,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
     output$distribution_plot_results <- renderPlot({
       distribution_plot()
     })
-      # ensure evaluation in case user goes directly to downloading the results
-    # outputOptions(output, "distribution_plot_results", suspendWhenHidden = FALSE)
+
 
     # !!!statistics!!!
     distribution_statistics <- reactive({p_value_reactive_table() %>%
@@ -83,7 +82,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         DT::datatable() %>%
         DT::formatRound(c(2,4), 5)
     })
-    # outputOptions(output, "distribution_statistics", suspendWhenHidden = FALSE)
 
 
     # GROUP 1 TYPE 1 ERROR
@@ -100,7 +98,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         DT::formatRound(c(2), 5)
 
     })
-    # outputOptions(output, "t1_error_group1", suspendWhenHidden = FALSE)
+
 
 
     # GROUP 2 TYPE 1 ERROR
@@ -116,7 +114,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         DT::datatable() %>%
         DT::formatRound(c(2), 5)
     })
-    # outputOptions(output, "t1_error_group2", suspendWhenHidden = FALSE)
 
 
     return(list(
