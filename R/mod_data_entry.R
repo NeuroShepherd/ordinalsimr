@@ -11,10 +11,11 @@ mod_data_entry_ui <- function(id){
   ns <- NS(id)
 
   tagList(
-   rhandsontable::rHandsontableOutput(ns("hottable")),
-   br(),
-   actionButton(ns("add_row"), "Add Row"),
-   actionButton(ns("delete_row"), "Delete Row")
+      box(width = 2,
+          actionButton(ns("add_row"), "Add Row"), br(), br(), actionButton(ns("delete_row"), "Delete Row"),
+          align = "center"
+          ),
+      box(width = 10, rhandsontable::rHandsontableOutput(ns("hottable")))
    )
 
 }
@@ -26,34 +27,21 @@ mod_data_entry_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    values = reactiveValues()
+    default_entry_rows <- getOption("ordinalsimr.default_entry_rows", default = 3)
+    entered_data = data.frame(`Group 1 Probabilities` = rep(0, default_entry_rows),
+                              `Group 2 Probabilities` = rep(0, default_entry_rows),
+                              check.names = FALSE)
+    reactive_data_vals <- reactiveVal(entered_data)
 
-
-    probability_data = reactive({
-
-      if (!is.null(input$hottable)) {
-        entered_data = rhandsontable::hot_to_r(input$hottable)
-      } else {
-        if (is.null(values[["entered_data"]])) {
-
-          entered_data = data.frame(`Group 1 Probabilities` = rep(0,3),
-                          `Group 2 Probabilities` = rep(0,3),
-                          check.names = FALSE)
-
-        } else
-          entered_data = values[["entered_data"]]
-      }
-
-      values[["entered_data"]] = entered_data
-      entered_data
-
-    })
-
+    observeEvent(input$hottable, { reactive_data_vals(hot_to_r(input$hottable)) } )
+    observeEvent(input$add_row, { reactive_data_vals(rbind(reactive_data_vals(), 0)) })
+    observeEvent(input$delete_row, { reactive_data_vals(reactive_data_vals()[-nrow(reactive_data_vals()), ]) })
 
 
     output$hottable <- rhandsontable::renderRHandsontable({
 
-      entered_data_2 = probability_data()
+      entered_data_2 = reactive_data_vals()
+
 
       # https://stackoverflow.com/questions/58746194/shiny-and-rhandsontable-conditional-cell-column-formatting-based-on-column-sum
       # not sure why I need to start at 1 and decrement from there, but it works...
@@ -103,7 +91,7 @@ mod_data_entry_server <- function(id){
 
     })
 
-    return(probability_data)
+    return(reactive_data_vals)
 
 
   })
