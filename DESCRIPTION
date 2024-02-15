@@ -25,6 +25,7 @@ Imports:
     rlang,
     rms,
     shiny (>= 1.7.4),
+    shinycssloaders,
     shinydashboard,
     shinydashboardPlus,
     stats,

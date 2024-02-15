@@ -21,7 +21,14 @@ mod_stats_calculations_ui <- function(id){
     ),
     box(
       width = 9,
-      DT::dataTableOutput(ns("results_table"))
+      tabsetPanel(type = "tabs",
+                  tabPanel("Comparison p-values",
+                           shinycssloaders::withSpinner(DT::dataTableOutput(ns("results_table")), type = 8)),
+                  tabPanel("Group 1 p-values",
+                           shinycssloaders::withSpinner(DT::dataTableOutput(ns("group1_pvalues")), type = 8)),
+                  tabPanel("Group 2 p-values",
+                           shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8))
+                  )
     )
   )
 
@@ -84,6 +91,24 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                     options = list(scrollX = TRUE)
       )
     )
+    outputOptions(output, "results_table", suspendWhenHidden = FALSE)
+
+    # if not keeping these output tables, use observe({group1_results()}) to
+    # ensure evaluation
+    output$group1_pvalues <- DT::renderDataTable(
+      DT::datatable(data = as.data.frame(group1_results()$p_values),
+                    options = list(scrollX = TRUE)
+      )
+    )
+    outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
+
+    output$group2_pvalues <- DT::renderDataTable(
+      DT::datatable(data = as.data.frame(group2_results()$p_values),
+                    options = list(scrollX = TRUE)
+      )
+    )
+    outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
+
 
     return(list(comparison_results = comparison_results,
                 group1_results = group1_results,

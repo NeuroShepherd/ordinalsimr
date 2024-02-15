@@ -10,6 +10,7 @@
 #' @import dplyr
 #' @import tidyr
 #' @importFrom shiny NS tagList
+#' @import shinycssloaders
 mod_plot_distributions_ui <- function(id){
   ns <- NS(id)
   tagList(
@@ -28,12 +29,15 @@ mod_plot_distributions_ui <- function(id){
     ),
     box(
       width = 9,
-      plotOutput(ns("distribution_plot_results")),
+      shinycssloaders::withSpinner(plotOutput(ns("distribution_plot_results")), type = 2,color.background = "#0275D8"),
       br(),
       tabsetPanel(type = "tabs",
-                  tabPanel("Power and Type II Error", DT::dataTableOutput(ns("distribution_statistics"))),
-                  tabPanel("Type I Error: Group 1", DT::dataTableOutput(ns("t1_error_group1"))),
-                  tabPanel("Type I Error: Group 2", DT::dataTableOutput(ns("t1_error_group2")))
+                  tabPanel("Power and Type II Error",
+                           shinycssloaders::withSpinner(DT::dataTableOutput(ns("distribution_statistics")), type=8)),
+                  tabPanel("Type I Error: Group 1",
+                           shinycssloaders::withSpinner(DT::dataTableOutput(ns("t1_error_group1")), type = 8)),
+                  tabPanel("Type I Error: Group 2",
+                           shinycssloaders::withSpinner(DT::dataTableOutput(ns("t1_error_group2")), type = 8))
                   )
 
     )
@@ -61,8 +65,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
     output$distribution_plot_results <- renderPlot({
       distribution_plot()
     })
-      # ensure evaluation in case user goes directly to downloading the results
-    outputOptions(output, "distribution_plot_results", suspendWhenHidden = FALSE)
+
 
     # !!!statistics!!!
     distribution_statistics <- reactive({p_value_reactive_table() %>%
@@ -72,7 +75,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
       })
     output$distribution_statistics <- DT::renderDataTable({
       distribution_statistics() %>%
-        select(-.data$lower_power_bound, -.data$upper_power_bound) %>%
+        select(-.data$lower_power_bound, -.data$upper_power_bound,
+               -.data$lower_t2error_bound, -.data$upper_t2error_bound) %>%
         rename(`Statistical Test` = .data$test,
                "Power (1-\U03B2)" = .data$power,
                "Type II Error (\U03B2)" = .data$t2_error) %>%
@@ -95,6 +99,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         DT::formatRound(c(2), 5)
 
     })
+
 
 
     # GROUP 2 TYPE 1 ERROR
