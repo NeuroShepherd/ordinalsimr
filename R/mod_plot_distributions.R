@@ -75,7 +75,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
       })
     output$distribution_statistics <- DT::renderDataTable({
       distribution_statistics() %>%
-        select(-.data$lower_power_bound, -.data$upper_power_bound) %>%
+        select(-.data$lower_power_bound, -.data$upper_power_bound,
+               -.data$lower_t2error_bound, -.data$upper_t2error_bound) %>%
         rename(`Statistical Test` = .data$test,
                "Power (1-\U03B2)" = .data$power,
                "Type II Error (\U03B2)" = .data$t2_error) %>%
