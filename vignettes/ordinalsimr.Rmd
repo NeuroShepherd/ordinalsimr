@@ -26,6 +26,17 @@ library(ordinalsimr)
 * Notes on future advances
 * Link to bug reports
 
+## App Options
+
+* `ordinalsimr.default_entry_rows` for default number of rows in the data entry table on start-up
+* ...
+
+Setting options:
+
+```
+options(name = "value")
+options(ordinalsimr.default_entry_rows = 6)
+```
 
 # Using Downloaded Data
 
