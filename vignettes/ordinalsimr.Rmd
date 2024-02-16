@@ -21,22 +21,42 @@ library(ordinalsimr)
 
 # Shiny App
 
-* Brief description of how to use the app
-* Alternative terminology
-* Notes on future advances
-* Link to bug reports
+The {ordinalsimr} package wraps a Shiny application and supporting functions for running simulation studies on several pre-selected statistical tests applicable to ordinal data. The Shiny app is particularly suited for calculating Power and Type II error for a proposed 2-group comparison of an ordinal endpoint. Available parameters to manipulate before running the tests include:
+
+* Number of simulations to run (integer)
+* The sample size (integer)
+* The distribution ratio between group 1 and group 2 (ratio of form X:X)
+* Group 1 and Group 2 distribution probabilities for levels of the ordinal outcome
+
+In addition to these parameters for running the simulation, the following can be adjusted in the Distributions page
+
+* Filtering out the top x% of observations from view in the plot. *This does not remove or alter data from any other processes. It is only included as a convenience function for observing smaller windows of the data.*
+* Setting the alpha significance level/p-value threshold
+* Setting the confidence intervals for the Power/T2 Error calculations
+* Setting the confidence intervals (separately) for the Type I Error in Group 1 and Group 2
+
+Bug reports and feature requests can be submitted as issues at [https://github.com/NeuroShepherd/ordinalsimr/issues](https://github.com/NeuroShepherd/ordinalsimr/issues)
 
 ## App Options
 
-* `ordinalsimr.default_entry_rows` for default number of rows in the data entry table on start-up
-* ...
+If you find yourself consistently changing the default parameters of the application to new values manually, it is possible to instead set default values for these parameters. All available preset parameters are prefixed with `ordinalsimr.`, but this functionality has so far only been implemented for a limited number of defaults. Options can be set using the `options()` function. 
 
-Setting options:
+Example of changing the default number of rows to 6:
 
 ```
-options(name = "value")
 options(ordinalsimr.default_entry_rows = 6)
 ```
+
+### Available Options
+
+* `ordinalsimr.default_entry_rows`: single integer indicating number of rows
+* `ordinalsimr.default_distributions`: data frame to use for simulations. Safety checks have not been included on this option. Input must be a 2-column data frame. Column names will be discarded. Recommend that you ensure the sum of values in each column are **near** 1 (e.g. using `dplyr::near()`).
+
+
+### Planned Options
+
+* `ordinalsimr.default_sample_size`: sample size
+* `ordinalsimr.default_simulations`: number of simulation iterations
 
 # Using Downloaded Data
 
