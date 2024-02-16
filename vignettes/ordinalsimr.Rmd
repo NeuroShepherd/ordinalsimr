@@ -57,24 +57,96 @@ options(ordinalsimr.default_entry_rows = 6)
 
 * `ordinalsimr.default_sample_size`: sample size
 * `ordinalsimr.default_simulations`: number of simulation iterations
+* ...
 
-# Using Downloaded Data
+## Using Downloaded Data
 
-* Description of the output data
-* Accessing the elements of the lists
+Data downloaded after running a simulation is stored as a `.rds` file, and can be loaded into your R session using `readRDS()`. The data is structured as a named list with 3 elements at the top level, and several sub-elements. A summary of the available information is available in the code below.
+
+```{r}
+output <- readRDS("data-2024-02-16-049dcfcd9afdad1402588ca3a3f73f95-1.rds")
+
+str(output, max.level = 2)
+
+```
+
 
 
 # Coding Your Own Simulations
 
-* Describing some of the functions in more detail
-* Showing example output
-* Work through an entire example
+This guide will provide a rough overview of how to code your own simulations using the components of this package should you find the Shiny application too limiting for your own purposes. Key information on functions:
 
-## Mapping Over Many Sample Sizes
+* `run_simulations()` will take simulation input parameters and return a list. The first element contains a matrix of p-values for each run of the simulation, while the second element is multiple lists of information describing group allocations in detail.
+* `format_simulation_data()` is recommended for reformatting the two list elements mentioned above. It will return a list of two tibbles.
+* `calculate_power_t2error()` and `calculate_t1_error()` can receive the p-value data frames for performing T1 Error, Power, and T2 Error calculations with confidence intervals. See function documentation for additional arguments.
 
-* Note this is a planned future feature for the app
-* Demonstrate how to do this by using `purrr::map()`
-  * recommend limiting number of runs unless using `furrr::map()` or other parallelization approach
+## Example: Power and Type II Error
+
+```{r, warning=FALSE}
+sim_results <- run_simulations(sample_size = 80,
+                sample_prob = c(0.5,0.5),
+                prob0 = c(0.1,0.2,0.3,0.4),
+                prob1 = c(0.6,0.2,0.1,0.1),
+                niter = 20
+                )
+
+formatted_results <- format_simulation_data(sim_results)
+names(formatted_results)
+
+formatted_results$p_values
+
+calculate_power_t2error(formatted_results$p_values, alpha = 0.05, power_confidence_int = 95)
+
+```
+
+
+## Example: Type I Error
+
+To find the Type I error of a distribution, the code from before is largely unchanged except for the fact that the probability vectors set in `run_simulations` must now be equivalent and the `calculate_t1_error()` function is now applied.
+
+
+```{r, warning=FALSE}
+sim_results <- run_simulations(sample_size = 80,
+                sample_prob = c(0.5,0.5),
+                prob0 = c(0.1,0.2,0.3,0.4),
+                prob1 = c(0.1,0.2,0.3,0.4),
+                niter = 20
+                )
+
+formatted_results <- format_simulation_data(sim_results)
+names(formatted_results)
+
+formatted_results$p_values
+
+calculate_t1_error(formatted_results$p_values, alpha = 0.05, t1_error_confidence_int = 95)
+```
+
+
+
+## Example: Mapping Over Many Sample Sizes
+
+The current version of the application can only accept one sample size at a time. A future iteration of the application will ideally implement this feature, but, in the meantime, there are many situations where it would be advantageous to model test results over many different sample sizes. Depending on how big the number of iterations per sample sizes (`niter`) and the actual number of sample sizes being checked, it may only be practical to do this in a parallelized manner with e.g. {furrr} or {parallel}. In any case, an example of such code is included below:
+
+
+```{r, warning=FALSE}
+
+sample_sizes <- c(30,50,100)
+
+purrr::map(sample_sizes,
+  ~ run_simulations(sample_size = .x,
+                sample_prob = c(0.5,0.5),
+                prob0 = c(0.1,0.2,0.3,0.4),
+                prob1 = c(0.6,0.2,0.1,0.1),
+                niter = 100
+                ) %>%
+    format_simulation_data() %>%
+    extract2("p_values") %>%
+    calculate_power_t2error()
+  )
+
+```
+
+
 
 
 
