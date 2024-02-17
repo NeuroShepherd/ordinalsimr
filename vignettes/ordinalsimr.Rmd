@@ -153,7 +153,8 @@ purrr::map(sample_sizes,
                 ) %>%
     format_simulation_data() %>%
     magrittr::extract2("p_values") %>%
-    calculate_power_t2error()
+    calculate_power_t2error(),
+  .progress = TRUE
   )
 
 ```
@@ -200,7 +201,8 @@ many_sims <- info_table %>%
     ) %>%
       format_simulation_data() %>%
       magrittr::extract2("p_values") %>%
-      calculate_power_t2error()
+      calculate_power_t2error(),
+    .progress = TRUE
   )
 
 many_sims[1]
