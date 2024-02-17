@@ -12,3 +12,9 @@ $run_dev.*
 ^\.github$
 ^app\.R$
 ^rsconnect$
+^doc$
+^Meta$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+

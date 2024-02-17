@@ -12,6 +12,7 @@ Simultaneously evaluate multiple ordinal outcome measures.
 Useful links:
 \itemize{
   \item \url{https://github.com/NeuroShepherd/ordinalsimr}
+  \item \url{https://neuroshepherd.github.io/ordinalsimr/}
   \item Report bugs at \url{https://github.com/NeuroShepherd/ordinalsimr/issues}
 }
 

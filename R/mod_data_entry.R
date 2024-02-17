@@ -28,10 +28,19 @@ mod_data_entry_server <- function(id){
     ns <- session$ns
 
     default_entry_rows <- getOption("ordinalsimr.default_entry_rows", default = 3)
-    entered_data = data.frame(`Group 1 Probabilities` = rep(0, default_entry_rows),
-                              `Group 2 Probabilities` = rep(0, default_entry_rows),
-                              check.names = FALSE)
+    default_dist_option <- getOption("ordinalsimr.default_distributions")
+    default_distribution_data <- data.frame(`Group 1 Probabilities` = rep(0, default_entry_rows),
+                                            `Group 2 Probabilities` = rep(0, default_entry_rows),
+                                            check.names = FALSE)
+    entered_data <- if (is.data.frame(default_dist_option)) {
+      default_dist_option %>%
+        dplyr::rename(`Group 1 Probabilities` = 1,
+                      `Group 2 Probabilities` = 2)
+    } else {
+      default_distribution_data
+    }
     reactive_data_vals <- reactiveVal(entered_data)
+
 
     observeEvent(input$hottable, { reactive_data_vals(hot_to_r(input$hottable)) } )
     observeEvent(input$add_row, { reactive_data_vals(rbind(reactive_data_vals(), 0)) })
