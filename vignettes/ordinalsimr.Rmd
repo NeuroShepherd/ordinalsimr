@@ -50,7 +50,8 @@ options(ordinalsimr.default_entry_rows = 6)
 ### Available Options
 
 * `ordinalsimr.default_entry_rows`: single integer indicating number of rows
-* `ordinalsimr.default_distributions`: data frame to use for simulations. Safety checks have not been included on this option. Input must be a 2-column data frame. Column names will be discarded. Recommend that you ensure the sum of values in each column are **near** 1 (e.g. using `dplyr::near()`).
+* `ordinalsimr.default_distributions`: data frame to use for simulations. 
+  * Safety checks have not been included on this option. Input must be a 2-column data frame. Column names will be discarded. Recommend that you ensure the sum of values in each column are **near** 1 (e.g. using `dplyr::near()`).
 
 
 ### Planned Options
@@ -65,10 +66,21 @@ Data downloaded after running a simulation is stored as a `.rds` file, and can b
 
 ```{r}
 output <- readRDS("data-2024-02-16-049dcfcd9afdad1402588ca3a3f73f95-1.rds")
-
+output$comparison_data$distribution_statistics
 str(output, max.level = 2)
 
 ```
+
+* Top level items
+  * `comparison_data` are results from comparing Group 1 against Group 2 in the statistical tests (for TII error and power)
+  * `group1_data` are results from comparing Group 1 data against itself (for TI error of this group)
+  * `group2_data` are results from comparing Group 2 data against itself (for TI error of this group)
+* Second level items
+  * `p_values` are tables of p-values for all of the tests (columns) in each simulation runs (rows)
+  * `run_info` are tables of detailed metainformation about the parameters used for each run
+  * `distribution_statistics` are tables of computed TII error, power, and associated confidence intervals
+  * `distribution_plot` is a {ggplot2} plot of the distributions of p-values
+  * `group1_t1error` and `group2_t1error` are tables of TI error and associated confidence intervals
 
 
 
@@ -93,7 +105,7 @@ sim_results <- run_simulations(sample_size = 80,
 formatted_results <- format_simulation_data(sim_results)
 names(formatted_results)
 
-formatted_results$p_values
+head(formatted_results$p_values)
 
 calculate_power_t2error(formatted_results$p_values, alpha = 0.05, power_confidence_int = 95)
 
@@ -116,7 +128,7 @@ sim_results <- run_simulations(sample_size = 80,
 formatted_results <- format_simulation_data(sim_results)
 names(formatted_results)
 
-formatted_results$p_values
+head(formatted_results$p_values)
 
 calculate_t1_error(formatted_results$p_values, alpha = 0.05, t1_error_confidence_int = 95)
 ```
@@ -140,11 +152,63 @@ purrr::map(sample_sizes,
                 niter = 100
                 ) %>%
     format_simulation_data() %>%
-    extract2("p_values") %>%
+    magrittr::extract2("p_values") %>%
     calculate_power_t2error()
   )
 
 ```
+
+
+## Example: Adjust Multiple Parameters
+
+It is perhaps more likely that analysts will want to iterate simulations over a variety of different parameters at once. The code below provides a structure for creating a combination grid based on the 5 input parameters that can be altered; this example can easily be altered to include desired parameters by replacing/removing/expanding the listed parameters. 
+
+Note that the `prob0_list` and `prob1_list` must always be of the same length **and** the corresponding sub-elements of the list must also be of the same length. Put in terms of the application, there must be a Group 2 if there is a Group 1, and the vector representing the number of possible outcomes must be the same length for these 2 groups.
+
+```{r, warning=FALSE}
+
+# Choose sample sizes
+sample_size <- c(50,100)
+# Set sample distributions as a proportion c(group1, group2)
+sample_prob <- list(c(0.5,0.5), c(0.75,0.25))
+# Trial 1 has matching probabilities between the 2 groups. Trial 2 has non-matching probabilities
+prob0_list <- list(trial1_group1 = c(0.1,0.2,0.3,0.4), trial2_group1 = c(0.1,0.2,0.3,0.4) )
+prob1_list <- list(trial1_group2 = c(0.1,0.2,0.3,0.4), trial2_group2 = c(0.2,0.3,0.3,0.2) )
+# Number of iterations
+niter <- c(20,100)
+
+# Use tidyr::expand_grid as it creates a tibble, supporting the nested tibble structure
+info_table <- tidyr::expand_grid(
+  sample_size,
+  sample_prob,
+  prob0_list,
+  prob1_list,
+  niter
+) 
+
+info_table
+
+# Calculate either Power/T2 error or T1 error depending on your specific needs
+many_sims <- info_table %>%
+  purrr::pmap(
+    ~run_simulations(
+      sample_size = ..1,
+      sample_prob = ..2,
+      prob0 = ..3,
+      prob1 = ..4,
+      niter = ..5
+    ) %>%
+      format_simulation_data() %>%
+      magrittr::extract2("p_values") %>%
+      calculate_power_t2error()
+  )
+
+many_sims[1]
+
+
+```
+
+
 
 
 
