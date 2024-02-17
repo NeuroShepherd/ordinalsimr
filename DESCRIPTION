@@ -19,7 +19,6 @@ Imports:
     glue,
     golem (>= 0.4.0),
     magrittr,
-    pkgload,
     purrr,
     rhandsontable,
     rlang,
