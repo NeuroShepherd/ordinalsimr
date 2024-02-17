@@ -2,3 +2,30 @@ url: https://neuroshepherd.github.io/ordinalsimr/
 template:
   bootstrap: 5
 
+
+reference:
+  - title: Run Shiny App
+    desc: Function for activating the {ordinalsimr} Shiny application
+  - contents:
+    - run_app
+  - title: Simulation Functions
+    desc: Functions useful for running your own simulations
+  - contents:
+    - run_simulations
+    - calculate_power_t2error
+    - calculate_t1_error
+    - format_simulation_data
+  - title: Helper Functions
+    desc: Constructors and utility functions
+    contents:
+    - ordinal_tests
+    - plot_distribution_results
+    - assign_groups
+    - parse_ratio_text
+  - title: Data
+    desc: Example data frames/lists
+  - contents:
+    - simulation_data_one_group
+    - simulation_data_one_group_formatted
+    - simulation_data_two_groups
+    - simulation_data_two_groups_formatted
