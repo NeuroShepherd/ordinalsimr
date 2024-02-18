@@ -110,7 +110,7 @@ confidence intervals. See function documentation for additional
 arguments.</li>
 </ul>
 <div class="section level3">
-<h3 id="example-power-and-type-ii-error">Example: Power and Type II Error<a class="anchor" aria-label="anchor" href="#example-power-and-type-ii-error"></a>
+<h3 id="power-and-type-ii-error">Power and Type II Error<a class="anchor" aria-label="anchor" href="#power-and-type-ii-error"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span>sample_size <span class="op">=</span> <span class="fl">80</span>,</span>
@@ -154,7 +154,7 @@ arguments.</li>
 <span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI Interval` &lt;glue&gt;, `Sample Size` &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="example-type-i-error">Example: Type I Error<a class="anchor" aria-label="anchor" href="#example-type-i-error"></a>
+<h3 id="type-i-error">Type I Error<a class="anchor" aria-label="anchor" href="#type-i-error"></a>
 </h3>
 <p>To find the Type I error of a distribution, the code from before is
 largely unchanged except for the fact that the probability vectors set
@@ -164,7 +164,7 @@ in <code>run_simulations</code> must now be equivalent and the
 <code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span>sample_size <span class="op">=</span> <span class="fl">80</span>,</span>
 <span>                sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>                prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>,</span>
-<span>                prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>                prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>, <span class="co"># note the matching probabilities between groups</span></span>
 <span>                niter <span class="op">=</span> <span class="fl">20</span></span>
 <span>                <span class="op">)</span></span>
 <span></span>
@@ -199,7 +199,7 @@ in <code>run_simulations</code> must now be equivalent and the
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> <span style="color: #949494;">"</span>Coin …        0.012<span style="text-decoration: underline;">3</span>           0.317     0.1  [0.0123, 0.317]              <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="example-mapping-over-many-sample-sizes">Example: Mapping Over Many Sample Sizes<a class="anchor" aria-label="anchor" href="#example-mapping-over-many-sample-sizes"></a>
+<h3 id="mapping-over-many-sample-sizes">Mapping Over Many Sample Sizes<a class="anchor" aria-label="anchor" href="#mapping-over-many-sample-sizes"></a>
 </h3>
 <p>The current version of the application can only accept one sample
 size at a time. A future iteration of the application will ideally
@@ -272,7 +272,7 @@ included below:</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI Interval` &lt;glue&gt;, `Sample Size` &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="example-adjust-multiple-parameters">Example: Adjust Multiple Parameters<a class="anchor" aria-label="anchor" href="#example-adjust-multiple-parameters"></a>
+<h3 id="adjust-multiple-parameters">Adjust Multiple Parameters<a class="anchor" aria-label="anchor" href="#adjust-multiple-parameters"></a>
 </h3>
 <p>It is perhaps more likely that analysts will want to iterate
 simulations over a variety of different parameters at once. The code
@@ -341,8 +341,7 @@ on. (This can, of course, be approached in other ways if desired.)</p>
 the number of distinct simulations to run, is equivalent to the
 combination of all parameters
 <code>length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)</code>
-or
-<code>r</code>length(sample_size)<em>length(sample_prob)</em>length(prob0_list)<em>length(prob1_list)</em>length(niter)`</p>
+or 32 in this case.</p>
 </div>
 <div class="section level4">
 <h4 id="run-simulation">Run Simulation<a class="anchor" aria-label="anchor" href="#run-simulation"></a>
@@ -367,11 +366,11 @@ other purposes.</p>
 <span>      <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    .progress <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
-<span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■                           </span>  12% |  ETA: 19s</span></span>
-<span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■                       </span>  28% |  ETA: 14s</span></span>
+<span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■                           </span>  12% |  ETA: 20s</span></span>
+<span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■                       </span>  25% |  ETA: 16s</span></span>
 <span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■■■■■■                  </span>  44% |  ETA: 12s</span></span>
 <span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■              </span>  56% |  ETA:  9s</span></span>
-<span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■         </span>  72% |  ETA:  6s</span></span>
+<span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■          </span>  69% |  ETA:  6s</span></span>
 <span><span class="co">#&gt;  <span style="color: #00BB00;">■■■■■■■■■■■■■■■■■■■■■■■■■■■     </span>  88% |  ETA:  3s</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">many_sims</span><span class="op">)</span></span>
