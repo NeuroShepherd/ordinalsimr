@@ -27,7 +27,7 @@ This guide will provide a rough overview of how to code your own simulations usi
 * `format_simulation_data()` is recommended for reformatting the two list elements mentioned above. It will return a list of two tibbles.
 * `calculate_power_t2error()` and `calculate_t1_error()` can receive the p-value data frames for performing T1 Error, Power, and T2 Error calculations with confidence intervals. See function documentation for additional arguments.
 
-## Example: Power and Type II Error
+## Power and Type II Error
 
 ```{r, warning=FALSE}
 sim_results <- run_simulations(sample_size = 80,
@@ -47,7 +47,7 @@ calculate_power_t2error(formatted_results$p_values, alpha = 0.05, power_confiden
 ```
 
 
-## Example: Type I Error
+## Type I Error
 
 To find the Type I error of a distribution, the code from before is largely unchanged except for the fact that the probability vectors set in `run_simulations` must now be equivalent and the `calculate_t1_error()` function is now applied.
 
@@ -56,7 +56,7 @@ To find the Type I error of a distribution, the code from before is largely unch
 sim_results <- run_simulations(sample_size = 80,
                 sample_prob = c(0.5,0.5),
                 prob0 = c(0.1,0.2,0.3,0.4),
-                prob1 = c(0.1,0.2,0.3,0.4),
+                prob1 = c(0.1,0.2,0.3,0.4), # note the matching probabilities between groups
                 niter = 20
                 )
 
@@ -70,7 +70,7 @@ calculate_t1_error(formatted_results$p_values, alpha = 0.05, t1_error_confidence
 
 
 
-## Example: Mapping Over Many Sample Sizes
+## Mapping Over Many Sample Sizes
 
 The current version of the application can only accept one sample size at a time. A future iteration of the application will ideally implement this feature, but, in the meantime, there are many situations where it would be advantageous to model test results over many different sample sizes. Depending on how big the number of iterations per sample sizes (`niter`) and the actual number of sample sizes being checked, it may only be practical to do this in a parallelized manner with e.g. {furrr} or {parallel}. In any case, an example of such code is included below:
 
@@ -95,7 +95,7 @@ purrr::map(sample_sizes,
 ```
 
 
-## Example: Adjust Multiple Parameters
+## Adjust Multiple Parameters
 
 It is perhaps more likely that analysts will want to iterate simulations over a variety of different parameters at once. The code below provides a structure for creating a combination grid based on the 5 input parameters that can be altered; this example can easily be altered to include desired parameters by replacing/removing/expanding the listed parameters. 
 
@@ -137,7 +137,7 @@ info_table <- tidyr::expand_grid(
 info_table
 ```
 
-As a check, it can be noted that the number of rows in this table, or the number of distinct simulations to run, is equivalent to the combination of all parameters `length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)` or `r `length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)`
+As a check, it can be noted that the number of rows in this table, or the number of distinct simulations to run, is equivalent to the combination of all parameters `length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)` or `r length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)` in this case.
 
 ### Run Simulation
 
