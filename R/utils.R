@@ -129,10 +129,11 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
   df %>%
     pivot_longer(cols = everything(),names_to = "test_name") %>%
+    mutate(test_name = reorder(test_name, value, decreasing = TRUE)) %>%
     {
     xaxis_lim <- (outlier_removal)*max(pull(.,"value"))
     ggplot(., aes(x = .data[["value"]], y = .data[["test_name"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
-    ggridges::geom_density_ridges(alpha = 0.2, panel_scaling = TRUE) +
+    ggridges::geom_density_ridges(alpha = 0.6, panel_scaling = TRUE) +
     geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
     scale_x_continuous(limits = c(0, xaxis_lim)) +
     ggtitle("Density Plot of p-values") +
