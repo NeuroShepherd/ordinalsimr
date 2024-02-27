@@ -122,16 +122,18 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 #' @return ggplot object
 #' @importFrom rlang .data
+#' @importFrom ggridges geom_density_ridges
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
 
   df %>%
     pivot_longer(cols = everything(),names_to = "test_name") %>%
+    mutate(test_name = reorder(test_name, value, decreasing = TRUE)) %>%
     {
     xaxis_lim <- (outlier_removal)*max(pull(.,"value"))
-    ggplot(., aes(x = .data[["value"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
-    geom_density(alpha = 0.1, size = 2.5) +
+    ggplot(., aes(x = .data[["value"]], y = .data[["test_name"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
+    ggridges::geom_density_ridges(alpha = 0.6, panel_scaling = TRUE) +
     geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
     scale_x_continuous(limits = c(0, xaxis_lim)) +
     ggtitle("Density Plot of p-values") +
@@ -139,9 +141,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     guides(fill = "none") +
     theme_bw() +
     theme(
-      legend.key.size = unit(1, 'cm'),
-      legend.text = element_text(size = 14),
-      legend.title = element_text(face = "bold", size = 16),
+      legend.position = "none",
       axis.text = element_text(face = "bold", size = 14),
       axis.title = element_text(face = "bold", size = 18),
       plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
