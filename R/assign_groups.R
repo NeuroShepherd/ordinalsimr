@@ -15,9 +15,10 @@
 #'
 #'
 #'
-assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed) {
+assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed,
+                          .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
 
-  set.seed(seed)
+  withr::with_seed(seed, {
 
   y <- factor(sample(x = 0:1, size = sample_size, replace = TRUE, prob = sample_prob))
   n_null <- sum(y==0)
@@ -35,5 +36,12 @@ assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed) {
 #     warning("Not all possible outcomes observed in the intervention group.")
 #   }
 
-  list(y=y, x=x, n_null=n_null, n_intervene=n_intervene, sample_size=sample_size, K=K)
+  list(y=y, x=x, n_null=n_null, n_intervene=n_intervene, sample_size=sample_size, K=K,
+       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind)
+  },
+  .rng_kind = .rng_kind,
+  .rng_normal_kind = .rng_normal_kind,
+  .rng_sample_kind = .rng_sample_kind
+  )
+
 }
