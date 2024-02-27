@@ -1,0 +1,47 @@
+---
+output: md_document
+---
+
+# {ordinalsimr} Shiny Application
+
+The {ordinalsimr} package is intended to assist applied statisticians with running simulation studies on ordinal data. This Shiny application provides a point-and-click approach to setting simulation parameters including setting the number of iterations, the total sample size, the group size ratio between group 1 and group 2, and the distribution probabilities of the ordinal endpoint for each group. 
+
+## Help Files
+
+If the Shiny application is not flexible enough for your purposes, this package also provides a variety of helper functions. See the package for vignettes for more information on coding your own simulation studies.
+
+
+```{r, eval=FALSE}
+vignette("coding-simulations", package = "ordinalsimr")
+vignette("ordinalsimr", package = "ordinalsimr")
+```
+
+
+## Included Tests
+
+* Wilcoxon Test: `stats::wilcox.test()`
+* Fisher Test: `stats::fisher.test()`
+* Chi-Squared without Continuity Correction: `stats::chisq.test(correct = FALSE)`
+* Chi-Squared with Continuity Correction: `stats::chisq.test(correct = TRUE)`
+* Proportional Odds model: `rms::lrm()`
+* Kruskal-Wallis test: `stats.kruskal.test()`
+* Independence Test: `coin::independence_test(ytrafo = coin::rank_trafo)`
+
+## Pages
+
+### Simulation
+
+This page is for parameter entries, and includes a "Run Test" button to press once all parameters have been determined. Processing is completed when the p-value tables at the bottom of the page appear.
+
+### Distributions
+
+Results of a simulation run can be seen here included a visualization of the p-value densities by test as well as Power, Type II error, Type I error, and associated confidence intervals for these values. The CI percentiles can be adjusted as well as the nominal significance level \alpha.
+
+### Report
+
+This page is under development, but does currently include an option to download the metadata (i.e. input parameters), p-values from tests, summary statistics, and the ggplot as an `.rds` file.
+
+
+
+
+
