@@ -12,7 +12,15 @@ app_ui <- function(request) {
     # Your application UI logic
     shinydashboardPlus::dashboardPage(
 
-      shinydashboardPlus::dashboardHeader(),
+      shinydashboardPlus::dashboardHeader(
+        title = "ordinalsimr",
+        tags$li(class = "dropdown", tags$a(href = "https://neuroshepherd.github.io/ordinalsimr/",
+                                           icon("book-open-reader"), "Docs", target = "_blank")),
+        tags$li(class = "dropdown", tags$a(href = "https://github.com/NeuroShepherd/ordinalsimr/issues",
+                                           icon("circle-exclamation"), "Issues", target = "_blank")),
+        tags$li(class = "dropdown", tags$a(href = "https://github.com/NeuroShepherd/ordinalsimr",
+                                           icon("github"), "GitHub", target = "_blank"))
+      ),
 
       shinydashboardPlus::dashboardSidebar(
         sidebarMenu(
