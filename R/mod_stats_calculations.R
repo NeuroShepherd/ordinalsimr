@@ -89,7 +89,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$results_table <- DT::renderDataTable(
       DT::datatable(data = as.data.frame(comparison_results()$p_values),
                     options = list(scrollX = TRUE)
-      )
+      ) %>%
+        DT::formatRound(1:7, digits = 5)
     )
     outputOptions(output, "results_table", suspendWhenHidden = FALSE)
 
@@ -98,14 +99,16 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$group1_pvalues <- DT::renderDataTable(
       DT::datatable(data = as.data.frame(group1_results()$p_values),
                     options = list(scrollX = TRUE)
-      )
+      ) %>%
+        DT::formatRound(1:7, digits = 5)
     )
     outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
 
     output$group2_pvalues <- DT::renderDataTable(
       DT::datatable(data = as.data.frame(group2_results()$p_values),
                     options = list(scrollX = TRUE)
-      )
+      ) %>%
+        DT::formatRound(1:7, digits = 5)
     )
     outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
 

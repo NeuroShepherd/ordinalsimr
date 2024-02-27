@@ -9,9 +9,9 @@ plot_distribution_results(df, alpha = 0.05, outlier_removal = 0.1)
 \arguments{
 \item{df}{data frame of p-values}
 
-\item{alpha}{significance level}
+\item{alpha}{numeric. significance level}
 
-\item{outlier_removal}{top x proportion of observations to filter out of table}
+\item{outlier_removal}{numeric. set x-axis scale maximum by proportion}
 }
 \value{
 ggplot object
