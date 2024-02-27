@@ -31,7 +31,8 @@ Imports:
     stats,
     stringr,
     tidyr,
-    markdown
+    markdown,
+    ggridges
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
