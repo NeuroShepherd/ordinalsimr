@@ -17,7 +17,7 @@ mod_plot_distributions_ui <- function(id){
     box(
       width = 3,
       sliderInput(ns("remove_outlier_percentage"), "Remove top x% from view",
-                  min = 0, max = 100, value = 10, round = TRUE),
+                  min = 0, max = 100, value = 0, round = TRUE),
       numericInput(ns("user_p_val"), "p-value Threshold",
                    min = 0, max = 1, value = 0.05, step = 0.01),
       numericInput(ns("power_confidence_int"), "%CI: Power",
