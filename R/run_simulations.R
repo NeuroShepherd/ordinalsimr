@@ -25,7 +25,7 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter) {
   K <- length(prob0)
   p_values <- matrix(NA,niter,7)
   colnames(p_values) <- c("Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)",
-    "Logistic Reg.", "Kruskal-Wallis", "Coin Indep. Test")
+    "Prop. Odds", "Kruskal-Wallis", "Coin Indep. Test")
 
 
   initial_groups <- list()
