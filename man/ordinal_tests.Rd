@@ -20,11 +20,13 @@ A named vector of probabilities for each test
 A metafunction that runs the statistical tests listed below, and returns the p-values as a named vector.
 }
 \details{
-* `stats::wilcox.test()`
-* `stats::fisher.test()`
-* `stats::chisq.test(correct = FALSE)`
-* `stats::chisq.test(correct = TRUE)`
-* `rms::lrm()`
-* `stats.kruskal.test()`
-* `coin::independence_test(ytrafo = coin::rank_trafo)`
+\itemize{
+ \item{`stats::wilcox.test()`}
+ \item{`stats::fisher.test()`}
+ \item{`stats::chisq.test(correct = FALSE)`}
+ \item{`stats::chisq.test(correct = TRUE)`}
+ \item{`rms::lrm()`}
+ \item{`stats.kruskal.test()`}
+ \item{`coin::independence_test(ytrafo = coin::rank_trafo)`}
+ }
 }

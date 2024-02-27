@@ -11,7 +11,7 @@ mod_homepage_ui <- function(id){
   ns <- NS(id)
   tagList(
     fluidRow(
-      column(2),
+      column(1),
       column(10,
       includeMarkdown(system.file("homepage.md", package = "ordinalsimr"))
       )
