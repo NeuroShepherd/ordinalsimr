@@ -37,7 +37,7 @@ mod_stats_calculations_ui <- function(id){
 #' stats_calculations Server Functions
 #'
 #' @noRd
-mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size){
+mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -62,7 +62,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                       prob0 = parameters()$prob0,
                       sample_prob = parameters()$sample_prob,
                       prob1 = parameters()$prob1,
-                      niter = parameters()$iterations)
+                      niter = parameters()$iterations,
+                      rng_info = rng_info)
     })
 
     group1_results <- eventReactive(input$run_button, {
@@ -71,7 +72,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                       prob0 = parameters()$prob0,
                       sample_prob = parameters()$sample_prob,
                       prob1 = parameters()$prob0,
-                      niter = parameters()$iterations)
+                      niter = parameters()$iterations,
+                      rng_info = rng_info)
       } else (data.frame())
     })
 
@@ -81,7 +83,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                         prob0 = parameters()$prob1,
                         sample_prob = parameters()$sample_prob,
                         prob1 = parameters()$prob1,
-                        niter = parameters()$iterations)
+                        niter = parameters()$iterations,
+                        rng_info = rng_info)
       } else (data.frame())
     })
 

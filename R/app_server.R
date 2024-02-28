@@ -12,6 +12,7 @@ app_server <- function(input, output, session) {
   data_entered_iters <- mod_iterations_server("iterations_1")
   data_entered_sample_size <- mod_sample_size_server("sample_size_1")
   data_sample_probabilities <- mod_sample_probabilities_server("sample_probabilities_1")
+  rng_selections <- mod_rng_option_server("rng_option_1")
 
 
   # Pass collected data to stats calculations
@@ -19,7 +20,8 @@ app_server <- function(input, output, session) {
                                 probability_data = data_entered_probs,
                                 sample_prob = data_sample_probabilities,
                                 iterations = data_entered_iters,
-                                sample_size = data_entered_sample_size)
+                                sample_size = data_entered_sample_size,
+                                rng_info = rng_selections)
 
   # Plot the distribution of values
   distributions_power_error <- mod_plot_distributions_server("plot_distributions_1",

@@ -13,7 +13,7 @@
 #' @export
 #'
 #'
-run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter) {
+run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, rng_info) {
 
   # Check equal vector lengths
   assert_that( length(prob0) == length(prob1) )
@@ -34,7 +34,11 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter) {
     initial_groups[[i]] <- assign_groups(sample_size = sample_size,
                                          sample_prob = sample_prob,
                                          prob0 = prob0, prob1 = prob1,
-                                         seed = i)
+                                         seed = i,
+                                         .rng_kind = rng_info$rng_kind(),
+                                         .rng_normal_kind = rng_info$rng_normal_kind(),
+                                         .rng_sample_kind = rng_info$rng_sample_kind()
+                                         )
 
     p_values[i, ] <- ordinal_tests(x = initial_groups[[i]]$x,
                                    y = initial_groups[[i]]$y)
