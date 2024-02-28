@@ -129,7 +129,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
   df %>%
     pivot_longer(cols = everything(),names_to = "test_name") %>%
-    mutate(test_name = reorder(test_name, value, decreasing = TRUE)) %>%
+    mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
     {
     xaxis_lim <- (outlier_removal)*max(pull(.,"value"))
     ggplot(., aes(x = .data[["value"]], y = .data[["test_name"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
@@ -137,7 +137,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
     scale_x_continuous(limits = c(0, xaxis_lim)) +
     ggtitle("Density Plot of p-values") +
-    labs(x = "p-value", y = "Density", color = "Statistical Test") +
+    labs(x = "p-value", y = "", color = "Statistical Test") +
     guides(fill = "none") +
     theme_bw() +
     theme(
