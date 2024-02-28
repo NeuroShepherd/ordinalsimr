@@ -32,6 +32,7 @@ app_server <- function(input, output, session) {
   # and any other enhanced functionality
   mod_save_data_server("save_data_1",
                        input_data = results_output,
-                       processed_data = distributions_power_error)
+                       processed_data = distributions_power_error,
+                       rng_info = rng_selections)
 
 }

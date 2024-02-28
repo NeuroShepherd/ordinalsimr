@@ -17,15 +17,22 @@ mod_save_data_ui <- function(id){
 #' save_data Server Functions
 #'
 #' @noRd
-mod_save_data_server <- function(id, input_data, processed_data, input, output, session){
+mod_save_data_server <- function(id, input_data, processed_data, rng_info, input, output, session){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
     # volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
     # shinyFileSave(input, "save_results", roots = "home")
 
+    rversion_info <- R.Version()
+
     data_to_save <- reactive({
       list(
+        rversion = rversion_info$version.string,
+        platform = rversion_info$platform,
+        rng_info = list(rng_kind = rng_info$rng_kind(),
+                        rng_normal_kind = rng_info$rng_normal_kind(),
+                        rng_sample_kind = rng_info$rng_sample_kind()),
         comparison_data = format_simulation_data(input_data$comparison_results()) %>%
           append(list(distribution_statistics = processed_data$distribution_statistics(),
                       distribution_plot = processed_data$distribution_plot()
