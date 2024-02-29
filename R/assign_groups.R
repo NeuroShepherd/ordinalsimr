@@ -9,9 +9,13 @@
 #' @param prob0 vector probability of each possible outcome for the null group
 #' @param prob1 vector probability of each possible outcome for the intervention group
 #' @param seed integer specifying the seed number
+#' @param .rng_kind seeding info passed to withr::with_seed
+#' @param .rng_normal_kind seeding info passed to withr::with_seed
+#' @param .rng_sample_kind seeding info passed to withr::with_seed
 #'
 #' @return list of group assignments
 #' @export
+#' @importFrom withr with_seed
 #'
 #'
 #'

@@ -4,7 +4,16 @@
 \alias{assign_groups}
 \title{Randomly assign groups}
 \usage{
-assign_groups(sample_size, sample_prob, prob0, prob1, seed)
+assign_groups(
+  sample_size,
+  sample_prob,
+  prob0,
+  prob1,
+  seed,
+  .rng_kind = NULL,
+  .rng_normal_kind = NULL,
+  .rng_sample_kind = NULL
+)
 }
 \arguments{
 \item{sample_size}{total number of people under observation.}
@@ -16,6 +25,12 @@ assign_groups(sample_size, sample_prob, prob0, prob1, seed)
 \item{prob1}{vector probability of each possible outcome for the intervention group}
 
 \item{seed}{integer specifying the seed number}
+
+\item{.rng_kind}{seeding info passed to withr::with_seed}
+
+\item{.rng_normal_kind}{seeding info passed to withr::with_seed}
+
+\item{.rng_sample_kind}{seeding info passed to withr::with_seed}
 }
 \value{
 list of group assignments

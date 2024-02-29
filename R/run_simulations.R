@@ -6,6 +6,10 @@
 #' @param prob0 Vector of probabilities for control group
 #' @param prob1 Vector of probabilities for intervention group
 #' @param niter Number of simulation iterations to complete#'
+#' @param .rng_kind seeding info passed to withr::with_seed
+#' @param .rng_normal_kind seeding info passed to withr::with_seed
+#' @param .rng_sample_kind seeding info passed to withr::with_seed
+#'
 #' @return list with elements `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
 #'
 #' @import assertthat
@@ -13,7 +17,8 @@
 #' @export
 #'
 #'
-run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, rng_info) {
+run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
+                            .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
 
   # Check equal vector lengths
   assert_that( length(prob0) == length(prob1) )
@@ -35,9 +40,9 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, rng_i
                                          sample_prob = sample_prob,
                                          prob0 = prob0, prob1 = prob1,
                                          seed = i,
-                                         .rng_kind = rng_info$rng_kind(),
-                                         .rng_normal_kind = rng_info$rng_normal_kind(),
-                                         .rng_sample_kind = rng_info$rng_sample_kind()
+                                         .rng_kind = .rng_kind,
+                                         .rng_normal_kind = .rng_normal_kind,
+                                         .rng_sample_kind = .rng_sample_kind
                                          )
 
     p_values[i, ] <- ordinal_tests(x = initial_groups[[i]]$x,

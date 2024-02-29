@@ -63,7 +63,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                       sample_prob = parameters()$sample_prob,
                       prob1 = parameters()$prob1,
                       niter = parameters()$iterations,
-                      rng_info = rng_info)
+                      .rng_kind = rng_info$rng_kind(),
+                      .rng_normal_kind = rng_info$rng_normal_kind(),
+                      .rng_sample_kind = rng_info$rng_sample_kind())
     })
 
     group1_results <- eventReactive(input$run_button, {
@@ -73,7 +75,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                       sample_prob = parameters()$sample_prob,
                       prob1 = parameters()$prob0,
                       niter = parameters()$iterations,
-                      rng_info = rng_info)
+                      .rng_kind = rng_info$rng_kind(),
+                      .rng_normal_kind = rng_info$rng_normal_kind(),
+                      .rng_sample_kind = rng_info$rng_sample_kind())
       } else (data.frame())
     })
 
@@ -84,7 +88,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
                         sample_prob = parameters()$sample_prob,
                         prob1 = parameters()$prob1,
                         niter = parameters()$iterations,
-                        rng_info = rng_info)
+                        .rng_kind = rng_info$rng_kind(),
+                        .rng_normal_kind = rng_info$rng_normal_kind(),
+                        .rng_sample_kind = rng_info$rng_sample_kind())
       } else (data.frame())
     })
 
