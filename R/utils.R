@@ -50,8 +50,8 @@ parse_ratio_text <- function(text) {
 #'
 calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
 
-  ci_power_label <- glue::glue("Power {power_confidence_int}% CI Interval")
-  ci_t2error_label <- glue::glue("TII Error {power_confidence_int}% CI Interval")
+  ci_power_label <- glue::glue("Power {power_confidence_int}% CI")
+  ci_t2error_label <- glue::glue("TII Error {power_confidence_int}% CI")
 
   df %>%
     purrr::map(
@@ -91,7 +91,7 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 #'
 calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
 
-  ci_label <- glue::glue("{t1_error_confidence_int}% CI Interval")
+  ci_label <- glue::glue("{t1_error_confidence_int}% CI")
 
   df %>%
     purrr::map(

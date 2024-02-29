@@ -16,8 +16,8 @@ test_that("power and t2 error calculations work", {
   # column name checks? p-value range checks? other errors to check for in the fxn itself?
   t2_power_result <- calculate_power_t2error(simulation_data_two_groups_formatted$p_values)
   expect_equal(names(t2_power_result),
-               c('test', 'lower_power_bound', 'upper_power_bound', 'power', 'Power 95% CI Interval',
-                 'lower_t2error_bound', 'upper_t2error_bound', 't2_error', 'TII Error 95% CI Interval', 'Sample Size'))
+               c('test', 'lower_power_bound', 'upper_power_bound', 'power', 'Power 95% CI',
+                 'lower_t2error_bound', 'upper_t2error_bound', 't2_error', 'TII Error 95% CI', 'Sample Size'))
 })
 
 
@@ -26,7 +26,7 @@ test_that("power and t2 error calculations work", {
 test_that("t1 error calculations work", {
   t1_error_result <- calculate_t1_error(simulation_data_one_group_formatted$p_values)
   expect_equal(names(t1_error_result),
-               c('test', 'lower_t1_bound', 'upper_t1_bound', 't1_error', '95% CI Interval', 'Sample Size'))
+               c('test', 'lower_t1_bound', 'upper_t1_bound', 't1_error', '95% CI', 'Sample Size'))
 })
 
 
