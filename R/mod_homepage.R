@@ -13,7 +13,7 @@ mod_homepage_ui <- function(id){
     fluidRow(
       column(1),
       column(10,
-      includeMarkdown(system.file("homepage.md", package = "ordinalsimr"))
+      includeHTML(system.file("homepage.html", package = "ordinalsimr"))
       )
 
     )

@@ -31,7 +31,6 @@ Imports:
     stats,
     stringr,
     tidyr,
-    markdown,
     ggridges
 Encoding: UTF-8
 LazyData: true
