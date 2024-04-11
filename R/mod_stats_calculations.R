@@ -87,28 +87,31 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
     output$results_table <- DT::renderDataTable(
-      DT::datatable(data = as.data.frame(comparison_results()$p_values),
-                    options = list(scrollX = TRUE)
-      ) %>%
-        DT::formatRound(1:7, digits = 5)
+      comparison_results() %>%
+        bind_rows() %>%
+        dplyr::select(sample_size, wilcox:coinasymp) %>%
+        DT::datatable(options = list(scrollX = TRUE)) %>%
+        DT::formatRound(2:8, digits = 5)
     )
     outputOptions(output, "results_table", suspendWhenHidden = FALSE)
 
     # if not keeping these output tables, use observe({group1_results()}) to
     # ensure evaluation
     output$group1_pvalues <- DT::renderDataTable(
-      DT::datatable(data = as.data.frame(group1_results()$p_values),
-                    options = list(scrollX = TRUE)
-      ) %>%
-        DT::formatRound(1:7, digits = 5)
+      group1_results() %>%
+        bind_rows() %>%
+        dplyr::select(sample_size, wilcox:coinasymp) %>%
+        DT::datatable(options = list(scrollX = TRUE)) %>%
+        DT::formatRound(2:8, digits = 5)
     )
     outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
 
     output$group2_pvalues <- DT::renderDataTable(
-      DT::datatable(data = as.data.frame(group2_results()$p_values),
-                    options = list(scrollX = TRUE)
-      ) %>%
-        DT::formatRound(1:7, digits = 5)
+      group2_results() %>%
+        bind_rows() %>%
+        dplyr::select(sample_size, wilcox:coinasymp) %>%
+        DT::datatable(options = list(scrollX = TRUE)) %>%
+        DT::formatRound(2:8, digits = 5)
     )
     outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
 
