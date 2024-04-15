@@ -48,13 +48,13 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter) {
                  t()
 
                initial_groups_formatted <- initial_groups %>%
-                 map_df(~tibble(y = list(.x[["y"]]), x = list(.x[["x"]]),
+                 purrr::map_df(~tibble(y = list(.x[["y"]]), x = list(.x[["x"]]),
                                 n_null = .x[["n_null"]], n_intervene = .x[["n_intervene"]],
                                 sample_size = .x[["sample_size"]], K = .x[["K"]])
                  ) %>%
                  mutate(run = row_number(), .before = y)
 
-               return( bind_cols(p_values, initial_groups_formatted) )
+               return( sim_results_table = bind_cols(p_values, initial_groups_formatted) )
              },
 
              .progress = list(caller = environment(),

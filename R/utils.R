@@ -54,22 +54,25 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
   ci_t2error_label <- glue::glue("TII Error {power_confidence_int}% CI")
 
   df %>%
-    purrr::map(
+    group_by(.data[["sample_size"]]) %>%
+    dplyr::group_modify(
       ~{
-        binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int/100)
-        tibble(
-          lower_power_bound = binom_power$conf.int[[1]],
-          upper_power_bound = binom_power$conf.int[[2]],
-          power = binom_power$estimate,
-          !!ci_power_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
-          lower_t2error_bound = 1-upper_power_bound,
-          upper_t2error_bound = 1-lower_power_bound,
-          t2_error = 1 - binom_power$estimate,
-          !!ci_t2error_label := glue::glue("[{round(lower_t2error_bound, 4)}, {round(upper_t2error_bound, 4)}]"))
+        purrr::map(.x, ~{
+          binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int/100)
+          tibble(
+            lower_power_bound = binom_power$conf.int[[1]],
+            upper_power_bound = binom_power$conf.int[[2]],
+            power = binom_power$estimate,
+            !!ci_power_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
+            lower_t2error_bound = 1-upper_power_bound,
+            upper_t2error_bound = 1-lower_power_bound,
+            t2_error = 1 - binom_power$estimate,
+            !!ci_t2error_label := glue::glue("[{round(lower_t2error_bound, 4)}, {round(upper_t2error_bound, 4)}]"))
+        }) %>%
+          purrr::list_rbind(names_to = "test")
       }
     ) %>%
-    purrr::list_rbind(names_to = "test") %>%
-    mutate("Sample Size" = n)
+    rename("Sample Size" = "sample_size")
 
 }
 
@@ -94,18 +97,21 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
   ci_label <- glue::glue("{t1_error_confidence_int}% CI")
 
   df %>%
-    purrr::map(
+    group_by(.data[["sample_size"]]) %>%
+    dplyr::group_modify(
       ~{
-        binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int/100)
-        tibble(
-          lower_t1_bound = binom_results$conf.int[[1]],
-          upper_t1_bound = binom_results$conf.int[[2]],
-          t1_error = binom_results$estimate,
-          !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]"))
+        purrr::map(.x, ~{
+          binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int/100)
+          tibble(
+            lower_t1_bound = binom_results$conf.int[[1]],
+            upper_t1_bound = binom_results$conf.int[[2]],
+            t1_error = binom_results$estimate,
+            !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]"))
+        }) %>%
+          purrr::list_rbind(names_to = "test")
       }
       ) %>%
-    purrr::list_rbind(names_to = "test") %>%
-    mutate("Sample Size" = n)
+    rename("Sample Size" = "sample_size")
 
 
 }
@@ -116,7 +122,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 #' This function takes a wide table of p-values (i.e. one column for each statistical test), converts it to long format, and creates a density plot of the p-values by each test.
 #'
-#' @param df data frame of p-values
+#' @param df data frame where each column is a set of p-values for a different statistical test
 #' @param alpha numeric. significance level
 #' @param outlier_removal numeric. set x-axis scale maximum by proportion
 #'
@@ -128,16 +134,14 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
 
   df %>%
-    pivot_longer(cols = everything(),names_to = "test_name") %>%
+    pivot_longer(cols = -sample_size, names_to = "test_name") %>%
     mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
     {
-    xaxis_lim <- (outlier_removal)*max(pull(.,"value"))
-    ggplot(., aes(x = .data[["value"]], y = .data[["test_name"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
-    ggridges::geom_density_ridges(alpha = 0.6, panel_scaling = TRUE) +
-    geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
-    scale_x_continuous(limits = c(0, xaxis_lim)) +
-    ggtitle("Density Plot of p-values") +
-    labs(x = "p-value", y = "", color = "Statistical Test") +
+    ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]] )) +
+    geom_smooth(alpha = 0.1) +
+    geom_hline(yintercept = alpha, linetype = "dashed", size = 2) +
+    ggtitle("Plot of p-values") +
+    labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
     guides(fill = "none") +
     theme_bw() +
     theme(
