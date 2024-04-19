@@ -145,7 +145,6 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     guides(fill = "none") +
     theme_bw() +
     theme(
-      legend.position = "none",
       axis.text = element_text(face = "bold", size = 14),
       axis.title = element_text(face = "bold", size = 18),
       plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
@@ -188,3 +187,29 @@ format_simulation_data <- function(input) {
 }
 
 
+
+#' Plot Test Power
+#'
+#' @param df a dataframe with p-values and a sample_size column
+#'
+#' @return
+#' @export
+#'
+#' @examples
+plot_power <- function(df) {
+
+  df %>%
+    ggplot(aes(x = .data[["Sample Size"]], y = .data[["power"]],
+               ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
+               color = .data[["test"]], fill = .data[["test"]])) +
+    geom_smooth(method="glm",
+                method.args=list(family="binomial"),
+                se = F) +
+    theme_bw() +
+    theme(
+      axis.text = element_text(face = "bold", size = 14),
+      axis.title = element_text(face = "bold", size = 18),
+      plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
+    )
+
+}

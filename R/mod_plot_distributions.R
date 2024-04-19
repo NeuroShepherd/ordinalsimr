@@ -29,7 +29,14 @@ mod_plot_distributions_ui <- function(id){
     ),
     box(
       width = 9,
-      shinycssloaders::withSpinner(plotOutput(ns("distribution_plot_results")), type = 2,color.background = "#0275D8"),
+      tabsetPanel(type = "tabs",
+                  tabPanel("Power Plot",
+                           shinycssloaders::withSpinner(plotOutput(ns("power_plot")),
+                                                        type = 2,color.background = "#0275D8")),
+                  tabPanel("p-value Plot",
+                           shinycssloaders::withSpinner(plotOutput(ns("distribution_plot_results")),
+                                                        type = 2,color.background = "#0275D8"))
+        ),
       br(),
       tabsetPanel(type = "tabs",
                   tabPanel("Power and Type II Error",
@@ -87,6 +94,13 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
                "Type II Error (\U03B2)" = .data$t2_error) %>%
         DT::datatable() %>%
         DT::formatRound(c(3,5), 5)
+    })
+
+
+    # Plot Power
+    output$power_plot <- renderPlot({
+      distribution_statistics() %>%
+        plot_power()
     })
 
 
