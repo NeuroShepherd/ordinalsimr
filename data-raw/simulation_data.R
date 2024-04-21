@@ -11,7 +11,7 @@ simulation_data_two_groups <- run_simulations(
   bind_rows()
 
 
-usethis::use_data(simulation_data_two_groups, overwrite = TRUE)
+usethis::use_data(simulation_data_two_groups, overwrite = TRUE, compress = "xz")
 
 
 
@@ -27,6 +27,6 @@ simulation_data_one_group <- run_simulations(
   bind_rows()
 
 
-usethis::use_data(simulation_data_one_group, overwrite = TRUE)
+usethis::use_data(simulation_data_one_group, overwrite = TRUE, compress = "xz")
 
 
