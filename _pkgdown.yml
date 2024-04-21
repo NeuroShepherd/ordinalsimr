@@ -20,6 +20,7 @@ reference:
     contents:
     - ordinal_tests
     - plot_distribution_results
+    - plot_power
     - assign_groups
     - parse_ratio_text
   - title: Data
