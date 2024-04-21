@@ -26,6 +26,4 @@ reference:
     desc: Example data frames/lists
   - contents:
     - simulation_data_one_group
-    - simulation_data_one_group_formatted
     - simulation_data_two_groups
-    - simulation_data_two_groups_formatted
