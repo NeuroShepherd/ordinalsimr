@@ -7,7 +7,7 @@
 plot_distribution_results(df, alpha = 0.05, outlier_removal = 0.1)
 }
 \arguments{
-\item{df}{data frame of p-values}
+\item{df}{data frame where each column is a set of p-values for a different statistical test}
 
 \item{alpha}{numeric. significance level}
 

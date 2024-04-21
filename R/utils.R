@@ -192,10 +192,9 @@ format_simulation_data <- function(input) {
 #'
 #' @param df a dataframe with p-values and a sample_size column
 #'
-#' @return
+#' @return ggplot object
 #' @export
 #'
-#' @examples
 plot_power <- function(df) {
 
   df %>%
