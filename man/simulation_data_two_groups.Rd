@@ -16,6 +16,6 @@ A list
 simulation_data_two_groups
 }
 \description{
-Simulated p-values and metadata for a two group comparison. See `simulation_data_two_groups_formatted` for a tidy, recommended version of this same data. Useful for Type II error and power calculations.
+Simulated p-values and metadata for a two group comparison. Useful for Type II error and power calculations.
 }
 \keyword{datasets}

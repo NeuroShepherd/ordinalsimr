@@ -16,6 +16,6 @@ A list
 simulation_data_one_group
 }
 \description{
-Simulated p-values and metadata for a two group comparison. See `simulation_data_one_group_formatted` for a tidy, recommended version of this same data. Useful for Type I error calculations.
+Simulated p-values and metadata for a two group comparison. Useful for Type I error calculations.
 }
 \keyword{datasets}
