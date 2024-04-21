@@ -128,7 +128,6 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 #' @return ggplot object
 #' @importFrom rlang .data
-#' @importFrom ggridges geom_density_ridges
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
