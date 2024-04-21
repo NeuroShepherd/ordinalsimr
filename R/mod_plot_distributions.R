@@ -29,7 +29,14 @@ mod_plot_distributions_ui <- function(id){
     ),
     box(
       width = 9,
-      shinycssloaders::withSpinner(plotOutput(ns("distribution_plot_results")), type = 2,color.background = "#0275D8"),
+      tabsetPanel(type = "tabs",
+                  tabPanel("Power Plot",
+                           shinycssloaders::withSpinner(plotOutput(ns("power_plot")),
+                                                        type = 2,color.background = "#0275D8")),
+                  tabPanel("p-value Plot",
+                           shinycssloaders::withSpinner(plotOutput(ns("distribution_plot_results")),
+                                                        type = 2,color.background = "#0275D8"))
+        ),
       br(),
       tabsetPanel(type = "tabs",
                   tabPanel("Power and Type II Error",
@@ -53,22 +60,26 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
 
     outlier_percent_removal <- reactive({ (100 - input$remove_outlier_percentage)/100 })
     p_val_threshold <- reactive({ input$user_p_val })
-    p_value_reactive_table <- reactive({ as.data.frame(p_value_table$comparison_results()$p_values) })
+    p_value_reactive_table <- reactive({ bind_rows(p_value_table$comparison_results()) })
 
 
     # COMPARISON STATISTICS/GRAPHING
     # !!!plot!!!
     distribution_plot <- reactive({
       p_value_reactive_table() %>%
+        dplyr::select(.data$wilcox:.data$coinasymp, .data$sample_size) %>%
         plot_distribution_results(outlier_removal = outlier_percent_removal(),
                                   alpha = p_val_threshold())})
+
     output$distribution_plot_results <- renderPlot({
       distribution_plot()
     })
 
 
     # !!!statistics!!!
-    distribution_statistics <- reactive({p_value_reactive_table() %>%
+    distribution_statistics <- reactive({
+      p_value_reactive_table() %>%
+      select(.data$wilcox:.data$coinasymp, .data$sample_size) %>%
       calculate_power_t2error(alpha = p_val_threshold(),
                               n = n(),
                               power_confidence_int = input$power_confidence_int)
@@ -77,34 +88,49 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
       distribution_statistics() %>%
         select(-.data$lower_power_bound, -.data$upper_power_bound,
                -.data$lower_t2error_bound, -.data$upper_t2error_bound) %>%
+        arrange(desc(.data$power)) %>%
         rename(`Statistical Test` = .data$test,
                "Power (1-\U03B2)" = .data$power,
                "Type II Error (\U03B2)" = .data$t2_error) %>%
         DT::datatable() %>%
-        DT::formatRound(c(2,4), 5)
+        DT::formatRound(c(3,5), 5)
+    })
+
+
+    # Plot Power
+    output$power_plot <- renderPlot({
+      distribution_statistics() %>%
+        plot_power()
     })
 
 
     # GROUP 1 TYPE 1 ERROR
-    group1_t1_reactive_table <- reactive({ p_value_table$group1_results()$p_values %>%
-        as.data.frame() %>%
+    group1_t1_reactive_table <- reactive({
+      p_value_table$group1_results() %>%
+        bind_rows() %>%
+        dplyr::select(.data$wilcox:.data$coinasymp, .data$sample_size) %>%
+        group_by(.data$sample_size) %>%
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int)
       })
     output$t1_error_group1 <- DT::renderDataTable({
+      # browser()
       group1_t1_reactive_table() %>%
         select(-.data$lower_t1_bound, -.data$upper_t1_bound) %>%
         rename(`Statistical Test` = .data$test,
                "Type I Error (\U003B1)" = .data$t1_error) %>%
         DT::datatable() %>%
-        DT::formatRound(c(2), 5)
+        DT::formatRound(c(3), 5)
 
     })
 
 
 
     # GROUP 2 TYPE 1 ERROR
-    group2_t1_reactive_table <- reactive({ p_value_table$group2_results()$p_values %>%
-        as.data.frame() %>%
+    group2_t1_reactive_table <- reactive({
+      p_value_table$group2_results() %>%
+        bind_rows() %>%
+        dplyr::select(.data$wilcox:.data$coinasymp, .data$sample_size) %>%
+        group_by(.data$sample_size) %>%
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group2_confidence_int)
       })
     output$t1_error_group2 <- DT::renderDataTable({
@@ -113,7 +139,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n){
         rename(`Statistical Test` = .data$test,
                "Type I Error (\U003B1)" = .data$t1_error) %>%
         DT::datatable() %>%
-        DT::formatRound(c(2), 5)
+        DT::formatRound(c(3), 5)
     })
 
 

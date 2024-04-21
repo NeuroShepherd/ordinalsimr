@@ -10,8 +10,7 @@
 mod_sample_size_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shiny::numericInput(ns("sample_n"), "Sample Size",
-                        value = 80, min = 1, max = Inf)
+    shiny::textInput(ns("sample_n"), "Sample Size", value = 80)
   )
 }
 
@@ -22,7 +21,13 @@ mod_sample_size_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    sample_n <- reactive({input$sample_n})
+    sample_n <- reactive({
+      # should technically set up checks that only a numeric vector is
+      # being passed before evaluating the expression (or, that the string
+      # being passed is comma-separated values with `:` and seq*()
+      # also being allowed.)
+      unique(eval(parse(text = paste0("c(", input$sample_n, ")") )))
+      })
 
     return(sample_n)
 
