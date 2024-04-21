@@ -45,7 +45,6 @@ parse_ratio_text <- function(text) {
 #' @param n Numeric value of sample size; repeated for convenience
 #'
 #' @return A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
-#' @importFrom rlang :=
 #' @export
 #'
 calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
@@ -89,7 +88,6 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 #' @param n optional numeric input of
 #'
 #' @return data frame
-#' @importFrom rlang :=
 #' @export
 #'
 calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
@@ -127,7 +125,6 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #' @param outlier_removal numeric. set x-axis scale maximum by proportion
 #'
 #' @return ggplot object
-#' @importFrom rlang .data
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
@@ -163,7 +160,6 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #' @param input a named list structured as the output from `run_simulations()`
 #'
 #' @return a named list with a p_value tibble and a run_info nested tibble
-#' @importFrom magrittr extract2
 #' @export
 #'
 format_simulation_data <- function(input) {
