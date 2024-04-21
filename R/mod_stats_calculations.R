@@ -89,7 +89,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$results_table <- DT::renderDataTable(
       comparison_results() %>%
         bind_rows() %>%
-        dplyr::select(sample_size, wilcox:coinasymp) %>%
+        dplyr::select(.data$sample_size, .data$wilcox:.data$coinasymp) %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
         DT::formatRound(2:8, digits = 5)
     )
@@ -100,7 +100,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$group1_pvalues <- DT::renderDataTable(
       group1_results() %>%
         bind_rows() %>%
-        dplyr::select(sample_size, wilcox:coinasymp) %>%
+        dplyr::select(.data$sample_size, .data$wilcox:.data$coinasymp) %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
         DT::formatRound(2:8, digits = 5)
     )
@@ -109,7 +109,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$group2_pvalues <- DT::renderDataTable(
       group2_results() %>%
         bind_rows() %>%
-        dplyr::select(sample_size, wilcox:coinasymp) %>%
+        dplyr::select(.data$sample_size, .data$wilcox:.data$coinasymp) %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
         DT::formatRound(2:8, digits = 5)
     )

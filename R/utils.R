@@ -134,7 +134,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
 
   df %>%
-    pivot_longer(cols = -sample_size, names_to = "test_name") %>%
+    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
     mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
     {
     ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]] )) +
