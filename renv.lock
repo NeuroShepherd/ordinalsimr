@@ -82,20 +82,8 @@
     },
     "Matrix": {
       "Package": "Matrix",
-      "Version": "1.6-5",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R",
-        "grDevices",
-        "graphics",
-        "grid",
-        "lattice",
-        "methods",
-        "stats",
-        "utils"
-      ],
-      "Hash": "8c7115cd3a0e048bda2a7cd110549f7a"
+      "Version": "1.7-0",
+      "Source": "Repository"
     },
     "MatrixModels": {
       "Package": "MatrixModels",
@@ -1370,13 +1358,8 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.1.1",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "askpass"
-      ],
-      "Hash": "2a0dc8c6adfb6f032e4d4af82d258ab5"
+      "Version": "2.1.2",
+      "Source": "Repository"
     },
     "packrat": {
       "Package": "packrat",
@@ -1497,14 +1480,8 @@
     },
     "polspline": {
       "Package": "polspline",
-      "Version": "1.1.24",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "graphics",
-        "stats"
-      ],
-      "Hash": "25658353186c2763a3b0fb92c9fd8ff8"
+      "Version": "1.1.25",
+      "Source": "Repository"
     },
     "praise": {
       "Package": "praise",
