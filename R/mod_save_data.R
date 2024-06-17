@@ -7,10 +7,13 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom writexl write_xlsx
 mod_save_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-    downloadButton(ns("save_button"), "Save Results")
+    downloadButton(ns("save_button"), "Save Results as .RDS"),
+    br(),
+    downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
   )
 }
 
@@ -46,6 +49,24 @@ mod_save_data_server <- function(id, input_data, processed_data, input, output, 
       },
       content = function(file) {
         saveRDS(data_to_save(), file)
+        # increment download number
+        download_counter(download_counter() + 1)
+      }
+    )
+
+    output$save_xlsx <- downloadHandler(
+      filename = function() {
+        # Consider: use .RData in future for flexibility?
+        glue::glue("data-{Sys.Date()}-{session$token}-{download_counter()}.xlsx")
+      },
+      content = function(file) {
+        writexl::write_xlsx(
+          list(
+            distribution_statistics = data_to_save()$comparison_data$distribution_statistics,
+            group1_type1_error = data_to_save()$group1_data$group1_t1error,
+            group2_type1_error = data_to_save()$group2_data$group2_t1error
+            ),
+          path = file)
         # increment download number
         download_counter(download_counter() + 1)
       }
