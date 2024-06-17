@@ -89,7 +89,7 @@
       "Package": "MatrixModels",
       "Version": "0.5-3",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "RSPM",
       "Requirements": [
         "Matrix",
         "R",
