@@ -60,7 +60,7 @@ mod_save_data_server <- function(id, input_data, processed_data, input, output, 
         glue::glue("data-{Sys.Date()}-{session$token}-{download_counter()}.xlsx")
       },
       content = function(file) {
-        write_xlsx(
+        writexl::write_xlsx(
           list(
             distribution_statistics = data_to_save()$comparison_data$distribution_statistics,
             group1_type1_error = data_to_save()$group1_data$group1_t1error,
