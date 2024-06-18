@@ -28,7 +28,8 @@ mod_report_generator_server <- function(id, formatted_data){
         # browser()
         HTML(
           readLines(
-            rmarkdown::render("inst/report_template.Rmd",
+            rmarkdown::render(
+                              system.file("report_template.Rmd", package = "ordinalsimr"),
                               quiet = TRUE,
                               output_format = rmarkdown::html_fragment(),
                               params = list(data_object = formatted_data()$comparison_data$distribution_plot)
