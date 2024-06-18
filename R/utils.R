@@ -155,7 +155,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
 #' Format Simulation Data
 #'
-#' Formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
+#' Soft wrapper for `dplyr::bind_rows()`: formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
 #'
 #' @param input a named list structured as the output from `run_simulations()`
 #'
@@ -164,20 +164,8 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #'
 format_simulation_data <- function(input) {
 
-  run_info <- input %>%
-    magrittr::extract2("initial_groups") %>%
-    purrr::map_df(~tibble(
-      total_sample_size = .x[["sample_size"]],
-      group1_count = .x[["n_null"]],
-      group2_count = .x[["n_intervene"]],
-      outcome_vars_count = .x[["K"]],
-      assigned_groups = list(tibble(.x[["y"]])),
-      assigned_values = list(tibble(.x[["x"]]))
-    ))
-
-  return(
-    list(p_values = tibble(as.data.frame(input[["p_values"]])), run_info = run_info)
-    )
+  input %>%
+    bind_rows()
 
 }
 

@@ -52,13 +52,9 @@ test_that("data object names are consistent",{
 test_that("data formatting works", {
   results <- format_simulation_data(simulation_data_one_group)
   expect_named(results)
-  expect_equal(length(results), 2)
+  expect_equal(length(results), 1)
 
-  expect_type(results, "list")
-  expect_type(results[[1]], "list")
-  expect_type(results[[2]], "list")
-  expect_s3_class(results[[1]], "tbl")
-  expect_s3_class(results[[2]], "tbl")
+  expect_s3_class(results, "tbl")
 })
 
 
