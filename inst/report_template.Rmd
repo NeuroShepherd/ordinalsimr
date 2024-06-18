@@ -4,16 +4,23 @@ author: "Pat Callahan"
 date: "2024-06-17"
 output: html_document
 params:
-  hello: NA
+  data_object: NA
+  na_object: NA
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+  )
 ```
 
 ## R Markdown
 
 ```{r}
-params$hello
+params$data_object
 ```
+
+
 
