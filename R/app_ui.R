@@ -27,7 +27,8 @@ app_ui <- function(request) {
           menuItem("Home", tabName = "homeinfo_page", icon = icon("book")),
           menuItem("Simulation", tabName = "simulation_page", icon = icon("sliders")),
           menuItem("Distributions", tabName = "distributions_page", icon = icon("chart-simple")),
-          menuItem("Report", tabName = "report_page", icon = icon("file"))
+          menuItem("Report", tabName = "report_page", icon = icon("markdown")),
+          menuItem("Data Download", tabName = "download_page", icon = icon("file-excel"))
         )
       ),
 
@@ -55,6 +56,10 @@ app_ui <- function(request) {
                   ),
 
           tabItem(tabName = "report_page",
+                  mod_report_generator_ui("report_generator_1")
+          ),
+
+          tabItem(tabName = "download_page",
                   mod_save_data_ui("save_data_1")
                   )
 

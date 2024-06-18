@@ -51,14 +51,13 @@ test_that("data object names are consistent",{
 # Tests for format_simulation_data
 test_that("data formatting works", {
   results <- format_simulation_data(simulation_data_one_group)
-  expect_named(results)
-  expect_equal(length(results), 2)
+  tbl_cols <- c('wilcox', 'fisher', 'chi_sq_false', 'chi_sq_true', 'lrm', 'kruskal',
+                'coinasymp', 'run', 'y', 'x', 'n_null', 'n_intervene', 'sample_size', 'K')
 
-  expect_type(results, "list")
-  expect_type(results[[1]], "list")
-  expect_type(results[[2]], "list")
-  expect_s3_class(results[[1]], "tbl")
-  expect_s3_class(results[[2]], "tbl")
+  expect_equal(colnames(results), tbl_cols)
+  expect_s3_class(results, "tbl")
+  expect_equal(ncol(results), 14)
+
 })
 
 
