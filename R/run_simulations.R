@@ -5,7 +5,11 @@
 #' @param sample_prob a vector of probability weights for obtaining the elements of the vector being sampled.
 #' @param prob0 Vector of probabilities for control group
 #' @param prob1 Vector of probabilities for intervention group
+#' @param .rng_kind seeding info passed to withr::with_seed
+#' @param .rng_normal_kind seeding info passed to withr::with_seed
+#' @param .rng_sample_kind seeding info passed to withr::with_seed
 #' @param niter Number of simulation iterations to complete#'
+#'
 #' @return a list of lists; sub-list elements include `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
 #'
 #' @import assertthat
