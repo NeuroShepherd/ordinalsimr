@@ -30,7 +30,9 @@ Imports:
     shinyWidgets,
     stats,
     stringr,
-    tidyr
+    tidyr,
+    markdown,
+    withr
 Encoding: UTF-8
 LazyData: true
 LazyDataCompression: xz

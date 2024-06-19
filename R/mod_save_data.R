@@ -19,7 +19,7 @@ mod_save_data_ui <- function(id){
 #' save_data Server Functions
 #'
 #' @noRd
-mod_save_data_server <- function(id, input_data, processed_data, input, output, session){
+mod_save_data_server <- function(id, input_data, processed_data, rng_info, input, output, session){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 

@@ -42,7 +42,8 @@ app_ui <- function(request) {
                     box(width = 3,
                         mod_iterations_ui("iterations_1"),
                         mod_sample_size_ui("sample_size_1"),
-                        mod_sample_probabilities_ui("sample_probabilities_1")),
+                        mod_sample_probabilities_ui("sample_probabilities_1"),
+                        mod_rng_option_ui("rng_option_1")),
                     box(width = 9,
                         mod_data_entry_ui("data_entry_1"))
                     ),

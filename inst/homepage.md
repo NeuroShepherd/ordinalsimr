@@ -46,6 +46,11 @@ percentiles can be adjusted as well as the nominal significance level .
 
 ### Report
 
+Experimental page: will include a report generated from the simulation
+results.
+
+### Data Download
+
 This page is under development, but does currently include an option to
 download the metadata (i.e. input parameters), p-values from tests,
 summary statistics, and the ggplot as an `.rds` file.
