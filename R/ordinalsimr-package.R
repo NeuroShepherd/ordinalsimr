@@ -6,6 +6,8 @@
 #' @importFrom rhandsontable renderRHandsontable
 #' @importFrom rhandsontable rhandsontable
 #' @importFrom rhandsontable rHandsontableOutput
+#' @importFrom rlang :=
+#' @importFrom rlang .data
 ## usethis namespace: end
 NULL
 

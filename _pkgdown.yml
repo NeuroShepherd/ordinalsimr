@@ -20,12 +20,11 @@ reference:
     contents:
     - ordinal_tests
     - plot_distribution_results
+    - plot_power
     - assign_groups
     - parse_ratio_text
   - title: Data
     desc: Example data frames/lists
   - contents:
     - simulation_data_one_group
-    - simulation_data_one_group_formatted
     - simulation_data_two_groups
-    - simulation_data_two_groups_formatted

@@ -7,11 +7,14 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @importFrom shinyWidgets numericRangeInput
 mod_sample_size_ui <- function(id){
   ns <- NS(id)
   tagList(
-    shiny::numericInput(ns("sample_n"), "Sample Size",
-                        value = 80, min = 1, max = Inf)
+    numericRangeInput(
+      inputId = ns("sample_n"), label = "Sample Size Range",
+      value = c(30, 80), step = 1
+    )
   )
 }
 
@@ -22,7 +25,12 @@ mod_sample_size_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    sample_n <- reactive({input$sample_n})
+
+    sample_n <- reactive({
+
+      seq(round(input$sample_n[1]), round(input$sample_n[2]))
+
+      })
 
     return(sample_n)
 

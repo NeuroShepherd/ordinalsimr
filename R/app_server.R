@@ -28,11 +28,14 @@ app_server <- function(input, output, session) {
                                 p_value_table = results_output,
                                 n = data_entered_sample_size)
 
-  # PLACEHOLDER: pass results to output options such as .Rdata/.csv
-  # and any other enhanced functionality
-  mod_save_data_server("save_data_1",
+  # format the data and plots into a list, and make this object available for
+  # download as an .Rds/.Xlsx and make object available for the report
+  formatted_data <- mod_save_data_server("save_data_1",
                        input_data = results_output,
                        processed_data = distributions_power_error,
                        rng_info = rng_selections)
+
+  mod_report_generator_server("report_generator_1",
+                              formatted_data = formatted_data)
 
 }

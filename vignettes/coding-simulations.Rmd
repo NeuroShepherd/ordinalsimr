@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 ```
 
@@ -137,7 +138,7 @@ info_table <- tidyr::expand_grid(
 info_table
 ```
 
-As a check, it can be noted that the number of rows in this table, or the number of distinct simulations to run, is equivalent to the combination of all parameters `length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)` or `r length(sample_size)*length(sample_prob)*length(prob0_list)*length(prob1_list)*length(niter)` in this case.
+
 
 ### Run Simulation
 

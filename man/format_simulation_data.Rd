@@ -13,5 +13,5 @@ format_simulation_data(input)
 a named list with a p_value tibble and a run_info nested tibble
 }
 \description{
-Formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
+Soft wrapper for `dplyr::bind_rows()`: formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
 }

@@ -45,31 +45,33 @@ parse_ratio_text <- function(text) {
 #' @param n Numeric value of sample size; repeated for convenience
 #'
 #' @return A data frame with columns for Type 1 error, Type 2 error, and power as well as rows for each test
-#' @importFrom rlang :=
 #' @export
 #'
 calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
 
-  ci_power_label <- glue::glue("Power {power_confidence_int}% CI Interval")
-  ci_t2error_label <- glue::glue("TII Error {power_confidence_int}% CI Interval")
+  ci_power_label <- glue::glue("Power {power_confidence_int}% CI")
+  ci_t2error_label <- glue::glue("TII Error {power_confidence_int}% CI")
 
   df %>%
-    purrr::map(
+    group_by(.data[["sample_size"]]) %>%
+    dplyr::group_modify(
       ~{
-        binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int/100)
-        tibble(
-          lower_power_bound = binom_power$conf.int[[1]],
-          upper_power_bound = binom_power$conf.int[[2]],
-          power = binom_power$estimate,
-          !!ci_power_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
-          lower_t2error_bound = 1-upper_power_bound,
-          upper_t2error_bound = 1-lower_power_bound,
-          t2_error = 1 - binom_power$estimate,
-          !!ci_t2error_label := glue::glue("[{round(lower_t2error_bound, 4)}, {round(upper_t2error_bound, 4)}]"))
+        purrr::map(.x, ~{
+          binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int/100)
+          tibble(
+            lower_power_bound = binom_power$conf.int[[1]],
+            upper_power_bound = binom_power$conf.int[[2]],
+            power = binom_power$estimate,
+            !!ci_power_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
+            lower_t2error_bound = 1-upper_power_bound,
+            upper_t2error_bound = 1-lower_power_bound,
+            t2_error = 1 - binom_power$estimate,
+            !!ci_t2error_label := glue::glue("[{round(lower_t2error_bound, 4)}, {round(upper_t2error_bound, 4)}]"))
+        }) %>%
+          purrr::list_rbind(names_to = "test")
       }
     ) %>%
-    purrr::list_rbind(names_to = "test") %>%
-    mutate("Sample Size" = n)
+    rename("Sample Size" = "sample_size")
 
 }
 
@@ -86,26 +88,28 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 #' @param n optional numeric input of
 #'
 #' @return data frame
-#' @importFrom rlang :=
 #' @export
 #'
 calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
 
-  ci_label <- glue::glue("{t1_error_confidence_int}% CI Interval")
+  ci_label <- glue::glue("{t1_error_confidence_int}% CI")
 
   df %>%
-    purrr::map(
+    group_by(.data[["sample_size"]]) %>%
+    dplyr::group_modify(
       ~{
-        binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int/100)
-        tibble(
-          lower_t1_bound = binom_results$conf.int[[1]],
-          upper_t1_bound = binom_results$conf.int[[2]],
-          t1_error = binom_results$estimate,
-          !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]"))
+        purrr::map(.x, ~{
+          binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int/100)
+          tibble(
+            lower_t1_bound = binom_results$conf.int[[1]],
+            upper_t1_bound = binom_results$conf.int[[2]],
+            t1_error = binom_results$estimate,
+            !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]"))
+        }) %>%
+          purrr::list_rbind(names_to = "test")
       }
       ) %>%
-    purrr::list_rbind(names_to = "test") %>%
-    mutate("Sample Size" = n)
+    rename("Sample Size" = "sample_size")
 
 
 }
@@ -116,32 +120,27 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 #' This function takes a wide table of p-values (i.e. one column for each statistical test), converts it to long format, and creates a density plot of the p-values by each test.
 #'
-#' @param df data frame of p-values
+#' @param df data frame where each column is a set of p-values for a different statistical test
 #' @param alpha numeric. significance level
 #' @param outlier_removal numeric. set x-axis scale maximum by proportion
 #'
 #' @return ggplot object
-#' @importFrom rlang .data
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
 
   df %>%
-    pivot_longer(cols = everything(),names_to = "test_name") %>%
+    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
+    mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
     {
-    xaxis_lim <- (outlier_removal)*max(pull(.,"value"))
-    ggplot(., aes(x = .data[["value"]], color = .data[["test_name"]], fill = .data[["test_name"]] )) +
-    geom_density(alpha = 0.1, size = 2.5) +
-    geom_vline(xintercept = alpha, linetype = "dashed", size = 2) +
-    scale_x_continuous(limits = c(0, xaxis_lim)) +
-    ggtitle("Density Plot of p-values") +
-    labs(x = "p-value", y = "Density", color = "Statistical Test") +
+    ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]] )) +
+    geom_smooth(alpha = 0.1) +
+    geom_hline(yintercept = alpha, linetype = "dashed", size = 2) +
+    ggtitle("Plot of p-values") +
+    labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
     guides(fill = "none") +
     theme_bw() +
     theme(
-      legend.key.size = unit(1, 'cm'),
-      legend.text = element_text(size = 14),
-      legend.title = element_text(face = "bold", size = 16),
       axis.text = element_text(face = "bold", size = 14),
       axis.title = element_text(face = "bold", size = 18),
       plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
@@ -156,31 +155,43 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
 #' Format Simulation Data
 #'
-#' Formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
+#' Soft wrapper for `dplyr::bind_rows()`: formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
 #'
 #' @param input a named list structured as the output from `run_simulations()`
 #'
 #' @return a named list with a p_value tibble and a run_info nested tibble
-#' @importFrom magrittr extract2
 #' @export
 #'
 format_simulation_data <- function(input) {
 
-  run_info <- input %>%
-    magrittr::extract2("initial_groups") %>%
-    purrr::map_df(~tibble(
-      total_sample_size = .x[["sample_size"]],
-      group1_count = .x[["n_null"]],
-      group2_count = .x[["n_intervene"]],
-      outcome_vars_count = .x[["K"]],
-      assigned_groups = list(tibble(.x[["y"]])),
-      assigned_values = list(tibble(.x[["x"]]))
-    ))
-
-  return(
-    list(p_values = tibble(as.data.frame(input[["p_values"]])), run_info = run_info)
-    )
+  input %>%
+    bind_rows()
 
 }
 
 
+
+#' Plot Test Power
+#'
+#' @param df a dataframe with p-values and a sample_size column
+#'
+#' @return ggplot object
+#' @export
+#'
+plot_power <- function(df) {
+
+  df %>%
+    ggplot(aes(x = .data[["Sample Size"]], y = .data[["power"]],
+               ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
+               color = .data[["test"]], fill = .data[["test"]])) +
+    geom_smooth(method="glm",
+                method.args=list(family="binomial"),
+                se = F) +
+    theme_bw() +
+    theme(
+      axis.text = element_text(face = "bold", size = 14),
+      axis.title = element_text(face = "bold", size = 18),
+      plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
+    )
+
+}

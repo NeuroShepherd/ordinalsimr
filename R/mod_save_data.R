@@ -10,7 +10,9 @@
 mod_save_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-    downloadButton(ns("save_button"), "Save Results")
+    downloadButton(ns("save_button"), "Save Results as .RDS"),
+    br(),
+    downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
   )
 }
 
@@ -28,19 +30,14 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
 
     data_to_save <- reactive({
       list(
-        rversion = rversion_info$version.string,
-        platform = rversion_info$platform,
-        rng_info = list(rng_kind = rng_info$rng_kind(),
-                        rng_normal_kind = rng_info$rng_normal_kind(),
-                        rng_sample_kind = rng_info$rng_sample_kind()),
-        comparison_data = format_simulation_data(input_data$comparison_results()) %>%
-          append(list(distribution_statistics = processed_data$distribution_statistics(),
-                      distribution_plot = processed_data$distribution_plot()
-                      )),
-        group1_data = format_simulation_data(input_data$group1_results()) %>%
-          append(list(group1_t1error = processed_data$group1_t1error())),
-        group2_data = format_simulation_data(input_data$group1_results()) %>%
-          append(list(group2_t1error = processed_data$group2_t1error()))
+        comparison_data = list(run_info = format_simulation_data(input_data$comparison_results()),
+                               distribution_statistics = processed_data$distribution_statistics(),
+                               distribution_plot = processed_data$distribution_plot()
+                               ),
+        group1_data = list(run_info = format_simulation_data(input_data$group1_results()),
+                           group1_t1error = processed_data$group1_t1error()),
+        group2_data = list(run_info = format_simulation_data(input_data$group1_results()),
+                           group2_t1error = processed_data$group2_t1error())
         )
       })
 
@@ -58,6 +55,29 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
       }
     )
 
+    output$save_xlsx <- downloadHandler(
+      filename = function() {
+        # Consider: use .RData in future for flexibility?
+        glue::glue("data-{Sys.Date()}-{session$token}-{download_counter()}.xlsx")
+      },
+      content = function(file) {
+        writexl::write_xlsx(
+          list(
+            distribution_statistics = data_to_save()$comparison_data$distribution_statistics,
+            comparison_run_info = data_to_save()$comparison_data$run_info,
+            group1_type1_error = data_to_save()$group1_data$group1_t1error,
+            group1_run_info = data_to_save()$group1_data$run_info,
+            group2_type1_error = data_to_save()$group2_data$group2_t1error,
+            group2_run_info = data_to_save()$group2_data$run_info
+            ),
+          path = file)
+        # increment download number
+        download_counter(download_counter() + 1)
+      }
+    )
+
+
+    return(data_to_save)
 
   })
 }

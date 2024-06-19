@@ -1,0 +1,26 @@
+---
+title: "report"
+author: "Pat Callahan"
+date: "2024-06-17"
+output: html_document
+params:
+  data_object: NA
+  na_object: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+  )
+```
+
+## R Markdown
+
+```{r}
+params$data_object
+```
+
+
+
