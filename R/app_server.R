@@ -36,6 +36,7 @@ app_server <- function(input, output, session) {
                        rng_info = rng_selections)
 
   mod_report_generator_server("report_generator_1",
-                              formatted_data = formatted_data)
+                              formatted_data = formatted_data,
+                              rng_info = rng_selections)
 
 }

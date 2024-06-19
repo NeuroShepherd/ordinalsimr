@@ -6,6 +6,7 @@ output: html_document
 params:
   data_object: NA
   na_object: NA
+  rng_info: NA
 ---
 
 ```{r setup, include=FALSE}
@@ -22,5 +23,9 @@ knitr::opts_chunk$set(
 params$data_object
 ```
 
+
+```{r}
+params$rng_info
+```
 
 
