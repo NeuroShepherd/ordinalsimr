@@ -4,7 +4,16 @@
 \alias{run_simulations}
 \title{Run Simulations}
 \usage{
-run_simulations(sample_size, sample_prob, prob0, prob1, niter)
+run_simulations(
+  sample_size,
+  sample_prob,
+  prob0,
+  prob1,
+  niter,
+  .rng_kind = NULL,
+  .rng_normal_kind = NULL,
+  .rng_sample_kind = NULL
+)
 }
 \arguments{
 \item{sample_size}{Total number of trial participants}
@@ -16,6 +25,12 @@ run_simulations(sample_size, sample_prob, prob0, prob1, niter)
 \item{prob1}{Vector of probabilities for intervention group}
 
 \item{niter}{Number of simulation iterations to complete#'}
+
+\item{.rng_kind}{seeding info passed to withr::with_seed}
+
+\item{.rng_normal_kind}{seeding info passed to withr::with_seed}
+
+\item{.rng_sample_kind}{seeding info passed to withr::with_seed}
 }
 \value{
 a list of lists; sub-list elements include `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
