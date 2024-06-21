@@ -1,4 +1,3 @@
-
 #' Parse Ratio Text
 #'
 #' This function parses text from ratios which are written in the format of 1-2 digit numbers separated by a colon and trailing with another 1-2 digit number. The text is processed into a numeric vector of length 2 containing the two numbers.
@@ -15,18 +14,18 @@
 #' parse_ratio_text("70:30")
 #'
 parse_ratio_text <- function(text) {
-
   assert_that(str_detect(text, "[[:digit:]]{1,2}:[[:digit:]]{1,2}"),
-              msg = "Incorrect ratio format.")
+    msg = "Incorrect ratio format."
+  )
 
   pre_value <- as.numeric(str_extract(text, "^[[:digit:]]{1,2}"))
   post_value <- as.numeric(str_extract(text, "[[:digit:]]{1,2}$"))
 
   assert_that(pre_value + post_value == 100,
-              msg = "Ratio does not sum to 100.")
+    msg = "Ratio does not sum to 100."
+  )
 
-  c(pre_value/100, post_value/100)
-
+  c(pre_value / 100, post_value / 100)
 }
 
 
@@ -48,31 +47,30 @@ parse_ratio_text <- function(text) {
 #' @export
 #'
 calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95, n = NA_real_) {
-
   ci_power_label <- glue::glue("Power {power_confidence_int}% CI")
   ci_t2error_label <- glue::glue("TII Error {power_confidence_int}% CI")
 
   df %>%
     group_by(.data[["sample_size"]]) %>%
     dplyr::group_modify(
-      ~{
-        purrr::map(.x, ~{
-          binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int/100)
+      ~ {
+        purrr::map(.x, ~ {
+          binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int / 100)
           tibble(
             lower_power_bound = binom_power$conf.int[[1]],
             upper_power_bound = binom_power$conf.int[[2]],
             power = binom_power$estimate,
             !!ci_power_label := glue::glue("[{round(lower_power_bound, 4)}, {round(upper_power_bound, 4)}]"),
-            lower_t2error_bound = 1-upper_power_bound,
-            upper_t2error_bound = 1-lower_power_bound,
+            lower_t2error_bound = 1 - upper_power_bound,
+            upper_t2error_bound = 1 - lower_power_bound,
             t2_error = 1 - binom_power$estimate,
-            !!ci_t2error_label := glue::glue("[{round(lower_t2error_bound, 4)}, {round(upper_t2error_bound, 4)}]"))
+            !!ci_t2error_label := glue::glue("[{round(lower_t2error_bound, 4)}, {round(upper_t2error_bound, 4)}]")
+          )
         }) %>%
           purrr::list_rbind(names_to = "test")
       }
     ) %>%
     rename("Sample Size" = "sample_size")
-
 }
 
 
@@ -91,27 +89,25 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
 #' @export
 #'
 calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n = NA_real_) {
-
   ci_label <- glue::glue("{t1_error_confidence_int}% CI")
 
   df %>%
     group_by(.data[["sample_size"]]) %>%
     dplyr::group_modify(
-      ~{
-        purrr::map(.x, ~{
-          binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int/100)
+      ~ {
+        purrr::map(.x, ~ {
+          binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int / 100)
           tibble(
             lower_t1_bound = binom_results$conf.int[[1]],
             upper_t1_bound = binom_results$conf.int[[2]],
             t1_error = binom_results$estimate,
-            !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]"))
+            !!ci_label := glue::glue("[{round(lower_t1_bound,4)}, {round(upper_t1_bound,4)}]")
+          )
         }) %>%
           purrr::list_rbind(names_to = "test")
       }
-      ) %>%
+    ) %>%
     rename("Sample Size" = "sample_size")
-
-
 }
 
 
@@ -128,23 +124,22 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
-
   df %>%
     pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
     mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
     {
-    ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]] )) +
-    geom_smooth(alpha = 0.1) +
-    geom_hline(yintercept = alpha, linetype = "dashed", size = 2) +
-    ggtitle("Plot of p-values") +
-    labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
-    guides(fill = "none") +
-    theme_bw() +
-    theme(
-      axis.text = element_text(face = "bold", size = 14),
-      axis.title = element_text(face = "bold", size = 18),
-      plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
-      )
+      ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]])) +
+        geom_smooth(alpha = 0.1) +
+        geom_hline(yintercept = alpha, linetype = "dashed", size = 2) +
+        ggtitle("Plot of p-values") +
+        labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
+        guides(fill = "none") +
+        theme_bw() +
+        theme(
+          axis.text = element_text(face = "bold", size = 14),
+          axis.title = element_text(face = "bold", size = 18),
+          plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
+        )
     }
 }
 
@@ -163,10 +158,8 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #' @export
 #'
 format_simulation_data <- function(input) {
-
   input %>%
     bind_rows()
-
 }
 
 
@@ -179,19 +172,21 @@ format_simulation_data <- function(input) {
 #' @export
 #'
 plot_power <- function(df) {
-
   df %>%
-    ggplot(aes(x = .data[["Sample Size"]], y = .data[["power"]],
-               ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
-               color = .data[["test"]], fill = .data[["test"]])) +
-    geom_smooth(method="glm",
-                method.args=list(family="binomial"),
-                se = F) +
+    ggplot(aes(
+      x = .data[["Sample Size"]], y = .data[["power"]],
+      ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
+      color = .data[["test"]], fill = .data[["test"]]
+    )) +
+    geom_smooth(
+      method = "glm",
+      method.args = list(family = "binomial"),
+      se = F
+    ) +
     theme_bw() +
     theme(
       axis.text = element_text(face = "bold", size = 14),
       axis.title = element_text(face = "bold", size = 18),
       plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
     )
-
 }

@@ -1,4 +1,3 @@
-
 #' Run Simulations
 #'
 #' @param sample_size Total number of trial participants
@@ -17,58 +16,62 @@
 #' @export
 #'
 #' @examples
-#' run_simulations(sample_size = c(40,50,60),
-#' sample_prob = c(0.5,0.5),
-#' prob0 = c(0.1,0.2,0.3,0.4),
-#' prob1 = c(0.6,0.2,0.1,0.1),
-#' niter = 100)
-#'
+#' run_simulations(
+#'   sample_size = c(40, 50, 60),
+#'   sample_prob = c(0.5, 0.5),
+#'   prob0 = c(0.1, 0.2, 0.3, 0.4),
+#'   prob1 = c(0.6, 0.2, 0.1, 0.1),
+#'   niter = 100
+#' )
 #'
 run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
                             .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
-
   # Check equal vector lengths
-  assert_that( length(prob0) == length(prob1) )
+  assert_that(length(prob0) == length(prob1))
   # Check probabilities for both groups sum to 1
-  assert_that( dplyr::near(sum(prob0), 1), msg = "Probability for Group 1 does not sum to 1." )
-  assert_that( dplyr::near(sum(prob1), 1), msg = "Probability for Group 2 does not sum to 1" )
+  assert_that(dplyr::near(sum(prob0), 1), msg = "Probability for Group 1 does not sum to 1.")
+  assert_that(dplyr::near(sum(prob1), 1), msg = "Probability for Group 2 does not sum to 1")
 
 
   K <- length(prob0)
-  p_values <- matrix(NA,niter,7)
-  colnames(p_values) <- c("Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)",
-    "Prop. Odds", "Kruskal-Wallis", "Coin Indep. Test")
+  p_values <- matrix(NA, niter, 7)
+  colnames(p_values) <- c(
+    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)",
+    "Prop. Odds", "Kruskal-Wallis", "Coin Indep. Test"
+  )
 
 
   purrr::map(sample_size,
-             ~{
-               sample_size_nested <- .x
-               initial_groups <- purrr::map(1:niter, ~assign_groups(sample_size = sample_size_nested,
-                                                                    sample_prob = sample_prob,
-                                                                    prob0 = prob0, prob1 = prob1,
-                                                                    seed = .x,
-                                                                    .rng_kind = .rng_kind,
-                                                                    .rng_normal_kind = .rng_normal_kind,
-                                                                    .rng_sample_kind = .rng_sample_kind))
+    ~ {
+      sample_size_nested <- .x
+      initial_groups <- purrr::map(1:niter, ~ assign_groups(
+        sample_size = sample_size_nested,
+        sample_prob = sample_prob,
+        prob0 = prob0, prob1 = prob1,
+        seed = .x,
+        .rng_kind = .rng_kind,
+        .rng_normal_kind = .rng_normal_kind,
+        .rng_sample_kind = .rng_sample_kind
+      ))
 
-               p_values <- initial_groups %>%
-                 sapply(.,function(x) ordinal_tests(x[["x"]], x[["y"]])) %>%
-                 t()
+      p_values <- initial_groups %>%
+        sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]])) %>%
+        t()
 
-               initial_groups_formatted <- initial_groups %>%
-                 purrr::map_df(~tibble(y = list(.x[["y"]]), x = list(.x[["x"]]),
-                                n_null = .x[["n_null"]], n_intervene = .x[["n_intervene"]],
-                                sample_size = .x[["sample_size"]], K = .x[["K"]])
-                 ) %>%
-                 mutate(run = row_number(), .before = y)
+      initial_groups_formatted <- initial_groups %>%
+        purrr::map_df(~ tibble(
+          y = list(.x[["y"]]), x = list(.x[["x"]]),
+          n_null = .x[["n_null"]], n_intervene = .x[["n_intervene"]],
+          sample_size = .x[["sample_size"]], K = .x[["K"]]
+        )) %>%
+        mutate(run = row_number(), .before = y)
 
-               return( sim_results_table = bind_cols(p_values, initial_groups_formatted) )
-             },
-
-             .progress = list(caller = environment(),
-                              format = "Running {niter} iterations on {length(sample_size)} sample sizes. Progress: {cli::pb_bar} {cli::pb_percent} {cli::pb_eta}")
-
+      return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
+    },
+    .progress = list(
+      caller = environment(),
+      format = "Running {niter} iterations on {length(sample_size)} sample sizes. Progress: {cli::pb_bar} {cli::pb_percent} {cli::pb_eta}"
+    )
   ) %>%
     purrr::set_names(glue::glue("sample_size_{sample_size}"))
-
 }
