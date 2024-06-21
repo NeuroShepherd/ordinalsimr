@@ -8,7 +8,7 @@
 #'
 #' @importFrom shiny NS tagList
 #' @importFrom shinyWidgets numericRangeInput
-mod_sample_size_ui <- function(id){
+mod_sample_size_ui <- function(id) {
   ns <- NS(id)
   tagList(
     numericRangeInput(
@@ -21,19 +21,16 @@ mod_sample_size_ui <- function(id){
 #' sample_size Server Functions
 #'
 #' @noRd
-mod_sample_size_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_sample_size_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
 
     sample_n <- reactive({
-
       seq(round(input$sample_n[1]), round(input$sample_n[2]))
-
-      })
+    })
 
     return(sample_n)
-
   })
 }
 

@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_save_data_ui <- function(id){
+mod_save_data_ui <- function(id) {
   ns <- NS(id)
   tagList(
     downloadButton(ns("save_button"), "Save Results as .RDS"),
@@ -19,8 +19,8 @@ mod_save_data_ui <- function(id){
 #' save_data Server Functions
 #'
 #' @noRd
-mod_save_data_server <- function(id, input_data, processed_data, rng_info, input, output, session){
-  moduleServer( id, function(input, output, session){
+mod_save_data_server <- function(id, input_data, processed_data, rng_info, input, output, session) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     # volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
@@ -28,16 +28,21 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
 
     data_to_save <- reactive({
       list(
-        comparison_data = list(run_info = format_simulation_data(input_data$comparison_results()),
-                               distribution_statistics = processed_data$distribution_statistics(),
-                               distribution_plot = processed_data$distribution_plot()
-                               ),
-        group1_data = list(run_info = format_simulation_data(input_data$group1_results()),
-                           group1_t1error = processed_data$group1_t1error()),
-        group2_data = list(run_info = format_simulation_data(input_data$group1_results()),
-                           group2_t1error = processed_data$group2_t1error())
+        comparison_data = list(
+          run_info = format_simulation_data(input_data$comparison_results()),
+          distribution_statistics = processed_data$distribution_statistics(),
+          distribution_plot = processed_data$distribution_plot()
+        ),
+        group1_data = list(
+          run_info = format_simulation_data(input_data$group1_results()),
+          group1_t1error = processed_data$group1_t1error()
+        ),
+        group2_data = list(
+          run_info = format_simulation_data(input_data$group1_results()),
+          group2_t1error = processed_data$group2_t1error()
         )
-      })
+      )
+    })
 
 
     download_counter <- reactiveVal(1)
@@ -67,8 +72,9 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
             group1_run_info = data_to_save()$group1_data$run_info,
             group2_type1_error = data_to_save()$group2_data$group2_t1error,
             group2_run_info = data_to_save()$group2_data$run_info
-            ),
-          path = file)
+          ),
+          path = file
+        )
         # increment download number
         download_counter(download_counter() + 1)
       }
@@ -76,7 +82,6 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
 
 
     return(data_to_save)
-
   })
 }
 
