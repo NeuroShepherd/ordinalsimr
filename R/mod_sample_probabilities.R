@@ -7,27 +7,29 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_sample_probabilities_ui <- function(id){
+mod_sample_probabilities_ui <- function(id) {
   ns <- NS(id)
   tagList(
     textInput(ns("sample_probabilities"),
-                "Distribution Ratio (Control:Intervention)",
-                value = "50:50",
-                placeholder = "Enter desired control:intervention group ratio")
+      "Distribution Ratio (Control:Intervention)",
+      value = "50:50",
+      placeholder = "Enter desired control:intervention group ratio"
+    )
   )
 }
 
 #' sample_probabilities Server Functions
 #'
 #' @noRd
-mod_sample_probabilities_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_sample_probabilities_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    sample_probabilities <- reactive({ parse_ratio_text(input$sample_probabilities) })
+    sample_probabilities <- reactive({
+      parse_ratio_text(input$sample_probabilities)
+    })
 
     return(sample_probabilities)
-
   })
 }
 

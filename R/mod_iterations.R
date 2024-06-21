@@ -7,26 +7,28 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_iterations_ui <- function(id){
+mod_iterations_ui <- function(id) {
   ns <- NS(id)
   tagList(
     shiny::numericInput(ns("iterations"), "Number of Iterations",
-                        value = 50, min = 1, max = Inf)
+      value = 50, min = 1, max = Inf
+    )
   )
 }
 
 #' iterations Server Functions
 #'
 #' @noRd
-mod_iterations_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_iterations_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
 
-    iterations <- reactive({input$iterations})
+    iterations <- reactive({
+      input$iterations
+    })
 
     return(iterations)
-
   })
 }
 

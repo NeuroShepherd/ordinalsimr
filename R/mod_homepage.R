@@ -7,15 +7,15 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_homepage_ui <- function(id){
+mod_homepage_ui <- function(id) {
   ns <- NS(id)
   tagList(
     fluidRow(
       column(1),
-      column(10,
-      includeMarkdown(system.file("homepage.md", package = "ordinalsimr"))
+      column(
+        10,
+        includeMarkdown(system.file("homepage.md", package = "ordinalsimr"))
       )
-
     )
   )
 }
@@ -23,10 +23,9 @@ mod_homepage_ui <- function(id){
 #' homepage Server Functions
 #'
 #' @noRd
-mod_homepage_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_homepage_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
   })
 }
 

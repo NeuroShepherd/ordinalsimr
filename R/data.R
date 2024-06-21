@@ -24,4 +24,3 @@
 #' }
 
 "simulation_data_one_group"
-

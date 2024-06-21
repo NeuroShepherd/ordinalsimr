@@ -31,12 +31,13 @@ This guide will provide a rough overview of how to code your own simulations usi
 ## Power and Type II Error
 
 ```{r, warning=FALSE}
-sim_results <- run_simulations(sample_size = 80,
-                sample_prob = c(0.5,0.5),
-                prob0 = c(0.1,0.2,0.3,0.4),
-                prob1 = c(0.6,0.2,0.1,0.1),
-                niter = 20
-                )
+sim_results <- run_simulations(
+  sample_size = 80,
+  sample_prob = c(0.5, 0.5),
+  prob0 = c(0.1, 0.2, 0.3, 0.4),
+  prob1 = c(0.6, 0.2, 0.1, 0.1),
+  niter = 20
+)
 
 formatted_results <- format_simulation_data(sim_results)
 names(formatted_results)
@@ -44,7 +45,6 @@ names(formatted_results)
 head(formatted_results$p_values)
 
 calculate_power_t2error(formatted_results$p_values, alpha = 0.05, power_confidence_int = 95)
-
 ```
 
 
@@ -54,12 +54,13 @@ To find the Type I error of a distribution, the code from before is largely unch
 
 
 ```{r, warning=FALSE}
-sim_results <- run_simulations(sample_size = 80,
-                sample_prob = c(0.5,0.5),
-                prob0 = c(0.1,0.2,0.3,0.4),
-                prob1 = c(0.1,0.2,0.3,0.4), # note the matching probabilities between groups
-                niter = 20
-                )
+sim_results <- run_simulations(
+  sample_size = 80,
+  sample_prob = c(0.5, 0.5),
+  prob0 = c(0.1, 0.2, 0.3, 0.4),
+  prob1 = c(0.1, 0.2, 0.3, 0.4), # note the matching probabilities between groups
+  niter = 20
+)
 
 formatted_results <- format_simulation_data(sim_results)
 names(formatted_results)
@@ -77,22 +78,21 @@ The current version of the application can only accept one sample size at a time
 
 
 ```{r, warning=FALSE}
-
-sample_sizes <- c(30,50,100)
+sample_sizes <- c(30, 50, 100)
 
 purrr::map(sample_sizes,
-  ~ run_simulations(sample_size = .x,
-                sample_prob = c(0.5,0.5),
-                prob0 = c(0.1,0.2,0.3,0.4),
-                prob1 = c(0.6,0.2,0.1,0.1),
-                niter = 100
-                ) %>%
+  ~ run_simulations(
+    sample_size = .x,
+    sample_prob = c(0.5, 0.5),
+    prob0 = c(0.1, 0.2, 0.3, 0.4),
+    prob1 = c(0.6, 0.2, 0.1, 0.1),
+    niter = 100
+  ) %>%
     format_simulation_data() %>%
     magrittr::extract2("p_values") %>%
     calculate_power_t2error(),
   .progress = TRUE
-  )
-
+)
 ```
 
 
@@ -108,16 +108,15 @@ Note that the `prob0_list` and `prob1_list` must always be of the same length **
 If performing simulations on one distribution to evaluate Type I error, it is only necessary to form one probability list. This object can be recycled for the probabilities of both groups.
 
 ```{r, warning=FALSE}
-
 # Choose sample sizes
-sample_size <- c(50,100)
+sample_size <- c(50, 100)
 # Set sample distributions as a proportion c(group1, group2)
-sample_prob <- list(c(0.5,0.5), c(0.75,0.25))
+sample_prob <- list(c(0.5, 0.5), c(0.75, 0.25))
 # Trial 1 has matching probabilities between the 2 groups. Trial 2 has non-matching probabilities
-prob0_list <- list(trial1_group1 = c(0.1,0.2,0.3,0.4), trial2_group1 = c(0.1,0.2,0.3,0.4) )
-prob1_list <- list(trial1_group2 = c(0.1,0.2,0.3,0.4), trial2_group2 = c(0.2,0.3,0.3,0.2) )
+prob0_list <- list(trial1_group1 = c(0.1, 0.2, 0.3, 0.4), trial2_group1 = c(0.1, 0.2, 0.3, 0.4))
+prob1_list <- list(trial1_group2 = c(0.1, 0.2, 0.3, 0.4), trial2_group2 = c(0.2, 0.3, 0.3, 0.2))
 # Number of iterations
-niter <- c(20,100)
+niter <- c(20, 100)
 ```
 
 ### Create Simulation Grid
@@ -125,7 +124,6 @@ niter <- c(20,100)
 Use `tidyr::expand_grid()` rather than `base:expand.grid()` because the former creates a tibble by default, and this supports the nested tibble structure which I'm relying on. (This can, of course, be approached in other ways if desired.)
 
 ```{r, warning=FALSE}
-
 # Use tidyr::expand_grid as it creates a tibble, supporting the nested tibble structure
 info_table <- tidyr::expand_grid(
   sample_size,
@@ -133,7 +131,7 @@ info_table <- tidyr::expand_grid(
   prob0_list,
   prob1_list,
   niter
-) 
+)
 
 info_table
 ```
@@ -148,7 +146,7 @@ The example below is complete in running the simulations and calculating the Pow
 # Calculate either Power/T2 error or T1 error depending on your specific needs
 many_sims <- info_table %>%
   purrr::pmap(
-    ~run_simulations(
+    ~ run_simulations(
       sample_size = ..1,
       sample_prob = ..2,
       prob0 = ..3,
@@ -163,8 +161,6 @@ many_sims <- info_table %>%
 
 length(many_sims)
 many_sims[1]
-
-
 ```
 
 
