@@ -10,6 +10,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R-CMD-check](https://github.com/NeuroShepherd/ordinalsimr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NeuroShepherd/ordinalsimr/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/ordinalsimr)](https://CRAN.R-project.org/package=ordinalsimr)
+[![Codecov test
+coverage](https://codecov.io/gh/NeuroShepherd/ordinalsimr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/NeuroShepherd/ordinalsimr?branch=master)
 <!-- badges: end -->
 
 The {ordinalsimr} package assists in constructing simulation studies of
