@@ -113,12 +113,13 @@ arguments.</li>
 <h3 id="power-and-type-ii-error">Power and Type II Error<a class="anchor" aria-label="anchor" href="#power-and-type-ii-error"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span>sample_size <span class="op">=</span> <span class="fl">80</span>,</span>
-<span>                sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>                prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>,</span>
-<span>                prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span><span class="op">)</span>,</span>
-<span>                niter <span class="op">=</span> <span class="fl">20</span></span>
-<span>                <span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">80</span>,</span>
+<span>  sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  niter <span class="op">=</span> <span class="fl">20</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">formatted_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/format_simulation_data.html">format_simulation_data</a></span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">)</span></span>
@@ -135,12 +136,13 @@ largely unchanged except for the fact that the probability vectors set
 in <code>run_simulations</code> must now be equivalent and the
 <code><a href="../reference/calculate_t1_error.html">calculate_t1_error()</a></code> function is now applied.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span>sample_size <span class="op">=</span> <span class="fl">80</span>,</span>
-<span>                sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>                prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>,</span>
-<span>                prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>, <span class="co"># note the matching probabilities between groups</span></span>
-<span>                niter <span class="op">=</span> <span class="fl">20</span></span>
-<span>                <span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sim_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span></span>
+<span>  sample_size <span class="op">=</span> <span class="fl">80</span>,</span>
+<span>  sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>  prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>, <span class="co"># note the matching probabilities between groups</span></span>
+<span>  niter <span class="op">=</span> <span class="fl">20</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">formatted_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/format_simulation_data.html">format_simulation_data</a></span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">)</span></span>
@@ -162,21 +164,21 @@ checked, it may only be practical to do this in a parallelized manner
 with e.g. {furrr} or {parallel}. In any case, an example of such code is
 included below:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>,<span class="fl">50</span>,<span class="fl">100</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span><span class="va">sample_sizes</span>,</span>
-<span>  <span class="op">~</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span>sample_size <span class="op">=</span> <span class="va">.x</span>,</span>
-<span>                sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>                prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>,</span>
-<span>                prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.1</span>,<span class="fl">0.1</span><span class="op">)</span>,</span>
-<span>                niter <span class="op">=</span> <span class="fl">100</span></span>
-<span>                <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="op">~</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span></span>
+<span>    sample_size <span class="op">=</span> <span class="va">.x</span>,</span>
+<span>    sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>    prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>,</span>
+<span>    prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>    niter <span class="op">=</span> <span class="fl">100</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/format_simulation_data.html">format_simulation_data</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu">magrittr</span><span class="fu">::</span><span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html" class="external-link">extract2</a></span><span class="op">(</span><span class="st">"p_values"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .progress <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adjust-multiple-parameters">Adjust Multiple Parameters<a class="anchor" aria-label="anchor" href="#adjust-multiple-parameters"></a>
@@ -200,16 +202,15 @@ length for these 2 groups.</p>
 error, it is only necessary to form one probability list. This object
 can be recycled for the probabilities of both groups.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Choose sample sizes</span></span>
-<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">100</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Choose sample sizes</span></span>
+<span><span class="va">sample_size</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="co"># Set sample distributions as a proportion c(group1, group2)</span></span>
-<span><span class="va">sample_prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>,<span class="fl">0.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>,<span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sample_prob</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.25</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Trial 1 has matching probabilities between the 2 groups. Trial 2 has non-matching probabilities</span></span>
-<span><span class="va">prob0_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trial1_group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>, trial2_group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span> <span class="op">)</span></span>
-<span><span class="va">prob1_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trial1_group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span><span class="op">)</span>, trial2_group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.3</span>,<span class="fl">0.2</span><span class="op">)</span> <span class="op">)</span></span>
+<span><span class="va">prob0_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trial1_group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>, trial2_group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">prob1_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>trial1_group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>, trial2_group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Number of iterations</span></span>
-<span><span class="va">niter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">niter</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="create-simulation-grid">Create Simulation Grid<a class="anchor" aria-label="anchor" href="#create-simulation-grid"></a>
@@ -219,15 +220,14 @@ can be recycled for the probabilities of both groups.</p>
 default, and this supports the nested tibble structure which I’m relying
 on. (This can, of course, be approached in other ways if desired.)</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Use tidyr::expand_grid as it creates a tibble, supporting the nested tibble structure</span></span>
+<code class="sourceCode R"><span><span class="co"># Use tidyr::expand_grid as it creates a tibble, supporting the nested tibble structure</span></span>
 <span><span class="va">info_table</span> <span class="op">&lt;-</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand_grid.html" class="external-link">expand_grid</a></span><span class="op">(</span></span>
 <span>  <span class="va">sample_size</span>,</span>
 <span>  <span class="va">sample_prob</span>,</span>
 <span>  <span class="va">prob0_list</span>,</span>
 <span>  <span class="va">prob1_list</span>,</span>
 <span>  <span class="va">niter</span></span>
-<span><span class="op">)</span> </span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">info_table</span></span></code></pre></div>
 </div>
@@ -242,7 +242,7 @@ other purposes.</p>
 <code class="sourceCode R"><span><span class="co"># Calculate either Power/T2 error or T1 error depending on your specific needs</span></span>
 <span><span class="va">many_sims</span> <span class="op">&lt;-</span> <span class="va">info_table</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pmap.html" class="external-link">pmap</a></span><span class="op">(</span></span>
-<span>    <span class="op">~</span><span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span></span>
+<span>    <span class="op">~</span> <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span></span>
 <span>      sample_size <span class="op">=</span> <span class="va">..1</span>,</span>
 <span>      sample_prob <span class="op">=</span> <span class="va">..2</span>,</span>
 <span>      prob0 <span class="op">=</span> <span class="va">..3</span>,</span>
