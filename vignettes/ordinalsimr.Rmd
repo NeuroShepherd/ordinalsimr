@@ -108,7 +108,11 @@ names(formatted_results)
 
 head(formatted_results$p_values)
 
-calculate_power_t2error(formatted_results$p_values, alpha = 0.05, power_confidence_int = 95)
+calculate_power_t2error(
+  formatted_results$p_values,
+  alpha = 0.05,
+  power_confidence_int = 95
+)
 ```
 
 
@@ -126,12 +130,18 @@ sim_results <- run_simulations(
   niter = 20
 )
 
-formatted_results <- format_simulation_data(sim_results)
+formatted_results <- format_simulation_data(
+  sim_results
+)
 names(formatted_results)
 
 head(formatted_results$p_values)
 
-calculate_t1_error(formatted_results$p_values, alpha = 0.05, t1_error_confidence_int = 95)
+calculate_t1_error(
+  formatted_results$p_values,
+  alpha = 0.05,
+  t1_error_confidence_int = 95
+)
 ```
 
 
@@ -171,13 +181,21 @@ Note that the `prob0_list` and `prob1_list` must always be of the same length **
 sample_size <- c(50, 100)
 # Set sample distributions as a proportion c(group1, group2)
 sample_prob <- list(c(0.5, 0.5), c(0.75, 0.25))
-# Trial 1 has matching probabilities between the 2 groups. Trial 2 has non-matching probabilities
-prob0_list <- list(trial1_group1 = c(0.1, 0.2, 0.3, 0.4), trial2_group1 = c(0.1, 0.2, 0.3, 0.4))
-prob1_list <- list(trial1_group2 = c(0.1, 0.2, 0.3, 0.4), trial2_group2 = c(0.2, 0.3, 0.3, 0.2))
+# Trial 1 has matching probabilities between the 2 groups.
+# Trial 2 has non-matching probabilities
+prob0_list <- list(
+  trial1_group1 = c(0.1, 0.2, 0.3, 0.4),
+  trial2_group1 = c(0.1, 0.2, 0.3, 0.4)
+)
+prob1_list <- list(
+  trial1_group2 = c(0.1, 0.2, 0.3, 0.4),
+  trial2_group2 = c(0.2, 0.3, 0.3, 0.2)
+)
 # Number of iterations
 niter <- c(20, 100)
 
-# Use tidyr::expand_grid as it creates a tibble, supporting the nested tibble structure
+# Use tidyr::expand_grid as it creates a tibble,
+# which supports the nested tibble structure
 info_table <- tidyr::expand_grid(
   sample_size,
   sample_prob,
