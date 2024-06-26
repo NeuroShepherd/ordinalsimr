@@ -39,11 +39,12 @@ a list of lists; sub-list elements include `p_values` which is a matrix of p val
 Run Simulations
 }
 \examples{
-run_simulations(sample_size = c(40,50,60),
-sample_prob = c(0.5,0.5),
-prob0 = c(0.1,0.2,0.3,0.4),
-prob1 = c(0.6,0.2,0.1,0.1),
-niter = 100)
-
+run_simulations(
+  sample_size = c(40, 50, 60),
+  sample_prob = c(0.5, 0.5),
+  prob0 = c(0.1, 0.2, 0.3, 0.4),
+  prob1 = c(0.6, 0.2, 0.1, 0.1),
+  niter = 100
+)
 
 }

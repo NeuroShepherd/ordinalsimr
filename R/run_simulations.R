@@ -33,7 +33,6 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
   assert_that(dplyr::near(sum(prob1), 1), msg = "Probability for Group 2 does not sum to 1")
 
 
-  K <- length(prob0)
   p_values <- matrix(NA, niter, 7)
   colnames(p_values) <- c(
     "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)",

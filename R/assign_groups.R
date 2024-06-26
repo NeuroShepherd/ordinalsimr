@@ -3,7 +3,8 @@
 #' (Brief description of the function here.)
 #'
 #' @param sample_size total number of people under observation.
-#' @param sample_prob a vector of probability weights for obtaining the elements of the vector being sampled.
+#' @param sample_prob a vector of probability weights for obtaining the
+#' elements of the vector being sampled.
 #' @param prob0 vector probability of each possible outcome for the null group
 #' @param prob1 vector probability of each possible outcome for the intervention group
 #' @param seed integer specifying the seed number
@@ -38,8 +39,13 @@ assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed,
       #   }
 
       list(
-        y = y, x = x, n_null = n_null, n_intervene = n_intervene, sample_size = sample_size, K = K,
-        .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind
+        y = y, x = x,
+        n_null = n_null, n_intervene = n_intervene,
+        sample_size = sample_size,
+        K = K,
+        .rng_kind = .rng_kind,
+        .rng_normal_kind = .rng_normal_kind,
+        .rng_sample_kind = .rng_sample_kind
       )
     },
     .rng_kind = .rng_kind,
