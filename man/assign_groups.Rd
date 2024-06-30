@@ -18,7 +18,8 @@ assign_groups(
 \arguments{
 \item{sample_size}{total number of people under observation.}
 
-\item{sample_prob}{a vector of probability weights for obtaining the elements of the vector being sampled.}
+\item{sample_prob}{a vector of probability weights for obtaining the
+elements of the vector being sampled.}
 
 \item{prob0}{vector probability of each possible outcome for the null group}
 

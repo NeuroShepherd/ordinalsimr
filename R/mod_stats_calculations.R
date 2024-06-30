@@ -46,7 +46,8 @@ mod_stats_calculations_ui <- function(id) {
 #' stats_calculations Server Functions
 #'
 #' @noRd
-mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info) {
+mod_stats_calculations_server <- function(id, probability_data, sample_prob,
+                                          iterations, sample_size, rng_info) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 

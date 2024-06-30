@@ -181,7 +181,7 @@ plot_power <- function(df) {
     geom_smooth(
       method = "glm",
       method.args = list(family = "binomial"),
-      se = F
+      se = FALSE,
     ) +
     theme_bw() +
     theme(

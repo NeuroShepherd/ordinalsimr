@@ -23,9 +23,6 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    # volumes <- c(Home = fs::path_home(), "R Installation" = R.home(), getVolumes()())
-    # shinyFileSave(input, "save_results", roots = "home")
-
     data_to_save <- reactive({
       list(
         comparison_data = list(

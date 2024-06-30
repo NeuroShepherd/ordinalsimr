@@ -146,7 +146,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int)
     })
     output$t1_error_group1 <- DT::renderDataTable({
-      # browser()
       group1_t1_reactive_table() %>%
         select(-.data$lower_t1_bound, -.data$upper_t1_bound) %>%
         rename(
