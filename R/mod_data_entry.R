@@ -123,15 +123,3 @@ mod_data_entry_server <- function(id) {
 ## To be copied in the server
 # mod_data_entry_server("data_entry_1")
 
-
-
-
-
-
-
-
-# Replace rhandsontable with DT. Use these links below for a reactive, editable
-# table and for info on add/remove rows
-# https://thatdatatho.com/r-shiny-data-table-proxy-replace-data/
-# https://community.rstudio.com/t/how-do-i-create-an-editable-table-to-allow-user-input-draw-scatterplot-and-fit-a-curve-through-those-points/83802/2
-# https://www.google.com/search?q=r+datatable+data+entry+shiny&client=firefox-b-d&sca_esv=602165150&ei=CXe2ZYDcKauoxc8PtKG62Ac&ved=0ahUKEwjAhP6Ot4CEAxUrVPEDHbSQDnsQ4dUDCBA&uact=5&oq=r+datatable+data+entry+shiny&gs_lp=Egxnd3Mtd2l6LXNlcnAiHHIgZGF0YXRhYmxlIGRhdGEgZW50cnkgc2hpbnkyBRAhGKABMgUQIRigATIFECEYoAFIoQZQjwFYgAVwAXgBkAEAmAGVAaABvgWqAQMxLjW4AQPIAQD4AQHCAgoQABhHGNYEGLAD4gMEGAAgQYgGAZAGCA&sclient=gws-wiz-serp
