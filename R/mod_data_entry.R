@@ -13,7 +13,9 @@ mod_data_entry_ui <- function(id) {
   tagList(
     box(
       width = 2,
-      actionButton(ns("add_row"), "Add Row"), br(), br(), actionButton(ns("delete_row"), "Delete Row"),
+      actionButton(ns("add_row"), "Add Row"),
+      br(), br(),
+      actionButton(ns("delete_row"), "Delete Row"),
       align = "center"
     ),
     box(width = 10, rhandsontable::rHandsontableOutput(ns("hottable")))
@@ -122,4 +124,3 @@ mod_data_entry_server <- function(id) {
 
 ## To be copied in the server
 # mod_data_entry_server("data_entry_1")
-

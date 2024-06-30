@@ -1,6 +1,7 @@
 #' Ordinal outcome tests
 #'
-#' A metafunction that runs the statistical tests listed below, and returns the p-values as a named vector.
+#' A metafunction that runs the statistical tests listed below,
+#' and returns the p-values as a named vector.
 #'
 #' \itemize{
 #'  \item{stats::wilcox.test()}

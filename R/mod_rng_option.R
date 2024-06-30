@@ -20,7 +20,8 @@ mod_rng_option_ui <- function(id) {
     ),
     selectInput(ns("rng_normal_kind"),
       label = "RNG Normal Kind",
-      choices = c("Inversion", "Kinderman-Ramage", "Buggy Kinderman-Ramage", "Ahrens-Dieter", "Box-Muller"),
+      choices = c("Inversion", "Kinderman-Ramage", "Buggy Kinderman-Ramage",
+                  "Ahrens-Dieter", "Box-Muller"),
       selected = "Inversion"
     ),
     selectInput(ns("rng_sample_kind"),
