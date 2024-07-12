@@ -49,7 +49,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     output$save_button <- downloadHandler(
       filename = function() {
         # Consider: use .RData in future for flexibility?
-        glue::glue("data-{Sys.Date()}-{session$token}-{download_counter()}.rds")
+        paste0("data", Sys.Date(), session$token, download_counter(), ".rds")
       },
       content = function(file) {
         saveRDS(data_to_save(), file)
@@ -61,7 +61,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     output$save_xlsx <- downloadHandler(
       filename = function() {
         # Consider: use .RData in future for flexibility?
-        glue::glue("data-{Sys.Date()}-{session$token}-{download_counter()}.xlsx")
+        paste0("data", Sys.Date(), session$token, download_counter(), ".xlsx")
       },
       content = function(file) {
         writexl::write_xlsx(
