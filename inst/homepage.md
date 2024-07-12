@@ -25,7 +25,6 @@ vignettes for more information on coding your own simulation studies.
 -   Chi-Squared with Continuity Correction:
     `stats::chisq.test(correct = TRUE)`
 -   Proportional Odds model: `rms::lrm()`
--   Kruskal-Wallis test: `stats.kruskal.test()`
 -   Independence Test:
     `coin::independence_test(ytrafo = coin::rank_trafo)`
 
