@@ -8,7 +8,6 @@
 #'  \item{stats::chisq.test(correct = FALSE)}
 #'  \item{stats::chisq.test(correct = TRUE)}
 #'  \item{rms::lrm()}
-#'  \item{stats.kruskal.test()}
 #'  \item{coin::independence_test(ytrafo = coin::rank_trafo)}
 #'  }
 #' @param x Group one
@@ -27,7 +26,6 @@ ordinal_tests <- function(x, y, ...) {
     chi_sq_false = stats::chisq.test(x, y, correct = FALSE)[["p.value"]],
     chi_sq_true = stats::chisq.test(x, y, correct = TRUE)[["p.value"]],
     lrm = rms::lrm(x ~ y)$stats[["P"]],
-    kruskal = stats::kruskal.test(x ~ y)[["p.value"]],
     coinasymp = coin::pvalue(coin::independence_test(x ~ y, ytrafo = coin::rank_trafo))
   )
 }

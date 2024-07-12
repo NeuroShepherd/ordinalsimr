@@ -24,7 +24,6 @@ vignette("ordinalsimr", package = "ordinalsimr")
 * Chi-Squared without Continuity Correction: `stats::chisq.test(correct = FALSE)`
 * Chi-Squared with Continuity Correction: `stats::chisq.test(correct = TRUE)`
 * Proportional Odds model: `rms::lrm()`
-* Kruskal-Wallis test: `stats.kruskal.test()`
 * Independence Test: `coin::independence_test(ytrafo = coin::rank_trafo)`
 
 ## Pages

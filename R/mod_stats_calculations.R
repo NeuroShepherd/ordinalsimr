@@ -111,13 +111,14 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
-    output$results_table <- DT::renderDataTable(
+    output$results_table <- DT::renderDataTable({
+      # browser()
       comparison_results() %>%
         bind_rows() %>%
         dplyr::select(.data$sample_size, .data$wilcox:.data$coinasymp) %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:8, digits = 5)
-    )
+        DT::formatRound(2:7, digits = 5)
+    })
     outputOptions(output, "results_table", suspendWhenHidden = FALSE)
 
     # if not keeping these output tables, use observe({group1_results()}) to
@@ -127,7 +128,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         bind_rows() %>%
         dplyr::select(.data$sample_size, .data$wilcox:.data$coinasymp) %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:8, digits = 5)
+        DT::formatRound(2:7, digits = 5)
     )
     outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
 
@@ -136,7 +137,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         bind_rows() %>%
         dplyr::select(.data$sample_size, .data$wilcox:.data$coinasymp) %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:8, digits = 5)
+        DT::formatRound(2:7, digits = 5)
     )
     outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
 

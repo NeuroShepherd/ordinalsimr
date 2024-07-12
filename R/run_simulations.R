@@ -34,10 +34,10 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
 
 
   K <- length(prob0)
-  p_values <- matrix(NA, niter, 7)
+  p_values <- matrix(NA, niter, 6)
   colnames(p_values) <- c(
-    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)",
-    "Prop. Odds", "Kruskal-Wallis", "Coin Indep. Test"
+    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+    "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
   )
 
 

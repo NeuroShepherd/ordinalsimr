@@ -26,7 +26,6 @@ A metafunction that runs the statistical tests listed below, and returns the p-v
  \item{stats::chisq.test(correct = FALSE)}
  \item{stats::chisq.test(correct = TRUE)}
  \item{rms::lrm()}
- \item{stats.kruskal.test()}
  \item{coin::independence_test(ytrafo = coin::rank_trafo)}
  }
 }
