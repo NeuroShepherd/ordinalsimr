@@ -9,7 +9,12 @@
 #' @importFrom shiny NS tagList
 mod_rng_option_ui <- function(id) {
   ns <- NS(id)
-  tagList(
+
+  shinydashboardPlus::dropdownBlock(
+    id = ns("rng_options"),
+    title = "RNG Options",
+    icon = icon("gear"),
+    badgeStatus = "info",
     selectInput(ns("rng_kind"),
       label = "RNG Kind",
       choices = c(
@@ -29,6 +34,7 @@ mod_rng_option_ui <- function(id) {
       selected = "Rejection"
     )
   )
+
 }
 
 #' rng_option Server Functions
