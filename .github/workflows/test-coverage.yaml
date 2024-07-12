@@ -3,9 +3,9 @@
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches: [main, master, development]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, development]
 
 name: test-coverage
 
