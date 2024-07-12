@@ -127,9 +127,11 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
   df %>%
     pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
     mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
+    group_by(.data$sample_size, .data$test_name) %>%
+    summarise(value = mean(.data$value)) %>%
     {
       ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]])) +
-        geom_smooth(alpha = 0.1) +
+        geom_line() +
         geom_hline(yintercept = alpha, linetype = "dashed", size = 2) +
         ggtitle("Plot of p-values") +
         labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
@@ -178,11 +180,7 @@ plot_power <- function(df) {
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
       color = .data[["test"]], fill = .data[["test"]]
     )) +
-    geom_smooth(
-      method = "glm",
-      method.args = list(family = "binomial"),
-      se = F
-    ) +
+    geom_line() +
     theme_bw() +
     theme(
       axis.text = element_text(face = "bold", size = 14),
