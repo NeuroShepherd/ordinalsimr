@@ -7,19 +7,18 @@
 #' @return Numeric vector of length 2
 #' @export
 #'
-#' @import stringr
 #'
 #' @examples
 #'
 #' parse_ratio_text("70:30")
 #'
 parse_ratio_text <- function(text) {
-  assert_that(str_detect(text, "[[:digit:]]{1,2}:[[:digit:]]{1,2}"),
+  assert_that(grepl("[[:digit:]]{1,2}:[[:digit:]]{1,2}", text),
     msg = "Incorrect ratio format."
   )
 
-  pre_value <- as.numeric(str_extract(text, "^[[:digit:]]{1,2}"))
-  post_value <- as.numeric(str_extract(text, "[[:digit:]]{1,2}$"))
+  pre_value <- as.numeric(regmatches(text, regexpr("^[[:digit:]]{1,2}", text)))
+  post_value <- as.numeric(regmatches(text, regexpr("[[:digit:]]{1,2}$", text)))
 
   assert_that(pre_value + post_value == 100,
     msg = "Ratio does not sum to 100."
