@@ -13,6 +13,7 @@ app_ui <- function(request) {
     shinydashboardPlus::dashboardPage(
       shinydashboardPlus::dashboardHeader(
         title = "ordinalsimr",
+        mod_rng_option_ui("rng_option_1"),
         tags$li(class = "dropdown", tags$a(
           href = "https://neuroshepherd.github.io/ordinalsimr/",
           icon("book-open-reader"), "Docs", target = "_blank"
@@ -48,9 +49,8 @@ app_ui <- function(request) {
                 width = 3,
                 mod_iterations_ui("iterations_1"),
                 mod_sample_size_ui("sample_size_1"),
-                mod_sample_probabilities_ui("sample_probabilities_1"),
-                mod_rng_option_ui("rng_option_1")
-              ),
+                mod_sample_probabilities_ui("sample_probabilities_1")
+                ),
               box(
                 width = 9,
                 mod_data_entry_ui("data_entry_1")
