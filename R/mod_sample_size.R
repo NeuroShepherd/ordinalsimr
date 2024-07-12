@@ -12,7 +12,7 @@ mod_sample_size_ui <- function(id) {
   ns <- NS(id)
   tagList(
     numericRangeInput(
-      inputId = ns("sample_n"), label = "Sample Size Range",
+      inputId = ns("sample_n"), label = "Total Sample Size Range",
       value = c(30, 80), step = 1
     )
   )
