@@ -16,7 +16,6 @@ Imports:
     dplyr,
     DT,
     ggplot2,
-    glue,
     golem (>= 0.4.0),
     magrittr,
     purrr,
@@ -29,7 +28,6 @@ Imports:
     shinydashboardPlus,
     shinyWidgets,
     stats,
-    stringr,
     tidyr,
     markdown,
     withr
