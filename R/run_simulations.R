@@ -73,5 +73,5 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
       format = "Running {niter} iterations on {length(sample_size)} sample sizes. Progress: {cli::pb_bar} {cli::pb_percent} {cli::pb_eta}"
     )
   ) %>%
-    purrr::set_names(glue::glue("sample_size_{sample_size}"))
+    purrr::set_names(paste0("sample_size_",sample_size))
 }
