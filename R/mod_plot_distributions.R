@@ -91,7 +91,12 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     # !!!plot!!!
     distribution_plot <- reactive({
       p_value_reactive_table() %>%
-        dplyr::select(.data$Wilcoxon:.data$`Coin Indep. Test`, .data$sample_size) %>%
+        dplyr::select(
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          )),
+          .data$sample_size) %>%
         plot_distribution_results(
           outlier_removal = outlier_percent_removal(),
           alpha = p_val_threshold()
@@ -106,7 +111,12 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     # !!!statistics!!!
     distribution_statistics <- reactive({
       p_value_reactive_table() %>%
-        select(.data$Wilcoxon:.data$`Coin Indep. Test`, .data$sample_size) %>%
+        select(
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          )),
+          .data$sample_size) %>%
         calculate_power_t2error(
           alpha = p_val_threshold(),
           n = n(),
@@ -141,7 +151,16 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     group1_t1_reactive_table <- reactive({
       p_value_table$group1_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$Wilcoxon:.data$`Coin Indep. Test`, .data$sample_size) %>%
+        dplyr::select(
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          )),
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          )),
+          .data$sample_size) %>%
         group_by(.data$sample_size) %>%
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int)
     })
@@ -163,7 +182,12 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     group2_t1_reactive_table <- reactive({
       p_value_table$group2_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$Wilcoxon:.data$`Coin Indep. Test`, .data$sample_size) %>%
+        dplyr::select(
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          )),
+          .data$sample_size) %>%
         group_by(.data$sample_size) %>%
         calculate_t1_error(t1_error_confidence_int = input$t1_error_group2_confidence_int)
     })

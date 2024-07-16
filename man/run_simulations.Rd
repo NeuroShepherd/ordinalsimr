@@ -10,6 +10,7 @@ run_simulations(
   prob0,
   prob1,
   niter,
+  included = "all",
   .rng_kind = NULL,
   .rng_normal_kind = NULL,
   .rng_sample_kind = NULL
@@ -25,6 +26,8 @@ run_simulations(
 \item{prob1}{Vector of probabilities for intervention group}
 
 \item{niter}{Number of simulation iterations to complete#'}
+
+\item{included}{a character vector of the tests to be included. Default is "all"}
 
 \item{.rng_kind}{seeding info passed to withr::with_seed}
 

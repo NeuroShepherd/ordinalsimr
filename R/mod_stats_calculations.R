@@ -46,7 +46,7 @@ mod_stats_calculations_ui <- function(id) {
 #' stats_calculations Server Functions
 #'
 #' @noRd
-mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info) {
+mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info, included_tests) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -57,7 +57,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         prob1 = dplyr::pull(probability_data(), "Group 2 Probabilities"),
         sample_prob = sample_prob(),
         iterations = iterations(),
-        sample_size = sample_size()
+        sample_size = sample_size(),
+        included_tests = included_tests()
       )
     })
 
@@ -72,6 +73,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         sample_prob = parameters()$sample_prob,
         prob1 = parameters()$prob1,
         niter = parameters()$iterations,
+        included = parameters()$included_tests,
         .rng_kind = rng_info$rng_kind(),
         .rng_normal_kind = rng_info$rng_normal_kind(),
         .rng_sample_kind = rng_info$rng_sample_kind()
@@ -85,6 +87,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
           sample_prob = parameters()$sample_prob,
           prob1 = parameters()$prob0,
           niter = parameters()$iterations,
+          included = parameters()$included_tests,
           .rng_kind = rng_info$rng_kind(),
           .rng_normal_kind = rng_info$rng_normal_kind(),
           .rng_sample_kind = rng_info$rng_sample_kind()
@@ -101,6 +104,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
           sample_prob = parameters()$sample_prob,
           prob1 = parameters()$prob1,
           niter = parameters()$iterations,
+          included = parameters()$included_tests,
           .rng_kind = rng_info$rng_kind(),
           .rng_normal_kind = rng_info$rng_normal_kind(),
           .rng_sample_kind = rng_info$rng_sample_kind()
@@ -112,33 +116,50 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
     output$results_table <- DT::renderDataTable({
-      # browser()
-      comparison_results() %>%
+      comp_res <- comparison_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$sample_size, .data$Wilcoxon:.data$`Coin Indep. Test`) %>%
+        dplyr::select(.data$sample_size,
+                      dplyr::any_of(c(
+                        "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+                        "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+                      )))
+
+      comp_res %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:7, digits = 5)
+        DT::formatRound(2:ncol(comp_res), digits = 5)
     })
     outputOptions(output, "results_table", suspendWhenHidden = FALSE)
 
     # if not keeping these output tables, use observe({group1_results()}) to
     # ensure evaluation
-    output$group1_pvalues <- DT::renderDataTable(
-      group1_results() %>%
+    output$group1_pvalues <- DT::renderDataTable({
+      g1_res <- group1_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$sample_size, .data$Wilcoxon:.data$`Coin Indep. Test`) %>%
+        dplyr::select(.data$sample_size,
+                      dplyr::any_of(c(
+                        "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+                        "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+                      )))
+
+      g1_res %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:7, digits = 5)
-    )
+        DT::formatRound(2:ncol(g1_res), digits = 5)
+    })
     outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
 
-    output$group2_pvalues <- DT::renderDataTable(
-      group2_results() %>%
+    output$group2_pvalues <- DT::renderDataTable({
+      g2_res <- group2_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$sample_size, .data$Wilcoxon:.data$`Coin Indep. Test`) %>%
+        dplyr::select(.data$sample_size,
+                      dplyr::any_of(c(
+                        "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+                        "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+                      )))
+
+      g2_res %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:7, digits = 5)
-    )
+        DT::formatRound(2:ncol(g2_res), digits = 5)
+    })
     outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
 
 

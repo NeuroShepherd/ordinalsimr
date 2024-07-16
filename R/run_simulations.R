@@ -8,6 +8,7 @@
 #' @param .rng_normal_kind seeding info passed to withr::with_seed
 #' @param .rng_sample_kind seeding info passed to withr::with_seed
 #' @param niter Number of simulation iterations to complete#'
+#' @param included a character vector of the tests to be included. Default is "all"
 #'
 #' @return a list of lists; sub-list elements include `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
 #'
@@ -24,7 +25,7 @@
 #'   niter = 100
 #' )
 #'
-run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
+run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                             .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
   # Check equal vector lengths
   assert_that(
@@ -67,7 +68,7 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
       )
 
       p_values <- initial_groups %>%
-        sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]])) %>%
+        sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
         t()
 
       initial_groups_formatted <- initial_groups %>%
