@@ -36,3 +36,19 @@ test_that("ordinal_tests names the vector correctly", {
   )
 })
 
+
+# write tests that check the assertthat messages in ordinal_tests
+
+test_that("ordinal_tests throws an error if x and y are not the same length", {
+  expect_error(ordinal_tests(c(1, 2, 3), c(1, 2, 3, 4)), "x and y must have the same length")
+})
+
+test_that("ordinal_tests throws an error if included is not a character vector", {
+  expect_error(ordinal_tests(c(1, 2, 3), c(1, 2, 3), included = 1), "included must be a character vector")
+})
+
+test_that("ordinal_tests throws an error if included is not a subset of the possible tests", {
+  expect_error(ordinal_tests(c(1, 2, 3), c(1, 2, 3), included = c("all", "Wilcoxon", "Fisher", "Chi Squared (No Correction)", "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test", "Not a test")), "included must be a subset of the possible tests")
+})
+
+
