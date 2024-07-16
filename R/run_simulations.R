@@ -28,10 +28,19 @@
 run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                             .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
   # Check equal vector lengths
-  assert_that(length(prob0) == length(prob1))
+  assert_that(
+    length(prob0) == length(prob1),
+    msg = "prob0 and prob1 must have the same length"
+    )
   # Check probabilities for both groups sum to 1
-  assert_that(dplyr::near(sum(prob0), 1), msg = "Probability for Group 1 does not sum to 1.")
-  assert_that(dplyr::near(sum(prob1), 1), msg = "Probability for Group 2 does not sum to 1")
+  assertthat::assert_that(
+    near(sum(prob0), 1),
+    msg = "prob0 must sum to 1"
+  )
+  assertthat::assert_that(
+    near(sum(prob1), 1),
+    msg = "prob0 must sum to 1"
+  )
 
 
   K <- length(prob0)
@@ -45,15 +54,18 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
   purrr::map(sample_size,
     ~ {
       sample_size_nested <- .x
-      initial_groups <- purrr::map(1:niter, ~ assign_groups(
-        sample_size = sample_size_nested,
-        sample_prob = sample_prob,
-        prob0 = prob0, prob1 = prob1,
-        seed = .x,
-        .rng_kind = .rng_kind,
-        .rng_normal_kind = .rng_normal_kind,
-        .rng_sample_kind = .rng_sample_kind
-      ))
+      initial_groups <- purrr::map(1:niter, ~{
+        assign_groups(
+          sample_size = sample_size_nested,
+          sample_prob = sample_prob,
+          prob0 = prob0, prob1 = prob1,
+          seed = .x,
+          .rng_kind = .rng_kind,
+          .rng_normal_kind = .rng_normal_kind,
+          .rng_sample_kind = .rng_sample_kind
+        )
+      }
+      )
 
       p_values <- initial_groups %>%
         sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%

@@ -19,6 +19,23 @@
 #'
 assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed,
                           .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
+
+  assertthat::assert_that(
+    length(prob0) == length(prob1),
+    msg = "prob0 and prob1 must have the same length"
+  )
+
+  assertthat::assert_that(
+    near(sum(prob0), 1),
+    msg = "prob0 must sum to 1"
+  )
+
+  assertthat::assert_that(
+    near(sum(prob1), 1),
+    msg = "prob1 must sum to 1"
+  )
+
+
   withr::with_seed(seed,
     {
       y <- factor(sample(x = 0:1, size = sample_size, replace = TRUE, prob = sample_prob))
@@ -29,13 +46,6 @@ assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed,
 
       x[y == 0] <- sample(1:K, n_null, replace = TRUE, prob = prob0)
       x[y == 1] <- sample(1:K, n_intervene, replace = TRUE, prob = prob1)
-      #
-      #   if( length(unique(x[y==0])) < K ) {
-      #     warning("Not all possible outcomes observed in the null group.")
-      #   }
-      #   if( length(unique(x[y==1])) < K ) {
-      #     warning("Not all possible outcomes observed in the intervention group.")
-      #   }
 
       list(
         y = y, x = x, n_null = n_null, n_intervene = n_intervene, sample_size = sample_size, K = K,

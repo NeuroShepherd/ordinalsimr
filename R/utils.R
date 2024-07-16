@@ -95,13 +95,30 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
     dplyr::group_modify(
       ~ {
         purrr::map(.x, ~ {
-          binom_results <- binom.test(sum(.x < alpha), length(.x), conf.level = t1_error_confidence_int / 100)
-          tibble(
-            lower_t1_bound = binom_results$conf.int[[1]],
-            upper_t1_bound = binom_results$conf.int[[2]],
-            t1_error = binom_results$estimate,
-            !!ci_label := paste0("[",round(lower_t1_bound, 4), ", ", round(upper_t1_bound, 4), "]")
-            )
+
+          tryCatch({
+
+            binom_results <- binom.test(sum(.x < alpha, na.rm = T),
+                                        sum(!is.na(.x)),
+                                        conf.level = t1_error_confidence_int / 100)
+
+              tibble(
+                lower_t1_bound = binom_results$conf.int[[1]],
+                upper_t1_bound = binom_results$conf.int[[2]],
+                t1_error = binom_results$estimate,
+                !!ci_label := paste0("[",round(lower_t1_bound, 4), ", ", round(upper_t1_bound, 4), "]")
+              )
+
+              },
+            error = function(e) {
+              tibble(
+                lower_t1_bound = NA_real_,
+                upper_t1_bound = NA_real_,
+                t1_error = NA_real_,
+                !!ci_label := NA_character_
+              )
+            })
+
         }) %>%
           purrr::list_rbind(names_to = "test")
       }
