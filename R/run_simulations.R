@@ -53,15 +53,18 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter,
   purrr::map(sample_size,
     ~ {
       sample_size_nested <- .x
-      initial_groups <- purrr::map(1:niter, ~ assign_groups(
-        sample_size = sample_size_nested,
-        sample_prob = sample_prob,
-        prob0 = prob0, prob1 = prob1,
-        seed = .x,
-        .rng_kind = .rng_kind,
-        .rng_normal_kind = .rng_normal_kind,
-        .rng_sample_kind = .rng_sample_kind
-      ))
+      initial_groups <- purrr::map(1:niter, ~{
+        assign_groups(
+          sample_size = sample_size_nested,
+          sample_prob = sample_prob,
+          prob0 = prob0, prob1 = prob1,
+          seed = .x,
+          .rng_kind = .rng_kind,
+          .rng_normal_kind = .rng_normal_kind,
+          .rng_sample_kind = .rng_sample_kind
+        )
+      }
+      )
 
       p_values <- initial_groups %>%
         sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]])) %>%
