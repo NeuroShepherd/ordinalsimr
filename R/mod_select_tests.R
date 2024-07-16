@@ -35,6 +35,12 @@ mod_select_tests_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    selected_tests <- reactive({
+      input$included
+    })
+
+    return(selected_tests)
+
   })
 }
 
