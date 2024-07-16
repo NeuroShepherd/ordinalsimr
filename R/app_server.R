@@ -10,6 +10,7 @@ app_server <- function(input, output, session) {
   data_entered_probs <- mod_data_entry_server("data_entry_1")
   data_entered_iters <- mod_iterations_server("iterations_1")
   data_entered_sample_size <- mod_sample_size_server("sample_size_1")
+  data_entered_tests <- mod_select_tests_server("select_tests_1")
   data_sample_probabilities <- mod_sample_probabilities_server("sample_probabilities_1")
   rng_selections <- mod_rng_option_server("rng_option_1")
 
@@ -20,7 +21,8 @@ app_server <- function(input, output, session) {
     sample_prob = data_sample_probabilities,
     iterations = data_entered_iters,
     sample_size = data_entered_sample_size,
-    rng_info = rng_selections
+    rng_info = rng_selections,
+    included_tests = data_entered_tests
   )
 
   # Plot the distribution of values
