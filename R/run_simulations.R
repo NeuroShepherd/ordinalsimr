@@ -25,7 +25,7 @@
 #'   niter = 100
 #' )
 #'
-run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, included,
+run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                             .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
   # Check equal vector lengths
   assert_that(length(prob0) == length(prob1))
