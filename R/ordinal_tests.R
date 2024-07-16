@@ -21,11 +21,31 @@
 #'
 ordinal_tests <- function(x, y, ...) {
   c(
-    Wilcoxon = stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]],
-    Fisher = stats::fisher.test(x, y, simulate.p.value = FALSE, workspace = 2e7)[["p.value"]],
-    "Chi Squared\n(No Correction)" = stats::chisq.test(x, y, correct = FALSE)[["p.value"]],
-    "Chi Squared\n(Correction)" = stats::chisq.test(x, y, correct = TRUE)[["p.value"]],
-    "Prop. Odds" = rms::lrm(x ~ y)$stats[["P"]],
-    "Coin Indep. Test" = coin::pvalue(coin::independence_test(x ~ y, ytrafo = coin::rank_trafo))
+    Wilcoxon = tryCatch(
+      {stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]]},
+      error = function(e) {NA_real_}
+      ),
+    Fisher = tryCatch(
+      {stats::fisher.test(x, y, simulate.p.value = FALSE, workspace = 2e7)[["p.value"]]},
+      error = function(e) {NA_real_}
+    ),
+    "Chi Squared\n(No Correction)" = tryCatch(
+      {stats::chisq.test(x, y, correct = FALSE)[["p.value"]]},
+      error = function(e) {NA_real_}
+    ),
+    "Chi Squared\n(Correction)" = tryCatch(
+      {stats::chisq.test(x, y, correct = TRUE)[["p.value"]]},
+      error = function(e) {NA_real_}
+    ),
+    "Prop. Odds" = tryCatch(
+      {rms::lrm(x ~ y)$stats[["P"]]},
+      error = function(e) {NA_real_}
+    ),
+    "Coin Indep. Test" = tryCatch(
+      {coin::pvalue(coin::independence_test(x ~ y, ytrafo = coin::rank_trafo))},
+      error = function(e) {NA_real_}
+    )
   )
 }
+
+
