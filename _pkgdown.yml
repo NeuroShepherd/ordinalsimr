@@ -14,7 +14,6 @@ reference:
     - run_simulations
     - calculate_power_t2error
     - calculate_t1_error
-    - format_simulation_data
   - title: Helper Functions
     desc: Constructors and utility functions
     contents:
