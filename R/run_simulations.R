@@ -76,7 +76,7 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
       )
     }) %>%
       bind_rows() %>%
-      mutate(run = row_number(), .before = y)
+      mutate(run = row_number(), .before = .data$y)
 
     return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
 
