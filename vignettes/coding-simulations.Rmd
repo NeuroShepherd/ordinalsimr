@@ -25,7 +25,7 @@ library(ordinalsimr)
 This guide will provide a rough overview of how to code your own simulations using the components of this package should you find the Shiny application too limiting for your own purposes. Key information on functions:
 
 * `run_simulations()` will take simulation input parameters and return a list. The first element contains a matrix of p-values for each run of the simulation, while the second element is multiple lists of information describing group allocations in detail.
-* `format_simulation_data()` is recommended for reformatting the two list elements mentioned above. It will return a list of two tibbles.
+* `bind_rows()` is recommended for reformatting the two list elements mentioned above.
 * `calculate_power_t2error()` and `calculate_t1_error()` can receive the p-value data frames for performing T1 Error, Power, and T2 Error calculations with confidence intervals. See function documentation for additional arguments.
 
 ## Power and Type II Error
@@ -39,7 +39,7 @@ sim_results <- run_simulations(
   niter = 20
 )
 
-formatted_results <- format_simulation_data(sim_results)
+formatted_results <- bind_rows(sim_results)
 names(formatted_results)
 head(formatted_results$p_values)
 
@@ -66,7 +66,7 @@ sim_results <- run_simulations(
   niter = 50
 )
 
-formatted_results <- format_simulation_data(sim_results)
+formatted_results <- bind_rows(sim_results)
 names(formatted_results)
 head(formatted_results$p_values)
 
@@ -97,7 +97,7 @@ lapply(sample_sizes, function(x) {
     prob1 = c(0.6, 0.2, 0.1, 0.1),
     niter = 100
   ) %>%
-    format_simulation_data() %>%
+    bind_rows() %>%
     select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
            `Chi Squared\n(Correction)`, `Prop. Odds`, 
            `Coin Indep. Test`, sample_size) %>%
@@ -117,7 +117,7 @@ sample_sizes %>%
       prob1 = c(0.6, 0.2, 0.1, 0.1),
       niter = 100
       ) %>%
-      format_simulation_data() %>%
+      bind_rows() %>%
       select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
            `Chi Squared\n(Correction)`, `Prop. Odds`, 
            `Coin Indep. Test`, sample_size) %>%
@@ -200,7 +200,7 @@ info_table %>%
       prob1 = ..4,
       niter = ..5
     ) %>%
-      format_simulation_data() %>%
+      bind_rows() %>%
       magrittr::extract2("p_values") %>%
       calculate_power_t2error(),
     .progress = TRUE

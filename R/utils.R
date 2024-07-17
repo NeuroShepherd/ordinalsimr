@@ -163,25 +163,6 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
 
 
-
-
-
-#' Format Simulation Data
-#'
-#' Soft wrapper for `dplyr::bind_rows()`: formats the list of data from running simulations into a list of tibbles; one tibble for the p-values for each run of each model, and one tibble with run metadata. List objects are named `p_values` and `run_info`. The tibble in `run_info` further contains two nested tibbles.
-#'
-#' @param input a named list structured as the output from `run_simulations()`
-#'
-#' @return a named list with a p_value tibble and a run_info nested tibble
-#' @export
-#'
-format_simulation_data <- function(input) {
-  input %>%
-    bind_rows()
-}
-
-
-
 #' Plot Test Power
 #'
 #' @param df a dataframe with p-values and a sample_size column

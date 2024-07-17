@@ -51,16 +51,3 @@ test_that("data object names are consistent", {
 })
 
 
-
-# Tests for format_simulation_data
-test_that("data formatting works", {
-  results <- format_simulation_data(simulation_data_one_group)
-  tbl_cols <- c(
-    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)", "Prop. Odds",
-    "Coin Indep. Test", "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
-  )
-
-  expect_equal(colnames(results), tbl_cols)
-  expect_s3_class(results, "tbl")
-  expect_equal(ncol(results), 13)
-})

@@ -29,16 +29,16 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     data_to_save <- reactive({
       list(
         comparison_data = list(
-          run_info = format_simulation_data(input_data$comparison_results()),
+          run_info = bind_rows(input_data$comparison_results()),
           distribution_statistics = processed_data$distribution_statistics(),
           distribution_plot = processed_data$distribution_plot()
         ),
         group1_data = list(
-          run_info = format_simulation_data(input_data$group1_results()),
+          run_info = bind_rows(input_data$group1_results()),
           group1_t1error = processed_data$group1_t1error()
         ),
         group2_data = list(
-          run_info = format_simulation_data(input_data$group1_results()),
+          run_info = bind_rows(input_data$group1_results()),
           group2_t1error = processed_data$group2_t1error()
         )
       )
