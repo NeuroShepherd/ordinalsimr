@@ -66,7 +66,7 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
             !!ci_t2error_label := paste0("[",round(lower_t2error_bound, 3), ", ", round(upper_t2error_bound, 3), "]")
           )
         }) %>%
-          purrr::list_rbind(names_to = "test")
+          bind_rows(.id = "test")
       }
     ) %>%
     rename("Sample Size" = "sample_size")
@@ -120,7 +120,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
             })
 
         }) %>%
-          purrr::list_rbind(names_to = "test")
+          bind_rows(.id = "test")
       }
     ) %>%
     rename("Sample Size" = "sample_size")
