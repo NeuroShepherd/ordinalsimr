@@ -51,4 +51,32 @@ test_that("ordinal_tests throws an error if included is not a subset of the poss
   expect_error(ordinal_tests(c(1, 2, 3), c(1, 2, 3), included = c("all", "Wilcoxon", "Fisher", "Chi Squared (No Correction)", "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test", "Not a test")), "included must be a subset of the possible tests")
 })
 
+test_that("ordinal_tests functions correctly on a subset of tests", {
+  subset_results <- suppressWarnings(
+      ordinal_tests(
+        groups[["x"]], groups[["y"]],
+        included = c("Wilcoxon", "Fisher")
+      )
+    )
+  expect_vector(subset_results)
+  expect_named(subset_results)
+  expect_equal(as.vector(subset_results)[1],
+               c(0.002205771),
+               tolerance = 0.0000001)
+
+  expect_length(subset_results, 2)
+})
+
+test_that("test each individual statistical test", {
+  suppressWarnings({
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Wilcoxon")[[1]], 0.002205771, tolerance = 0.000001)
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Fisher")[[1]], 0.00157921, tolerance = 0.000001)
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Chi Squared (No Correction)")[[1]], 0.00364612, tolerance = 0.000001)
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Chi Squared (Correction)")[[1]], 0.00364612, tolerance = 0.000001)
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Prop. Odds")[[1]], 0.00101583, tolerance = 0.000001)
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Coin Indep. Test")[[1]], 0.002022075, tolerance = 0.000001)
+  })
+})
+
+
 
