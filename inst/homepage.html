@@ -1,0 +1,63 @@
+
+
+
+<div id="ordinalsimr-shiny-application" class="section level1">
+<h1>{ordinalsimr} Shiny Application</h1>
+<p>The {ordinalsimr} package is intended to assist applied statisticians
+with running simulation studies on ordinal data. This Shiny application
+provides a point-and-click approach to setting simulation parameters
+including setting the number of iterations, the total sample size, the
+group size ratio between group 1 and group 2, and the distribution
+probabilities of the ordinal endpoint for each group.</p>
+<div id="help-files" class="section level2">
+<h2>Help Files</h2>
+<p>If the Shiny application is not flexible enough for your purposes,
+this package also provides a variety of helper functions. See the
+package for vignettes for more information on coding your own simulation
+studies.</p>
+<pre class="r"><code>vignette(&quot;coding-simulations&quot;, package = &quot;ordinalsimr&quot;)
+vignette(&quot;ordinalsimr&quot;, package = &quot;ordinalsimr&quot;)</code></pre>
+</div>
+<div id="included-tests" class="section level2">
+<h2>Included Tests</h2>
+<ul>
+<li>Wilcoxon Test: <code>stats::wilcox.test()</code></li>
+<li>Fisher Test: <code>stats::fisher.test()</code></li>
+<li>Chi-Squared without Continuity Correction:
+<code>stats::chisq.test(correct = FALSE)</code></li>
+<li>Chi-Squared with Continuity Correction:
+<code>stats::chisq.test(correct = TRUE)</code></li>
+<li>Proportional Odds model: <code>rms::lrm()</code></li>
+<li>Independence Test:
+<code>coin::independence_test(ytrafo = coin::rank_trafo)</code></li>
+</ul>
+</div>
+<div id="pages" class="section level2">
+<h2>Pages</h2>
+<div id="simulation" class="section level3">
+<h3>Simulation</h3>
+<p>This page is for parameter entries, and includes a “Run Test” button
+to press once all parameters have been determined. Processing is
+completed when the p-value tables at the bottom of the page appear.</p>
+</div>
+<div id="distributions" class="section level3">
+<h3>Distributions</h3>
+<p>Results of a simulation run can be seen here included a visualization
+of the p-value densities by test as well as Power, Type II error, Type I
+error, and associated confidence intervals for these values. The CI
+percentiles can be adjusted as well as the nominal significance level
+.</p>
+</div>
+<div id="report" class="section level3">
+<h3>Report</h3>
+<p>Experimental page: will include a report generated from the
+simulation results.</p>
+</div>
+<div id="data-download" class="section level3">
+<h3>Data Download</h3>
+<p>This page is under development, but does currently include an option
+to download the metadata (i.e. input parameters), p-values from tests,
+summary statistics, and the ggplot as an <code>.rds</code> file.</p>
+</div>
+</div>
+</div>
