@@ -136,7 +136,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           "Type II Error (\U03B2)" = .data$t2_error
         ) %>%
         DT::datatable() %>%
-        DT::formatRound(c(3, 5), 5)
+        DT::formatRound(c(3, 5), 3)
     })
 
 
@@ -173,7 +173,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           "Type I Error (\U003B1)" = .data$t1_error
         ) %>%
         DT::datatable() %>%
-        DT::formatRound(c(3), 5)
+        DT::formatRound(c(3), 3)
     })
 
 
@@ -199,7 +199,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           "Type I Error (\U003B1)" = .data$t1_error
         ) %>%
         DT::datatable() %>%
-        DT::formatRound(c(3), 5)
+        DT::formatRound(c(3), 3)
     })
 
 
