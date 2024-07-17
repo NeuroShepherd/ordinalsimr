@@ -59,11 +59,11 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
             lower_power_bound = binom_power$conf.int[[1]],
             upper_power_bound = binom_power$conf.int[[2]],
             power = binom_power$estimate,
-            !!ci_power_label := paste0("[",round(lower_power_bound, 4), ", ", round(upper_power_bound, 4), "]"),
+            !!ci_power_label := paste0("[",round(lower_power_bound, 3), ", ", round(upper_power_bound, 3), "]"),
             lower_t2error_bound = 1 - upper_power_bound,
             upper_t2error_bound = 1 - lower_power_bound,
             t2_error = 1 - binom_power$estimate,
-            !!ci_t2error_label := paste0("[",round(lower_t2error_bound, 4), ", ", round(upper_t2error_bound, 4), "]")
+            !!ci_t2error_label := paste0("[",round(lower_t2error_bound, 3), ", ", round(upper_t2error_bound, 3), "]")
           )
         }) %>%
           purrr::list_rbind(names_to = "test")
@@ -106,7 +106,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
                 lower_t1_bound = binom_results$conf.int[[1]],
                 upper_t1_bound = binom_results$conf.int[[2]],
                 t1_error = binom_results$estimate,
-                !!ci_label := paste0("[",round(lower_t1_bound, 4), ", ", round(upper_t1_bound, 4), "]")
+                !!ci_label := paste0("[",round(lower_t1_bound, 3), ", ", round(upper_t1_bound, 3), "]")
               )
 
               },
