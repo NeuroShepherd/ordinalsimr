@@ -13,7 +13,7 @@ test_that("ratio text parsing works", {
 test_that("power and t2 error calculations work", {
   # column name checks? p-value range checks? other errors to check for in the fxn itself?
   t2_power_result <- simulation_data_two_groups %>%
-    select(wilcox:coinasymp, sample_size) %>%
+    select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
     calculate_power_t2error()
   expect_equal(
     names(t2_power_result),
@@ -29,7 +29,7 @@ test_that("power and t2 error calculations work", {
 # tests for calculate_t1_error()
 test_that("t1 error calculations work", {
   t1_error_result <- simulation_data_one_group %>%
-    select(wilcox:coinasymp, sample_size) %>%
+    select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
     calculate_t1_error()
   expect_equal(
     names(t1_error_result),
@@ -42,8 +42,8 @@ test_that("t1 error calculations work", {
 # test data
 test_that("data object names are consistent", {
   expected_col_names <- c(
-    "wilcox", "fisher", "chi_sq_false", "chi_sq_true", "lrm",
-    "coinasymp", "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
+    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)", "Prop. Odds",
+    "Coin Indep. Test", "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
   )
 
   expect_equal(names(simulation_data_two_groups), expected_col_names)
@@ -56,8 +56,8 @@ test_that("data object names are consistent", {
 test_that("data formatting works", {
   results <- format_simulation_data(simulation_data_one_group)
   tbl_cols <- c(
-    "wilcox", "fisher", "chi_sq_false", "chi_sq_true", "lrm",
-    "coinasymp", "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
+    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)", "Prop. Odds",
+    "Coin Indep. Test", "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
   )
 
   expect_equal(colnames(results), tbl_cols)
