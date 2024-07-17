@@ -42,7 +42,6 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
     msg = "prob0 must sum to 1"
   )
 
-
   K <- length(prob0)
   p_values <- matrix(NA, niter, 6)
   colnames(p_values) <- c(
@@ -50,41 +49,38 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
     "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
   )
 
+  lapply(sample_size, function(x) {
 
-  purrr::map(sample_size,
-    ~ {
-      sample_size_nested <- .x
-      initial_groups <- purrr::map(1:niter, ~{
-        assign_groups(
-          sample_size = sample_size_nested,
-          sample_prob = sample_prob,
-          prob0 = prob0, prob1 = prob1,
-          seed = .x,
-          .rng_kind = .rng_kind,
-          .rng_normal_kind = .rng_normal_kind,
-          .rng_sample_kind = .rng_sample_kind
-        )
-      }
+    sample_size_nested <- x
+    initial_groups <- lapply(1:niter, function(x) {
+      assign_groups(
+        sample_size = sample_size_nested,
+        sample_prob = sample_prob,
+        prob0 = prob0, prob1 = prob1,
+        seed = x,
+        .rng_kind = .rng_kind,
+        .rng_normal_kind = .rng_normal_kind,
+        .rng_sample_kind = .rng_sample_kind
       )
+    })
 
-      p_values <- initial_groups %>%
-        sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
-        t()
+    p_values <- initial_groups %>%
+      sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
+      t()
 
-      initial_groups_formatted <- initial_groups %>%
-        purrr::map_df(~ tibble(
-          y = list(.x[["y"]]), x = list(.x[["x"]]),
-          n_null = .x[["n_null"]], n_intervene = .x[["n_intervene"]],
-          sample_size = .x[["sample_size"]], K = .x[["K"]]
-        )) %>%
-        mutate(run = row_number(), .before = y)
+    initial_groups_formatted <- lapply(initial_groups, function(groups) {
+      tibble(
+        y = list(groups[["y"]]), x = list(groups[["x"]]),
+        n_null = groups[["n_null"]], n_intervene = groups[["n_intervene"]],
+        sample_size = groups[["sample_size"]], K = groups[["K"]]
+      )
+    }) %>%
+      bind_rows() %>%
+      mutate(run = row_number(), .before = y)
 
-      return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
-    },
-    .progress = list(
-      caller = environment(),
-      format = "Running {niter} iterations on {length(sample_size)} sample sizes. Progress: {cli::pb_bar} {cli::pb_percent} {cli::pb_eta}"
-    )
-  ) %>%
-    purrr::set_names(paste0("sample_size_",sample_size))
+    return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
+
+  }) %>%
+    magrittr::set_names(paste0("sample_size_",sample_size))
+
 }
