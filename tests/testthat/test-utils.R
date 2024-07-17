@@ -49,5 +49,3 @@ test_that("data object names are consistent", {
   expect_equal(names(simulation_data_two_groups), expected_col_names)
   expect_equal(names(simulation_data_one_group), expected_col_names)
 })
-
-
