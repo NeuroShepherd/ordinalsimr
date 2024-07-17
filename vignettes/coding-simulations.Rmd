@@ -41,10 +41,14 @@ sim_results <- run_simulations(
 
 formatted_results <- format_simulation_data(sim_results)
 names(formatted_results)
-
 head(formatted_results$p_values)
 
-calculate_power_t2error(formatted_results$p_values, alpha = 0.05, power_confidence_int = 95)
+formatted_results %>%
+  select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
+         `Chi Squared\n(Correction)`, `Prop. Odds`, 
+         `Coin Indep. Test`,
+         sample_size) %>%
+  calculate_power_t2error(alpha = 0.05, power_confidence_int = 95)
 ```
 
 
@@ -55,19 +59,24 @@ To find the Type I error of a distribution, the code from before is largely unch
 
 ```{r, warning=FALSE}
 sim_results <- run_simulations(
-  sample_size = 80,
+  sample_size = 30:35,
   sample_prob = c(0.5, 0.5),
-  prob0 = c(0.1, 0.2, 0.3, 0.4),
-  prob1 = c(0.1, 0.2, 0.3, 0.4), # note the matching probabilities between groups
-  niter = 20
+  prob0 = c(.4, .3, .3),
+  prob1 = c(.8, .1, .1), # note the matching probabilities between groups
+  niter = 50
 )
 
 formatted_results <- format_simulation_data(sim_results)
 names(formatted_results)
-
 head(formatted_results$p_values)
 
-calculate_t1_error(formatted_results$p_values, alpha = 0.05, t1_error_confidence_int = 95)
+
+formatted_results %>%
+  select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
+         `Chi Squared\n(Correction)`, `Prop. Odds`, 
+         `Coin Indep. Test`,
+         sample_size) %>%
+  calculate_t1_error(alpha = 0.05, t1_error_confidence_int = 95)
 ```
 
 
@@ -80,21 +89,41 @@ The current version of the application can only accept one sample size at a time
 ```{r, warning=FALSE}
 sample_sizes <- c(30, 50, 100)
 
-purrr::map(sample_sizes,
-  ~ run_simulations(
-    sample_size = .x,
+lapply(sample_sizes, function(x) {
+  run_simulations(
+    sample_size = x,
     sample_prob = c(0.5, 0.5),
     prob0 = c(0.1, 0.2, 0.3, 0.4),
     prob1 = c(0.6, 0.2, 0.1, 0.1),
     niter = 100
   ) %>%
     format_simulation_data() %>%
-    magrittr::extract2("p_values") %>%
-    calculate_power_t2error(),
-  .progress = TRUE
-)
+    select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
+           `Chi Squared\n(Correction)`, `Prop. Odds`, 
+           `Coin Indep. Test`, sample_size) %>%
+    calculate_power_t2error()
+})
 ```
 
+Equivalent code with purrr
+
+``` r
+sample_sizes %>%
+  purrr::map(
+    ~run_simulations(
+      sample_size = .x,
+      sample_prob = c(0.5, 0.5),
+      prob0 = c(0.1, 0.2, 0.3, 0.4),
+      prob1 = c(0.6, 0.2, 0.1, 0.1),
+      niter = 100
+      ) %>%
+      format_simulation_data() %>%
+      select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
+           `Chi Squared\n(Correction)`, `Prop. Odds`, 
+           `Coin Indep. Test`, sample_size) %>%
+      calculate_power_t2error()
+)
+```
 
 ## Adjust Multiple Parameters
 
@@ -144,7 +173,25 @@ The example below is complete in running the simulations and calculating the Pow
 
 ```{r, warning=FALSE}
 # Calculate either Power/T2 error or T1 error depending on your specific needs
-many_sims <- info_table %>%
+many_sims <- mapply(
+    ordinalsimr::run_simulations,
+    sample_size = info_table$sample_size,
+    sample_prob = info_table$sample_prob,
+    prob0 = info_table$prob0_list,
+    prob1 = info_table$prob1_list,
+    niter = info_table$niter
+)
+
+
+length(many_sims)
+many_sims[1]
+```
+
+
+Equivalent Code with {purrr}
+
+``` r
+info_table %>%
   purrr::pmap(
     ~ run_simulations(
       sample_size = ..1,
@@ -158,9 +205,6 @@ many_sims <- info_table %>%
       calculate_power_t2error(),
     .progress = TRUE
   )
-
-length(many_sims)
-many_sims[1]
 ```
 
 
