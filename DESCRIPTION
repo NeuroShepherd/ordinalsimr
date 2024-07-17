@@ -29,7 +29,6 @@ Imports:
     shinyWidgets,
     stats,
     tidyr,
-    markdown,
     withr
 Encoding: UTF-8
 LazyData: true
