@@ -53,8 +53,8 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
     group_by(.data[["sample_size"]]) %>%
     dplyr::group_modify(
       ~ {
-        purrr::map(.x, ~ {
-          binom_power <- binom.test(sum(.x < alpha), length(.x), conf.level = power_confidence_int / 100)
+        lapply(., function(x) {
+          binom_power <- binom.test(sum(x < alpha), length(x), conf.level = power_confidence_int / 100)
           tibble(
             lower_power_bound = binom_power$conf.int[[1]],
             upper_power_bound = binom_power$conf.int[[2]],
@@ -94,12 +94,12 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
     group_by(.data[["sample_size"]]) %>%
     dplyr::group_modify(
       ~ {
-        purrr::map(.x, ~ {
+        lapply(., function(x) {
 
           tryCatch({
 
-            binom_results <- binom.test(sum(.x < alpha, na.rm = T),
-                                        sum(!is.na(.x)),
+            binom_results <- binom.test(sum(x < alpha, na.rm = T),
+                                        sum(!is.na(x)),
                                         conf.level = t1_error_confidence_int / 100)
 
               tibble(
