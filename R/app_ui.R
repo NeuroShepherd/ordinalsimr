@@ -3,6 +3,7 @@
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import bslib
 #' @import shinydashboard
 #' @noRd
 app_ui <- function(request) {
@@ -14,7 +15,7 @@ app_ui <- function(request) {
       title = "ordinalsimr",
       mod_homepage_ui("homepage_1"),
       mod_simulation_inputs_page_ui("simulation_inputs_page_1"),
-      nav_panel("Distributions/Results"),
+      mod_distributions_page_ui("distributions_page_1"),
       nav_panel("Downloads"),
       nav_spacer(),
       !!!mod_navbar_extras_ui("navbar_extras_1"),

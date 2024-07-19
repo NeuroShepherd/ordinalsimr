@@ -23,11 +23,12 @@ mod_simulation_inputs_page_ui <- function(id){
           layout_column_wrap(
             width = 1/2,
             heights_equal = "row",
-            mod_iterations_ui("iterations_1"),
-            mod_sample_size_ui("sample_size_1"),
-            mod_sample_probabilities_ui("sample_probabilities_1"),
-            layout_column_wrap(
-              width = 1,
+            card(
+              mod_iterations_ui("iterations_1"),
+              mod_sample_size_ui("sample_size_1"),
+              mod_sample_probabilities_ui("sample_probabilities_1")
+              ),
+            card(
               mod_select_tests_ui("select_tests_1")
             )
           )
@@ -56,7 +57,8 @@ mod_simulation_inputs_page_ui <- function(id){
           ),
         mod_start_simulation_ui("start_simulation_1")
       ),
-      navset_card_tab(
+      navset_card_pill(
+        title = "Simulation p-values",
         !!!mod_stats_calculations_ui("stats_calculations_1")
       )
 
