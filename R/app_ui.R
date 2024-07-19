@@ -10,71 +10,14 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    shinydashboardPlus::dashboardPage(
-      shinydashboardPlus::dashboardHeader(
-        title = "ordinalsimr",
-        mod_rng_option_ui("rng_option_1"),
-        tags$li(class = "dropdown", tags$a(
-          href = "https://neuroshepherd.github.io/ordinalsimr/",
-          icon("book-open-reader"), "Docs", target = "_blank"
-        )),
-        tags$li(class = "dropdown", tags$a(
-          href = "https://github.com/NeuroShepherd/ordinalsimr/issues",
-          icon("circle-exclamation"), "Issues", target = "_blank"
-        )),
-        tags$li(class = "dropdown", tags$a(
-          href = "https://github.com/NeuroShepherd/ordinalsimr",
-          icon("github"), "GitHub", target = "_blank"
-        ))
-      ),
-      shinydashboardPlus::dashboardSidebar(
-        sidebarMenu(
-          menuItem("Home", tabName = "homeinfo_page", icon = icon("book")),
-          menuItem("Simulation", tabName = "simulation_page", icon = icon("sliders")),
-          menuItem("Distributions", tabName = "distributions_page", icon = icon("chart-simple")),
-          menuItem("Report", tabName = "report_page", icon = icon("markdown")),
-          menuItem("Data Download", tabName = "download_page", icon = icon("file-excel"))
-        )
-      ),
-      dashboardBody(
-        tabItems(
-          tabItem(
-            tabName = "homeinfo_page",
-            mod_homepage_ui("homepage_1")
-          ),
-          tabItem(
-            tabName = "simulation_page",
-            fluidRow(
-              box(
-                width = 3,
-                mod_iterations_ui("iterations_1"),
-                mod_sample_size_ui("sample_size_1"),
-                mod_sample_probabilities_ui("sample_probabilities_1"),
-                mod_select_tests_ui("select_tests_1")
-                ),
-              box(
-                width = 9,
-                mod_data_entry_ui("data_entry_1")
-              )
-            ),
-            fluidRow(
-              mod_stats_calculations_ui("stats_calculations_1")
-            )
-          ),
-          tabItem(
-            tabName = "distributions_page",
-            mod_plot_distributions_ui("plot_distributions_1")
-          ),
-          tabItem(
-            tabName = "report_page",
-            mod_report_generator_ui("report_generator_1")
-          ),
-          tabItem(
-            tabName = "download_page",
-            mod_save_data_ui("save_data_1")
-          )
-        )
-      )
+    bslib::page_navbar(
+      title = "ordinalsimr",
+      mod_homepage_ui("homepage_1"),
+      mod_simulation_inputs_page_ui("simulation_inputs_page_1"),
+      nav_panel("Distributions/Results"),
+      nav_panel("Downloads"),
+      nav_spacer(),
+      !!!mod_navbar_extras_ui("navbar_extras_1")
     )
   )
 }
