@@ -11,19 +11,15 @@ mod_data_entry_ui <- function(id) {
   ns <- NS(id)
 
   tagList(
-    box(
-      width = 2,
-      actionButton(ns("add_row"), "Add Row"), br(), br(), actionButton(ns("delete_row"), "Delete Row"),
-      align = "center"
-    ),
-    box(width = 10, rhandsontable::rHandsontableOutput(ns("hottable")))
+    rhandsontable::rHandsontableOutput(ns("hottable"))
   )
+
 }
 
 #' data_entry Server Functions
 #'
 #' @noRd
-mod_data_entry_server <- function(id) {
+mod_data_entry_server <- function(id, add_row, delete_row) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -49,10 +45,10 @@ mod_data_entry_server <- function(id) {
     observeEvent(input$hottable, {
       reactive_data_vals(hot_to_r(input$hottable))
     })
-    observeEvent(input$add_row, {
+    observeEvent(add_row(), {
       reactive_data_vals(rbind(reactive_data_vals(), 0))
     })
-    observeEvent(input$delete_row, {
+    observeEvent(delete_row(), {
       reactive_data_vals(reactive_data_vals()[-nrow(reactive_data_vals()), ])
     })
 

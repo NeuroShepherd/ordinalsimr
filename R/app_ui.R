@@ -17,7 +17,8 @@ app_ui <- function(request) {
       nav_panel("Distributions/Results"),
       nav_panel("Downloads"),
       nav_spacer(),
-      !!!mod_navbar_extras_ui("navbar_extras_1")
+      !!!mod_navbar_extras_ui("navbar_extras_1"),
+      fillable = TRUE
     )
   )
 }

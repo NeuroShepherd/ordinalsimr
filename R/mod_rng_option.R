@@ -10,11 +10,8 @@
 mod_rng_option_ui <- function(id) {
   ns <- NS(id)
 
-  shinydashboardPlus::dropdownBlock(
-    id = ns("rng_options"),
-    title = "RNG Options",
-    icon = icon("gear"),
-    badgeStatus = "info",
+  tagList(
+    markdown("These Random Number Generators are advanced options, and they use the default values employed by R as of version 4.4. Run `?RNGkind` in an R session to see the associated help file."),
     selectInput(ns("rng_kind"),
       label = "RNG Kind",
       choices = c(
