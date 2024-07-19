@@ -13,29 +13,32 @@ mod_simulation_inputs_page_ui <- function(id){
   nav_panel(
     "Simulation Inputs",
     layout_columns(
-      col_widths = c(5, 7, -2, 8, -2),
-      row_heights = c(3, 2),
+      col_widths = c(5 , 7, -2, 8, -2),
+      row_heights = c(3, 3),
       navset_card_tab(
-        height = 450,
         full_screen = TRUE,
         title = "Inputs",
         nav_panel(
           "Core Inputs",
-          sliderInput(ns("type1_error"), "Fillter", min = 0, max = 1, value = 0.05)
-        ),
-        nav_panel(
-          "Type I Erorr",
-          radioButtons(
-            ns("t1_error_toggle"), "Calculate Type I Error",
-            c("Both" = "both", "Group 1" = "group1", "Group 2" = "group2", "None" = "none")
+          layout_column_wrap(
+            width = 1/2,
+            heights_equal = "row",
+            mod_iterations_ui("iterations_1"),
+            mod_sample_size_ui("sample_size_1"),
+            mod_sample_probabilities_ui("sample_probabilities_1"),
+            layout_column_wrap(
+              width = 1,
+              mod_select_tests_ui("select_tests_1")
+            )
           )
         ),
         nav_panel(
+          "Type I Erorr",
+          mod_type_one_error_ui("type_one_error_1")
+        ),
+        nav_panel(
           "RNG Options",
-          markdown("These Random Number Generators are advanced options, and they use the default values employed by R as of version 4.4. Run `?RNGkind` in an R session to see the associated help file."),
-          selectInput(ns("rng"), "RNG", choices = c("L'Ecuyer-CMRG", "Mersenne-Twister"), selected = "L'Ecuyer-CMRG"),
-          selectInput(ns("rng"), "RNG", choices = c("L'Ecuyer-CMRG", "Mersenne-Twister"), selected = "L'Ecuyer-CMRG"),
-          selectInput(ns("rng"), "RNG", choices = c("L'Ecuyer-CMRG", "Mersenne-Twister"), selected = "L'Ecuyer-CMRG")
+          mod_rng_option_ui("rng_option_1")
         ),
         nav_panel(
           shiny::icon("circle-info"),
@@ -44,15 +47,17 @@ mod_simulation_inputs_page_ui <- function(id){
       ),
       card(
         card_header("Data Entry", class = "bg-dark"),
-        dataTableOutput(ns("data_table")),
+        mod_data_entry_ui("data_entry_1"),
         card_body(
           fillable = FALSE,
-          actionButton(ns("add_row"), "Add Row"),
-          actionButton(ns("delete_row"), "Delete Row")
-          )
+          class = "gap-2 container",
+          mod_row_add_ui("row_add_1"),
+          mod_row_delete_ui("row_delete_1")
+          ),
+        mod_start_simulation_ui("start_simulation_1")
       ),
-      card(
-        card_header("Data Tables", class = "bg-dark")
+      navset_card_tab(
+        !!!mod_stats_calculations_ui("stats_calculations_1")
       )
 
     )

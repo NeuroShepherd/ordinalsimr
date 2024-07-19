@@ -7,12 +7,18 @@
 app_server <- function(input, output, session) {
   # UI for data entry endpoints
   # Collect entered data
-  data_entered_probs <- mod_data_entry_server("data_entry_1")
+  add_row <- mod_row_add_server("row_add_1")
+  delete_row <- mod_row_delete_server("row_delete_1")
+  data_entered_probs <- mod_data_entry_server("data_entry_1",
+                                              add_row = add_row,
+                                              delete_row = delete_row)
   data_entered_iters <- mod_iterations_server("iterations_1")
   data_entered_sample_size <- mod_sample_size_server("sample_size_1")
   data_entered_tests <- mod_select_tests_server("select_tests_1")
   data_sample_probabilities <- mod_sample_probabilities_server("sample_probabilities_1")
   rng_selections <- mod_rng_option_server("rng_option_1")
+  run_simulation_button <- mod_start_simulation_server("start_simulation_1")
+  t1_error_toggle <- mod_type_one_error_server("type_one_error_1")
 
 
   # Pass collected data to stats calculations
@@ -22,7 +28,9 @@ app_server <- function(input, output, session) {
     iterations = data_entered_iters,
     sample_size = data_entered_sample_size,
     rng_info = rng_selections,
-    included_tests = data_entered_tests
+    included_tests = data_entered_tests,
+    run_simulation_button = run_simulation_button,
+    t1_error_toggle = t1_error_toggle
   )
 
   # Plot the distribution of values
