@@ -13,15 +13,19 @@
 #' @import shinycssloaders
 mod_plot_distributions_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-    box(
-      width = 3,
-      sliderInput(ns("remove_outlier_percentage"), "Remove top x% from view",
-        min = 0, max = 100, value = 0, round = TRUE
-      ),
+  list(
+    outlier_input = list(
+      sliderInput(ns("remove_outlier_percentage"),
+                  "Remove top x% from view",
+                  min = 0, max = 100, value = 0, round = TRUE
+      )
+    ),
+    p_val_input = list(
       numericInput(ns("user_p_val"), "p-value Threshold",
-        min = 0, max = 1, value = 0.05, step = 0.01
-      ),
+                   min = 0, max = 1, value = 0.05, step = 0.01
+      )
+    ),
+    ci_inputs = list(
       numericInput(ns("power_confidence_int"), "%CI: Power",
         min = 0, max = 100, value = 95, step = 1
       ),
@@ -32,41 +36,37 @@ mod_plot_distributions_ui <- function(id) {
         min = 0, max = 100, value = 95, step = 1
       )
     ),
-    box(
-      width = 9,
-      tabsetPanel(
-        type = "tabs",
-        tabPanel(
-          "Power Plot",
-          shinycssloaders::withSpinner(plotOutput(ns("power_plot")),
+    output_plots = list(
+          shinycssloaders::withSpinner(
+            plotOutput(ns("power_plot")),
+            type = 2, color.background = "#0275D8"
+          ),
+          shinycssloaders::withSpinner(
+            plotOutput(ns("distribution_plot_results")),
             type = 2, color.background = "#0275D8"
           )
         ),
-        tabPanel(
-          "p-value Plot",
-          shinycssloaders::withSpinner(plotOutput(ns("distribution_plot_results")),
-            type = 2, color.background = "#0275D8"
-          )
-        )
-      ),
-      br(),
-      tabsetPanel(
-        type = "tabs",
-        tabPanel(
-          "Power and Type II Error",
-          shinycssloaders::withSpinner(DT::dataTableOutput(ns("distribution_statistics")), type = 8)
+    output_data = list(
+      nav_panel(
+        title = "Power and Type II Error",
+        shinycssloaders::withSpinner(
+          DT::dataTableOutput(ns("distribution_statistics")),
+          type = 8)
         ),
-        tabPanel(
-          "Type I Error: Group 1",
-          shinycssloaders::withSpinner(DT::dataTableOutput(ns("t1_error_group1")), type = 8)
+      nav_panel(
+        title = "Typer I Error: Group 1",
+        shinycssloaders::withSpinner(
+          DT::dataTableOutput(ns("t1_error_group1")),
+          type = 8)
         ),
-        tabPanel(
-          "Type I Error: Group 2",
-          shinycssloaders::withSpinner(DT::dataTableOutput(ns("t1_error_group2")), type = 8)
+      nav_panel(
+        title = "Typer I Error: Group 2",
+        shinycssloaders::withSpinner(
+          DT::dataTableOutput(ns("t1_error_group2")),
+          type = 8)
         )
       )
     )
-  )
 }
 
 #' plot_distributions Server Functions
