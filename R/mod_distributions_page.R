@@ -10,10 +10,22 @@
 mod_distributions_page_ui <- function(id){
   ns <- NS(id)
   nav_panel(
-    "Simulation Inputs",
+    "Results and Plots",
     layout_columns(
-      col_widths = c(5 , 7, -2, 8, -2),
-      row_heights = c(3, 3),
+      col_widths = c(12, 4, 8),
+      fillable = TRUE,
+      navset_card_pill(
+        full_screen = TRUE,
+        title = "Plot Output",
+        nav_panel(
+          title = "Power",
+          mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["power_plot"]]
+        ),
+        nav_panel(
+          title = "p-values",
+          mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["p_val_plot"]]
+        )
+      ),
       navset_card_tab(
         full_screen = TRUE,
         title = "Inputs",
@@ -23,27 +35,21 @@ mod_distributions_page_ui <- function(id){
             width = 1/2,
             heights_equal = "row",
             card(
+              markdown("Confidence Intervals"),
               !!!mod_plot_distributions_ui("plot_distributions_1")[["ci_inputs"]]
             ),
             card(
-              mod_plot_distributions_ui("plot_distributions_1")[["p_val_input"]]
+              markdown("p-value Threshold"),
+              mod_plot_distributions_ui("plot_distributions_1")[["p_val_input"]],
+              markdown("Power Threshold"),
+              mod_plot_distributions_ui("plot_distributions_1")[["power_val_input"]]
             )
           )
         ),
         nav_panel(
-          "Type I Erorr",
-          markdown("something here")
+          "Filter Outliers",
+          mod_plot_distributions_ui("plot_distributions_1")[["outlier_input"]]
         )
-      ),
-      card(
-        card_header("Data Entry", class = "bg-dark"),
-        markdown("som"),
-        card_body(
-          fillable = FALSE,
-          class = "gap-2 container",
-          markdown("something here")
-        ),
-        markdown("something here")
       ),
       navset_card_pill(
         title = "Results",
