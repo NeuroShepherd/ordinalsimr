@@ -21,8 +21,13 @@ mod_plot_distributions_ui <- function(id) {
       )
     ),
     p_val_input = list(
-      numericInput(ns("user_p_val"), "p-value Threshold",
+      numericInput(ns("user_p_val"), "\U003B1",
                    min = 0, max = 1, value = 0.05, step = 0.01
+      )
+    ),
+    power_val_input = list(
+      numericInput(ns("power_value"), "Power (1-\U03B2)",
+                   min = 0, max = 1, value = 0.80, step = 0.01
       )
     ),
     ci_inputs = list(
@@ -37,12 +42,12 @@ mod_plot_distributions_ui <- function(id) {
       )
     ),
     output_plots = list(
-          shinycssloaders::withSpinner(
-            plotOutput(ns("power_plot")),
+        power_plot = shinycssloaders::withSpinner(
+            plotOutput(ns("power_plot"), height = "800px"),
             type = 2, color.background = "#0275D8"
           ),
-          shinycssloaders::withSpinner(
-            plotOutput(ns("distribution_plot_results")),
+        p_val_plot = shinycssloaders::withSpinner(
+            plotOutput(ns("distribution_plot_results"), height = "800px"),
             type = 2, color.background = "#0275D8"
           )
         ),
@@ -143,7 +148,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     # Plot Power
     output$power_plot <- renderPlot({
       distribution_statistics() %>%
-        plot_power()
+        plot_power(power_threshold = input$power_value)
     })
 
 
@@ -162,7 +167,10 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           )),
           .data$sample_size) %>%
         group_by(.data$sample_size) %>%
-        calculate_t1_error(t1_error_confidence_int = input$t1_error_group1_confidence_int)
+        calculate_t1_error(
+          alpha = p_val_threshold(),
+          t1_error_confidence_int = input$t1_error_group1_confidence_int
+          )
     })
     output$t1_error_group1 <- DT::renderDataTable({
       # browser()
@@ -189,7 +197,10 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           )),
           .data$sample_size) %>%
         group_by(.data$sample_size) %>%
-        calculate_t1_error(t1_error_confidence_int = input$t1_error_group2_confidence_int)
+        calculate_t1_error(
+          alpha = p_val_threshold(),
+          t1_error_confidence_int = input$t1_error_group2_confidence_int
+          )
     })
     output$t1_error_group2 <- DT::renderDataTable({
       group2_t1_reactive_table() %>%
