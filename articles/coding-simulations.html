@@ -108,10 +108,12 @@ arguments.</li>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">$</span><span class="va">p_values</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">formatted_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>, </span>
-<span>         <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>, </span>
-<span>         <span class="va">`Coin Indep. Test`</span>,</span>
-<span>         <span class="va">sample_size</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>,</span>
+<span>    <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
+<span>    <span class="va">`Coin Indep. Test`</span>,</span>
+<span>    <span class="va">sample_size</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, power_confidence_int <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -136,10 +138,12 @@ in <code>run_simulations</code> must now be equivalent and the
 <span></span>
 <span></span>
 <span><span class="va">formatted_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">select</span><span class="op">(</span><span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>, </span>
-<span>         <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>, </span>
-<span>         <span class="va">`Coin Indep. Test`</span>,</span>
-<span>         <span class="va">sample_size</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">select</span><span class="op">(</span></span>
+<span>    <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>,</span>
+<span>    <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
+<span>    <span class="va">`Coin Indep. Test`</span>,</span>
+<span>    <span class="va">sample_size</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/calculate_t1_error.html">calculate_t1_error</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, t1_error_confidence_int <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -166,9 +170,11 @@ included below:</p>
 <span>    niter <span class="op">=</span> <span class="fl">100</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu">select</span><span class="op">(</span><span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>, </span>
-<span>           <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>, </span>
-<span>           <span class="va">`Coin Indep. Test`</span>, <span class="va">sample_size</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">select</span><span class="op">(</span></span>
+<span>      <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>,</span>
+<span>      <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
+<span>      <span class="va">`Coin Indep. Test`</span>, <span class="va">sample_size</span></span>
+<span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Equivalent code with purrr</p>
@@ -250,12 +256,12 @@ other purposes.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Calculate either Power/T2 error or T1 error depending on your specific needs</span></span>
 <span><span class="va">many_sims</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mapply.html" class="external-link">mapply</a></span><span class="op">(</span></span>
-<span>    <span class="fu">ordinalsimr</span><span class="fu">::</span><span class="va"><a href="../reference/run_simulations.html">run_simulations</a></span>,</span>
-<span>    sample_size <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">sample_size</span>,</span>
-<span>    sample_prob <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">sample_prob</span>,</span>
-<span>    prob0 <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">prob0_list</span>,</span>
-<span>    prob1 <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">prob1_list</span>,</span>
-<span>    niter <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">niter</span></span>
+<span>  <span class="fu">ordinalsimr</span><span class="fu">::</span><span class="va"><a href="../reference/run_simulations.html">run_simulations</a></span>,</span>
+<span>  sample_size <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">sample_size</span>,</span>
+<span>  sample_prob <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">sample_prob</span>,</span>
+<span>  prob0 <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">prob0_list</span>,</span>
+<span>  prob1 <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">prob1_list</span>,</span>
+<span>  niter <span class="op">=</span> <span class="va">info_table</span><span class="op">$</span><span class="va">niter</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span></span>
