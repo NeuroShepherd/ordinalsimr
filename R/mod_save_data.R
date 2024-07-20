@@ -9,10 +9,9 @@
 #' @importFrom shiny NS tagList
 mod_save_data_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-    downloadButton(ns("save_button"), "Save Results as .RDS"),
-    br(),
-    downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
+  list(
+    save_rds = downloadButton(ns("save_button"), "Save Results as .RDS"),
+    save_excel = downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
   )
 }
 

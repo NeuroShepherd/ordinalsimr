@@ -9,11 +9,10 @@
 #' @importFrom shiny NS tagList
 mod_report_generator_ui <- function(id) {
   ns <- NS(id)
-  tagList(
-    actionButton(ns("update_report"), "Update Report"),
-    actionButton(ns("download_report"), "Download Report"),
-    br(),
-    fluidPage(uiOutput(ns("rendered_report")))
+  list(
+    update_report = actionButton(ns("update_report"), "Update Report"),
+    download_report = actionButton(ns("download_report"), "Download Report"),
+    rendered_report = fluidPage(uiOutput(ns("rendered_report")))
   )
 }
 
