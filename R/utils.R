@@ -146,17 +146,28 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     group_by(.data$sample_size, .data$test_name) %>%
     summarise(value = mean(.data$value)) %>%
     {
-      ggplot(., aes(x = .data[["sample_size"]], y = .data[["value"]], color = .data[["test_name"]])) +
-        geom_line() +
-        geom_hline(yintercept = alpha, linetype = "dashed", size = 2) +
-        ggtitle("Plot of p-values") +
+      ggplot(., aes(
+          x = .data[["sample_size"]],
+          y = .data[["value"]],
+          color = .data[["test_name"]],
+          linetype = .data[["test_name"]]
+          )
+        ) +
+        geom_line(size = 2) +
+        geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
+        expand_limits(y = 0) +
+        ggtitle("Mean p-value") +
         labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
-        guides(fill = "none") +
+        guides(fill = "none", linetype = "none") +
         theme_bw() +
         theme(
           axis.text = element_text(face = "bold", size = 14),
           axis.title = element_text(face = "bold", size = 18),
-          plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
+          plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+          axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+          axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+          legend.text = element_text(size=14),
+          legend.title = element_text(size = 16, face = "bold")
         )
     }
 }
@@ -175,13 +186,20 @@ plot_power <- function(df) {
     ggplot(aes(
       x = .data[["Sample Size"]], y = .data[["power"]],
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
-      color = .data[["test"]], fill = .data[["test"]]
+      color = .data[["test"]], fill = .data[["test"]], linetype = .data[["test"]]
     )) +
-    geom_line() +
+    geom_line(size = 2) +
+    ggtitle("Estimated Power") +
+    labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
+    guides(fill = "none", linetype = "none") +
     theme_bw() +
     theme(
       axis.text = element_text(face = "bold", size = 14),
       axis.title = element_text(face = "bold", size = 18),
-      plot.title = element_text(face = "bold", size = 20, hjust = 0.5)
+      plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+      axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+      legend.text = element_text(size=14),
+      legend.title = element_text(size = 16, face = "bold")
     )
 }
