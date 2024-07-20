@@ -13,14 +13,14 @@ app_ui <- function(request) {
     # Your application UI logic
     bslib::page_navbar(
       title = "ordinalsimr",
+      fillable = c("Simulation Inputs"),
       mod_homepage_ui("homepage_1"),
       mod_simulation_inputs_page_ui("simulation_inputs_page_1"),
       mod_distributions_page_ui("distributions_page_1"),
       nav_panel("Downloads"),
       nav_spacer(),
-      !!!mod_navbar_extras_ui("navbar_extras_1"),
-      fillable = TRUE
-    )
+      !!!mod_navbar_extras_ui("navbar_extras_1")
+      )
   )
 }
 
