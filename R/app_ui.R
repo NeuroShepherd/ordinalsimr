@@ -17,7 +17,7 @@ app_ui <- function(request) {
       mod_homepage_ui("homepage_1"),
       mod_simulation_inputs_page_ui("simulation_inputs_page_1"),
       mod_distributions_page_ui("distributions_page_1"),
-      nav_panel("Downloads"),
+      mod_downloads_page_ui("downloads_page_1"),
       nav_spacer(),
       !!!mod_navbar_extras_ui("navbar_extras_1")
       )
