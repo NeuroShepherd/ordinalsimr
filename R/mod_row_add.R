@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_row_add_ui <- function(id){
+mod_row_add_ui <- function(id) {
   ns <- NS(id)
   tagList(
     actionButton(ns("add_row"), "Add Row")
@@ -17,8 +17,8 @@ mod_row_add_ui <- function(id){
 #' row_add Server Functions
 #'
 #' @noRd
-mod_row_add_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_row_add_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     add_row_button <- reactive({
@@ -26,7 +26,6 @@ mod_row_add_server <- function(id){
     })
 
     return(add_row_button)
-
   })
 }
 

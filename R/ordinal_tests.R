@@ -34,7 +34,6 @@
 #' @export
 #'
 ordinal_tests <- function(x, y, included = "all", ...) {
-
   assertthat::assert_that(
     length(x) == length(y),
     msg = "x and y must have the same length"
@@ -64,8 +63,12 @@ ordinal_tests <- function(x, y, included = "all", ...) {
 
   if ("Wilcoxon" %in% included) {
     wilcoxon <- tryCatch(
-      {stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]]},
-      error = function(e) {NA_real_}
+      {
+        stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]]
+      },
+      error = function(e) {
+        NA_real_
+      }
     )
   } else {
     wilcoxon <- NULL
@@ -73,8 +76,12 @@ ordinal_tests <- function(x, y, included = "all", ...) {
 
   if ("Fisher" %in% included) {
     fisher <- tryCatch(
-      {stats::fisher.test(x, y, simulate.p.value = FALSE, workspace = 2e7)[["p.value"]]},
-      error = function(e) {NA_real_}
+      {
+        stats::fisher.test(x, y, simulate.p.value = FALSE, workspace = 2e7)[["p.value"]]
+      },
+      error = function(e) {
+        NA_real_
+      }
     )
   } else {
     fisher <- NULL
@@ -82,8 +89,12 @@ ordinal_tests <- function(x, y, included = "all", ...) {
 
   if ("Chi Squared (No Correction)" %in% included) {
     chi_sq_no_correction <- tryCatch(
-      {stats::chisq.test(x, y, correct = FALSE)[["p.value"]]},
-      error = function(e) {NA_real_}
+      {
+        stats::chisq.test(x, y, correct = FALSE)[["p.value"]]
+      },
+      error = function(e) {
+        NA_real_
+      }
     )
   } else {
     chi_sq_no_correction <- NULL
@@ -91,8 +102,12 @@ ordinal_tests <- function(x, y, included = "all", ...) {
 
   if ("Chi Squared (Correction)" %in% included) {
     chi_sq_correction <- tryCatch(
-      {stats::chisq.test(x, y, correct = TRUE)[["p.value"]]},
-      error = function(e) {NA_real_}
+      {
+        stats::chisq.test(x, y, correct = TRUE)[["p.value"]]
+      },
+      error = function(e) {
+        NA_real_
+      }
     )
   } else {
     chi_sq_correction <- NULL
@@ -100,8 +115,12 @@ ordinal_tests <- function(x, y, included = "all", ...) {
 
   if ("Prop. Odds" %in% included) {
     prop_odds <- tryCatch(
-      {rms::lrm(x ~ y)$stats[["P"]]},
-      error = function(e) {NA_real_}
+      {
+        rms::lrm(x ~ y)$stats[["P"]]
+      },
+      error = function(e) {
+        NA_real_
+      }
     )
   } else {
     prop_odds <- NULL
@@ -109,8 +128,12 @@ ordinal_tests <- function(x, y, included = "all", ...) {
 
   if ("Coin Indep. Test" %in% included) {
     coin_indep_test <- tryCatch(
-      {coin::pvalue(coin::independence_test(x ~ y, ytrafo = coin::rank_trafo))},
-      error = function(e) {NA_real_}
+      {
+        coin::pvalue(coin::independence_test(x ~ y, ytrafo = coin::rank_trafo))
+      },
+      error = function(e) {
+        NA_real_
+      }
     )
   } else {
     coin_indep_test <- NULL
@@ -127,7 +150,4 @@ ordinal_tests <- function(x, y, included = "all", ...) {
       "Coin Indep. Test" = coin_indep_test
     )
   )
-
-
 }
-

@@ -10,8 +10,9 @@ app_server <- function(input, output, session) {
   add_row <- mod_row_add_server("row_add_1")
   delete_row <- mod_row_delete_server("row_delete_1")
   data_entered_probs <- mod_data_entry_server("data_entry_1",
-                                              add_row = add_row,
-                                              delete_row = delete_row)
+    add_row = add_row,
+    delete_row = delete_row
+  )
   data_entered_iters <- mod_iterations_server("iterations_1")
   data_entered_sample_size <- mod_sample_size_server("sample_size_1")
   data_entered_tests <- mod_select_tests_server("select_tests_1")

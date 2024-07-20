@@ -11,19 +11,19 @@ mod_stats_calculations_ui <- function(id) {
   ns <- NS(id)
 
   list(
-      nav_panel(
-        "Comparison p-values",
-        shinycssloaders::withSpinner(DT::dataTableOutput(ns("results_table")), type = 8)
-      ),
-      nav_panel(
-        "Group 1 p-values",
-        shinycssloaders::withSpinner(DT::dataTableOutput(ns("group1_pvalues")), type = 8)
-      ),
-      nav_panel(
-        "Group 2 p-values",
-        shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8)
-      )
+    nav_panel(
+      "Comparison p-values",
+      shinycssloaders::withSpinner(DT::dataTableOutput(ns("results_table")), type = 8)
+    ),
+    nav_panel(
+      "Group 1 p-values",
+      shinycssloaders::withSpinner(DT::dataTableOutput(ns("group1_pvalues")), type = 8)
+    ),
+    nav_panel(
+      "Group 2 p-values",
+      shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8)
     )
+  )
 }
 
 #' stats_calculations Server Functions
@@ -103,11 +103,13 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$results_table <- DT::renderDataTable({
       comp_res <- comparison_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$sample_size,
-                      dplyr::any_of(c(
-                        "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-                        "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-                      )))
+        dplyr::select(
+          .data$sample_size,
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          ))
+        )
 
       comp_res %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
@@ -120,11 +122,13 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$group1_pvalues <- DT::renderDataTable({
       g1_res <- group1_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$sample_size,
-                      dplyr::any_of(c(
-                        "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-                        "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-                      )))
+        dplyr::select(
+          .data$sample_size,
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          ))
+        )
 
       g1_res %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%
@@ -135,11 +139,13 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     output$group2_pvalues <- DT::renderDataTable({
       g2_res <- group2_results() %>%
         bind_rows() %>%
-        dplyr::select(.data$sample_size,
-                      dplyr::any_of(c(
-                        "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-                        "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-                      )))
+        dplyr::select(
+          .data$sample_size,
+          dplyr::any_of(c(
+            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+          ))
+        )
 
       g2_res %>%
         DT::datatable(options = list(scrollX = TRUE)) %>%

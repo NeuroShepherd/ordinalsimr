@@ -16,18 +16,18 @@ mod_plot_distributions_ui <- function(id) {
   list(
     outlier_input = list(
       sliderInput(ns("remove_outlier_percentage"),
-                  "Remove top x% from view",
-                  min = 0, max = 100, value = 0, round = TRUE
+        "Remove top x% from view",
+        min = 0, max = 100, value = 0, round = TRUE
       )
     ),
     p_val_input = list(
       numericInput(ns("user_p_val"), "\U003B1",
-                   min = 0, max = 1, value = 0.05, step = 0.01
+        min = 0, max = 1, value = 0.05, step = 0.01
       )
     ),
     power_val_input = list(
       numericInput(ns("power_value"), "Power (1-\U03B2)",
-                   min = 0, max = 1, value = 0.80, step = 0.01
+        min = 0, max = 1, value = 0.80, step = 0.01
       )
     ),
     ci_inputs = list(
@@ -42,36 +42,39 @@ mod_plot_distributions_ui <- function(id) {
       )
     ),
     output_plots = list(
-        power_plot = shinycssloaders::withSpinner(
-            plotOutput(ns("power_plot"), height = "800px"),
-            type = 2, color.background = "#0275D8"
-          ),
-        p_val_plot = shinycssloaders::withSpinner(
-            plotOutput(ns("distribution_plot_results"), height = "800px"),
-            type = 2, color.background = "#0275D8"
-          )
-        ),
+      power_plot = shinycssloaders::withSpinner(
+        plotOutput(ns("power_plot"), height = "800px"),
+        type = 2, color.background = "#0275D8"
+      ),
+      p_val_plot = shinycssloaders::withSpinner(
+        plotOutput(ns("distribution_plot_results"), height = "800px"),
+        type = 2, color.background = "#0275D8"
+      )
+    ),
     output_data = list(
       nav_panel(
         title = "Power and Type II Error",
         shinycssloaders::withSpinner(
           DT::dataTableOutput(ns("distribution_statistics")),
-          type = 8)
-        ),
+          type = 8
+        )
+      ),
       nav_panel(
         title = "Typer I Error: Group 1",
         shinycssloaders::withSpinner(
           DT::dataTableOutput(ns("t1_error_group1")),
-          type = 8)
-        ),
+          type = 8
+        )
+      ),
       nav_panel(
         title = "Typer I Error: Group 2",
         shinycssloaders::withSpinner(
           DT::dataTableOutput(ns("t1_error_group2")),
-          type = 8)
+          type = 8
         )
       )
     )
+  )
 }
 
 #' plot_distributions Server Functions
@@ -101,7 +104,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
             "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
             "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
           )),
-          .data$sample_size) %>%
+          .data$sample_size
+        ) %>%
         plot_distribution_results(
           outlier_removal = outlier_percent_removal(),
           alpha = p_val_threshold()
@@ -121,7 +125,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
             "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
             "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
           )),
-          .data$sample_size) %>%
+          .data$sample_size
+        ) %>%
         calculate_power_t2error(
           alpha = p_val_threshold(),
           n = n(),
@@ -165,12 +170,13 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
             "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
             "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
           )),
-          .data$sample_size) %>%
+          .data$sample_size
+        ) %>%
         group_by(.data$sample_size) %>%
         calculate_t1_error(
           alpha = p_val_threshold(),
           t1_error_confidence_int = input$t1_error_group1_confidence_int
-          )
+        )
     })
     output$t1_error_group1 <- DT::renderDataTable({
       # browser()
@@ -195,12 +201,13 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
             "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
             "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
           )),
-          .data$sample_size) %>%
+          .data$sample_size
+        ) %>%
         group_by(.data$sample_size) %>%
         calculate_t1_error(
           alpha = p_val_threshold(),
           t1_error_confidence_int = input$t1_error_group2_confidence_int
-          )
+        )
     })
     output$t1_error_group2 <- DT::renderDataTable({
       group2_t1_reactive_table() %>%

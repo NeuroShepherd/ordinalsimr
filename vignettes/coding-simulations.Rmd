@@ -44,10 +44,12 @@ names(formatted_results)
 head(formatted_results$p_values)
 
 formatted_results %>%
-  select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
-         `Chi Squared\n(Correction)`, `Prop. Odds`, 
-         `Coin Indep. Test`,
-         sample_size) %>%
+  select(
+    Wilcoxon, Fisher, `Chi Squared\n(No Correction)`,
+    `Chi Squared\n(Correction)`, `Prop. Odds`,
+    `Coin Indep. Test`,
+    sample_size
+  ) %>%
   calculate_power_t2error(alpha = 0.05, power_confidence_int = 95)
 ```
 
@@ -72,10 +74,12 @@ head(formatted_results$p_values)
 
 
 formatted_results %>%
-  select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
-         `Chi Squared\n(Correction)`, `Prop. Odds`, 
-         `Coin Indep. Test`,
-         sample_size) %>%
+  select(
+    Wilcoxon, Fisher, `Chi Squared\n(No Correction)`,
+    `Chi Squared\n(Correction)`, `Prop. Odds`,
+    `Coin Indep. Test`,
+    sample_size
+  ) %>%
   calculate_t1_error(alpha = 0.05, t1_error_confidence_int = 95)
 ```
 
@@ -98,9 +102,11 @@ lapply(sample_sizes, function(x) {
     niter = 100
   ) %>%
     bind_rows() %>%
-    select(Wilcoxon, Fisher, `Chi Squared\n(No Correction)`, 
-           `Chi Squared\n(Correction)`, `Prop. Odds`, 
-           `Coin Indep. Test`, sample_size) %>%
+    select(
+      Wilcoxon, Fisher, `Chi Squared\n(No Correction)`,
+      `Chi Squared\n(Correction)`, `Prop. Odds`,
+      `Coin Indep. Test`, sample_size
+    ) %>%
     calculate_power_t2error()
 })
 ```
@@ -174,12 +180,12 @@ The example below is complete in running the simulations and calculating the Pow
 ```{r, warning=FALSE}
 # Calculate either Power/T2 error or T1 error depending on your specific needs
 many_sims <- mapply(
-    ordinalsimr::run_simulations,
-    sample_size = info_table$sample_size,
-    sample_prob = info_table$sample_prob,
-    prob0 = info_table$prob0_list,
-    prob1 = info_table$prob1_list,
-    niter = info_table$niter
+  ordinalsimr::run_simulations,
+  sample_size = info_table$sample_size,
+  sample_prob = info_table$sample_prob,
+  prob0 = info_table$prob0_list,
+  prob1 = info_table$prob1_list,
+  niter = info_table$niter
 )
 
 

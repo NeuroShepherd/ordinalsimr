@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_distributions_page_ui <- function(id){
+mod_distributions_page_ui <- function(id) {
   ns <- NS(id)
   nav_panel(
     "Results and Plots",
@@ -32,7 +32,7 @@ mod_distributions_page_ui <- function(id){
         nav_panel(
           "Core Inputs",
           layout_column_wrap(
-            width = 1/2,
+            width = 1 / 2,
             heights_equal = "row",
             card(
               markdown("Confidence Intervals"),
@@ -55,19 +55,16 @@ mod_distributions_page_ui <- function(id){
         title = "Results",
         !!!mod_plot_distributions_ui("plot_distributions_1")[["output_data"]]
       )
-
     )
-
   )
 }
 
 #' distributions_page Server Functions
 #'
 #' @noRd
-mod_distributions_page_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_distributions_page_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
   })
 }
 

@@ -19,7 +19,6 @@
 #'
 assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed,
                           .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
-
   assertthat::assert_that(
     length(prob0) == length(prob1),
     msg = "prob0 and prob1 must have the same length"

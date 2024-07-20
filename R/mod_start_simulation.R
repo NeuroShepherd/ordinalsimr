@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_start_simulation_ui <- function(id){
+mod_start_simulation_ui <- function(id) {
   ns <- NS(id)
   tagList(
     actionButton(ns("run_button"), "Run Tests")
@@ -17,8 +17,8 @@ mod_start_simulation_ui <- function(id){
 #' start_simulation Server Functions
 #'
 #' @noRd
-mod_start_simulation_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_start_simulation_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     run_simulation_button <- reactive({
@@ -26,7 +26,6 @@ mod_start_simulation_server <- function(id){
     })
 
     return(run_simulation_button)
-
   })
 }
 

@@ -31,7 +31,6 @@ mod_rng_option_ui <- function(id) {
       selected = "Rejection"
     )
   )
-
 }
 
 #' rng_option Server Functions

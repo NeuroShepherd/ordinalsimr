@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_type_one_error_ui <- function(id){
+mod_type_one_error_ui <- function(id) {
   ns <- NS(id)
   tagList(
     markdown("Choose whether you would like to calculate the Type I Error for both groups, Group 1, Group 2, or None of the groups. Default and recommended is to calculate for Both groups."),
@@ -21,8 +21,8 @@ mod_type_one_error_ui <- function(id){
 #' type_one_error Server Functions
 #'
 #' @noRd
-mod_type_one_error_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_type_one_error_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     t1_error_toggle <- reactive({
@@ -30,7 +30,6 @@ mod_type_one_error_server <- function(id){
     })
 
     return(t1_error_toggle)
-
   })
 }
 

@@ -20,7 +20,7 @@ app_ui <- function(request) {
       mod_downloads_page_ui("downloads_page_1"),
       nav_spacer(),
       !!!mod_navbar_extras_ui("navbar_extras_1")
-      )
+    )
   )
 }
 

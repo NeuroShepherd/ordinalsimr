@@ -1,17 +1,18 @@
-
 # write tests for the ordinal_tests function
 
-sample_size = 30
+sample_size <- 30
 prob0 <- c(.4, .3, .3)
 prob1 <- c(.9, .05, .05)
 seed <- 10
 sample_prob <- c(0.50, 0.50)
 
-groups <- assign_groups(sample_size = sample_size,
-              prob0 = prob0,
-              prob1 = prob1,
-              seed = 10,
-              sample_prob = sample_prob)
+groups <- assign_groups(
+  sample_size = sample_size,
+  prob0 = prob0,
+  prob1 = prob1,
+  seed = 10,
+  sample_prob = sample_prob
+)
 
 
 
@@ -31,8 +32,8 @@ test_that("ordinal_tests names the vector correctly", {
   suppressWarnings(
     expect_named(
       ordinal_tests(groups[["x"]], groups[["y"]]),
-    c("Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test")
-  )
+      c("Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test")
+    )
   )
 })
 
@@ -53,16 +54,17 @@ test_that("ordinal_tests throws an error if included is not a subset of the poss
 
 test_that("ordinal_tests functions correctly on a subset of tests", {
   subset_results <- suppressWarnings(
-      ordinal_tests(
-        groups[["x"]], groups[["y"]],
-        included = c("Wilcoxon", "Fisher")
-      )
+    ordinal_tests(
+      groups[["x"]], groups[["y"]],
+      included = c("Wilcoxon", "Fisher")
     )
+  )
   expect_vector(subset_results)
   expect_named(subset_results)
   expect_equal(as.vector(subset_results)[1],
-               c(0.002205771),
-               tolerance = 0.0000001)
+    c(0.002205771),
+    tolerance = 0.0000001
+  )
 
   expect_length(subset_results, 2)
 })
@@ -77,6 +79,3 @@ test_that("test each individual statistical test", {
     expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Coin Indep. Test")[[1]], 0.002022075, tolerance = 0.000001)
   })
 })
-
-
-

@@ -7,42 +7,43 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_navbar_extras_ui <- function(id){
+mod_navbar_extras_ui <- function(id) {
   ns <- NS(id)
 
-    list(
-      nav_item(
-        tags$a(
-          shiny::icon("book-open-reader"),
-          "Docs",
-          href = "https://neuroshepherd.github.io/ordinalsimr/",
-          target = "_blank")
-      ),
-      nav_item(
-        tags$a(
-          shiny::icon("circle-exclamation"),
-          "Issues",
-          href = "https://github.com/neuroshepherd/ordinalsimr/issues",
-          target = "_blank")
-      ),
-      nav_item(
-        tags$a(
-          shiny::icon("github"),
-          "GitHub",
-          href = "https://github.com/neuroshepherd/ordinalsimr",
-          target = "_blank")
+  list(
+    nav_item(
+      tags$a(
+        shiny::icon("book-open-reader"),
+        "Docs",
+        href = "https://neuroshepherd.github.io/ordinalsimr/",
+        target = "_blank"
+      )
+    ),
+    nav_item(
+      tags$a(
+        shiny::icon("circle-exclamation"),
+        "Issues",
+        href = "https://github.com/neuroshepherd/ordinalsimr/issues",
+        target = "_blank"
+      )
+    ),
+    nav_item(
+      tags$a(
+        shiny::icon("github"),
+        "GitHub",
+        href = "https://github.com/neuroshepherd/ordinalsimr",
+        target = "_blank"
       )
     )
-
+  )
 }
 
 #' navbar_extras Server Functions
 #'
 #' @noRd
-mod_navbar_extras_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_navbar_extras_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
   })
 }
 

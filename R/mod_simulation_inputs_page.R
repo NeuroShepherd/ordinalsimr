@@ -8,28 +8,28 @@
 #'
 #' @importFrom shiny NS tagList
 #'
-mod_simulation_inputs_page_ui <- function(id){
+mod_simulation_inputs_page_ui <- function(id) {
   ns <- NS(id)
   nav_panel(
     "Simulation Inputs",
     layout_columns(
       fill = TRUE,
       fillable = TRUE,
-      col_widths = c(5 , 7, -2, 8, -2),
-      row_heights = c(7,9),
+      col_widths = c(5, 7, -2, 8, -2),
+      row_heights = c(7, 9),
       navset_card_tab(
         full_screen = TRUE,
         title = "Inputs",
         nav_panel(
           "Core Inputs",
           layout_column_wrap(
-            width = 1/2,
+            width = 1 / 2,
             heights_equal = "row",
             card(
               mod_iterations_ui("iterations_1"),
               mod_sample_size_ui("sample_size_1"),
               mod_sample_probabilities_ui("sample_probabilities_1")
-              ),
+            ),
             card(
               mod_select_tests_ui("select_tests_1")
             )
@@ -65,7 +65,6 @@ mod_simulation_inputs_page_ui <- function(id){
         title = "Simulation p-values",
         !!!mod_stats_calculations_ui("stats_calculations_1")
       )
-
     )
   )
 }
@@ -73,11 +72,10 @@ mod_simulation_inputs_page_ui <- function(id){
 #' simulation_inputs_page Server Functions
 #'
 #' @noRd
-mod_simulation_inputs_page_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_simulation_inputs_page_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
-
-})
+  })
 }
 
 ## To be copied in the UI

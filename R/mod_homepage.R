@@ -9,13 +9,13 @@
 #' @importFrom shiny NS tagList
 mod_homepage_ui <- function(id) {
   ns <- NS(id)
-    nav_panel(
-      "Home",
-      card(
-        title = "OrdinalSimR",
-        includeHTML(system.file("homepage.html", package = "ordinalsimr"))
-      )
+  nav_panel(
+    "Home",
+    card(
+      title = "OrdinalSimR",
+      includeHTML(system.file("homepage.html", package = "ordinalsimr"))
     )
+  )
 }
 
 #' homepage Server Functions

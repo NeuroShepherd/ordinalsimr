@@ -31,7 +31,7 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
   assert_that(
     length(prob0) == length(prob1),
     msg = "prob0 and prob1 must have the same length"
-    )
+  )
   # Check probabilities for both groups sum to 1
   assertthat::assert_that(
     near(sum(prob0), 1),
@@ -50,7 +50,6 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
   )
 
   lapply(sample_size, function(x) {
-
     sample_size_nested <- x
     initial_groups <- lapply(1:niter, function(x) {
       assign_groups(
@@ -79,8 +78,6 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
       mutate(run = row_number(), .before = .data$y)
 
     return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
-
   }) %>%
-    magrittr::set_names(paste0("sample_size_",sample_size))
-
+    magrittr::set_names(paste0("sample_size_", sample_size))
 }

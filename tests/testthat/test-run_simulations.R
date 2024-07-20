@@ -1,4 +1,3 @@
-
 # write an example using the run_simulations() function
 
 run_sims_output <- suppressWarnings(
@@ -30,8 +29,10 @@ test_that("run_simulations returns a list of the correct length", {
 test_that("run_simulations returns a list with the correct names", {
   expect_named(
     run_sims_output,
-    c("sample_size_40", "sample_size_41", "sample_size_42",
-      "sample_size_43", "sample_size_44", "sample_size_45")
+    c(
+      "sample_size_40", "sample_size_41", "sample_size_42",
+      "sample_size_43", "sample_size_44", "sample_size_45"
+    )
   )
 })
 
@@ -58,10 +59,10 @@ test_that("run_simulations returns data frames with the correct number of column
 test_that("run_simulations returns data frames with the correct column names", {
   expect_named(
     run_sims_output[["sample_size_40"]],
-    c('Wilcoxon', 'Fisher', 'Chi Squared\n(No Correction)',
-      'Chi Squared\n(Correction)', 'Prop. Odds', 'Coin Indep. Test',
-      'run', 'y', 'x', 'n_null', 'n_intervene', 'sample_size', 'K')
+    c(
+      "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+      "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test",
+      "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
+    )
   )
 })
-
-

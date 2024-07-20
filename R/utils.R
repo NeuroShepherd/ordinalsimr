@@ -59,11 +59,11 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
             lower_power_bound = binom_power$conf.int[[1]],
             upper_power_bound = binom_power$conf.int[[2]],
             power = binom_power$estimate,
-            !!ci_power_label := paste0("[",round(lower_power_bound, 3), ", ", round(upper_power_bound, 3), "]"),
+            !!ci_power_label := paste0("[", round(lower_power_bound, 3), ", ", round(upper_power_bound, 3), "]"),
             lower_t2error_bound = 1 - upper_power_bound,
             upper_t2error_bound = 1 - lower_power_bound,
             t2_error = 1 - binom_power$estimate,
-            !!ci_t2error_label := paste0("[",round(lower_t2error_bound, 3), ", ", round(upper_t2error_bound, 3), "]")
+            !!ci_t2error_label := paste0("[", round(lower_t2error_bound, 3), ", ", round(upper_t2error_bound, 3), "]")
           )
         }) %>%
           bind_rows(.id = "test")
@@ -95,21 +95,20 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
     dplyr::group_modify(
       ~ {
         lapply(., function(x) {
-
-          tryCatch({
-
-            binom_results <- binom.test(sum(x < alpha, na.rm = T),
-                                        sum(!is.na(x)),
-                                        conf.level = t1_error_confidence_int / 100)
+          tryCatch(
+            {
+              binom_results <- binom.test(sum(x < alpha, na.rm = T),
+                sum(!is.na(x)),
+                conf.level = t1_error_confidence_int / 100
+              )
 
               tibble(
                 lower_t1_bound = binom_results$conf.int[[1]],
                 upper_t1_bound = binom_results$conf.int[[2]],
                 t1_error = binom_results$estimate,
-                !!ci_label := paste0("[",round(lower_t1_bound, 3), ", ", round(upper_t1_bound, 3), "]")
+                !!ci_label := paste0("[", round(lower_t1_bound, 3), ", ", round(upper_t1_bound, 3), "]")
               )
-
-              },
+            },
             error = function(e) {
               tibble(
                 lower_t1_bound = NA_real_,
@@ -117,8 +116,8 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
                 t1_error = NA_real_,
                 !!ci_label := NA_character_
               )
-            })
-
+            }
+          )
         }) %>%
           bind_rows(.id = "test")
       }
@@ -140,7 +139,6 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
-
   levels <- df %>%
     pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
     group_by(.data[["test_name"]]) %>%
@@ -157,12 +155,11 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     summarise(value = mean(.data$value)) %>%
     {
       ggplot(., aes(
-          x = .data[["sample_size"]],
-          y = .data[["value"]],
-          color = .data[["test_name"]],
-          linetype = .data[["test_name"]]
-          )
-        ) +
+        x = .data[["sample_size"]],
+        y = .data[["value"]],
+        color = .data[["test_name"]],
+        linetype = .data[["test_name"]]
+      )) +
         geom_line(size = 2) +
         geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
         expand_limits(y = 0) +
@@ -176,7 +173,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
           plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
           axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
           axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-          legend.text = element_text(size=14),
+          legend.text = element_text(size = 14),
           legend.title = element_text(size = 16, face = "bold")
         )
     }
@@ -193,7 +190,6 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #' @export
 #'
 plot_power <- function(df, power_threshold = 0.80) {
-
   levels <- df %>%
     group_by(.data[["test"]]) %>%
     summarize(
@@ -212,7 +208,7 @@ plot_power <- function(df, power_threshold = 0.80) {
     )) +
     geom_line(size = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
-    expand_limits(y = c(0,1)) +
+    expand_limits(y = c(0, 1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
@@ -223,7 +219,7 @@ plot_power <- function(df, power_threshold = 0.80) {
       plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
       axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
       axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-      legend.text = element_text(size=14),
+      legend.text = element_text(size = 14),
       legend.title = element_text(size = 16, face = "bold")
     )
 }

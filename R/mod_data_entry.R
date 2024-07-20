@@ -13,7 +13,6 @@ mod_data_entry_ui <- function(id) {
   tagList(
     rhandsontable::rHandsontableOutput(ns("hottable"))
   )
-
 }
 
 #' data_entry Server Functions

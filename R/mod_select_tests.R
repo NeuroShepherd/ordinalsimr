@@ -7,32 +7,34 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_select_tests_ui <- function(id){
+mod_select_tests_ui <- function(id) {
   ns <- NS(id)
   tagList(
-
     selectizeInput(
       ns("included"),
       label = "Select Tests",
       choices = c(
         "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-        "Chi Squared (Correction)", "Proportional Odds" = "Prop. Odds",
-        "Coin Independence Test" = "Coin Indep. Test"),
+        "Chi Squared (Correction)",
+        "Proportional Odds" = "Prop. Odds",
+        "Coin Independence Test" = "Coin Indep. Test"
+      ),
       multiple = TRUE,
       selected = c(
         "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-        "Chi Squared (Correction)", "Proportional Odds" = "Prop. Odds",
-        "Coin Independence Test" = "Coin Indep. Test")
+        "Chi Squared (Correction)",
+        "Proportional Odds" = "Prop. Odds",
+        "Coin Independence Test" = "Coin Indep. Test"
       )
-
+    )
   )
 }
 
 #' select_tests Server Functions
 #'
 #' @noRd
-mod_select_tests_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_select_tests_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
     selected_tests <- reactive({
@@ -40,7 +42,6 @@ mod_select_tests_server <- function(id){
     })
 
     return(selected_tests)
-
   })
 }
 
