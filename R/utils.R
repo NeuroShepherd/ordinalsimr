@@ -140,9 +140,19 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
+
+  levels <- df %>%
+    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
+    group_by(.data[["test_name"]]) %>%
+    summarize(
+      mean = mean(.data[["value"]], na.rm = T)
+    ) %>%
+    arrange(.data[["mean"]]) %>%
+    pull(.data[["test_name"]])
+
   df %>%
     pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
-    mutate(test_name = stats::reorder(.data[["test_name"]], .data[["value"]], decreasing = TRUE)) %>%
+    mutate(test_name = factor(test_name, levels = levels)) %>%
     group_by(.data$sample_size, .data$test_name) %>%
     summarise(value = mean(.data$value)) %>%
     {
@@ -181,14 +191,27 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #' @return ggplot object
 #' @export
 #'
-plot_power <- function(df) {
+plot_power <- function(df, power_threshold = 0.80) {
+
+  levels <- df %>%
+    group_by(.data[["test"]]) %>%
+    summarize(
+      mean = mean(.data[["power"]], na.rm = T)
+    ) %>%
+    arrange(desc(.data[["mean"]])) %>%
+    pull(.data[["test"]])
+
+
   df %>%
+    mutate(test = factor(test, levels = levels)) %>%
     ggplot(aes(
       x = .data[["Sample Size"]], y = .data[["power"]],
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
       color = .data[["test"]], fill = .data[["test"]], linetype = .data[["test"]]
     )) +
     geom_line(size = 2) +
+    geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
+    expand_limits(y = 1) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
