@@ -152,7 +152,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 
   df %>%
     pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
-    mutate(test_name = factor(test_name, levels = levels)) %>%
+    mutate(test_name = factor(.data$test_name, levels = levels)) %>%
     group_by(.data$sample_size, .data$test_name) %>%
     summarise(value = mean(.data$value)) %>%
     {
@@ -187,6 +187,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #' Plot Test Power
 #'
 #' @param df a dataframe with p-values and a sample_size column
+#' @param power_threshold numeric. desired power threshold
 #'
 #' @return ggplot object
 #' @export
@@ -203,7 +204,7 @@ plot_power <- function(df, power_threshold = 0.80) {
 
 
   df %>%
-    mutate(test = factor(test, levels = levels)) %>%
+    mutate(test = factor(.data[["test"]], levels = levels)) %>%
     ggplot(aes(
       x = .data[["Sample Size"]], y = .data[["power"]],
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],

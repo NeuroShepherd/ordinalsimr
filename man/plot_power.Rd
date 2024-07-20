@@ -4,10 +4,12 @@
 \alias{plot_power}
 \title{Plot Test Power}
 \usage{
-plot_power(df)
+plot_power(df, power_threshold = 0.8)
 }
 \arguments{
 \item{df}{a dataframe with p-values and a sample_size column}
+
+\item{power_threshold}{numeric. desired power threshold}
 }
 \value{
 ggplot object
