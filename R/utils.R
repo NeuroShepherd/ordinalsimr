@@ -211,7 +211,7 @@ plot_power <- function(df, power_threshold = 0.80) {
     )) +
     geom_line(size = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
-    expand_limits(y = 1) +
+    expand_limits(y = c(0,1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
