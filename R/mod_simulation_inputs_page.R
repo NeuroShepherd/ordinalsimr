@@ -13,8 +13,10 @@ mod_simulation_inputs_page_ui <- function(id){
   nav_panel(
     "Simulation Inputs",
     layout_columns(
+      fill = TRUE,
+      fillable = TRUE,
       col_widths = c(5 , 7, -2, 8, -2),
-      row_heights = c(3, 3),
+      row_heights = c(7,9),
       navset_card_tab(
         full_screen = TRUE,
         title = "Inputs",
@@ -48,14 +50,16 @@ mod_simulation_inputs_page_ui <- function(id){
       ),
       card(
         card_header("Data Entry", class = "bg-dark"),
-        mod_data_entry_ui("data_entry_1"),
-        card_body(
-          fillable = FALSE,
-          class = "gap-2 container",
-          mod_row_add_ui("row_add_1"),
-          mod_row_delete_ui("row_delete_1")
+        layout_columns(
+          col_widths = c(3, 9),
+          card(
+            mod_row_add_ui("row_add_1"),
+            mod_row_delete_ui("row_delete_1"),
+            br(), br(),
+            mod_start_simulation_ui("start_simulation_1")
           ),
-        mod_start_simulation_ui("start_simulation_1")
+          mod_data_entry_ui("data_entry_1")
+        )
       ),
       navset_card_pill(
         title = "Simulation p-values",
