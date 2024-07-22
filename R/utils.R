@@ -151,17 +151,26 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
   df %>%
     pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
     mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    group_by(.data$sample_size, .data$test_name) %>%
-    summarise(value = mean(.data$value)) %>%
+    group_by(.data$sample_size, .data$test_name)  %>%
+    summarise(mean.value = mean(value, na.rm = TRUE),
+              sd.value = sd(value, na.rm = TRUE),
+              n.value = n()) %>%
+    mutate(se.value = sd.value / sqrt(n.value),
+           lower.ci.value = mean.value - qt(1 - (0.05 / 2), n.value - 1) * se.value,
+           upper.ci.value = mean.value + qt(1 - (0.05 / 2), n.value - 1) * se.value) %>%
     {
       ggplot(., aes(
         x = .data[["sample_size"]],
-        y = .data[["value"]],
+        y = .data[["mean.value"]],
         color = .data[["test_name"]],
-        linetype = .data[["test_name"]]
+        linetype = .data[["test_name"]],
+        fill = .data[["test_name"]],
+        ymin = .data[["lower.ci.value"]],
+        ymax = .data[["upper.ci.value"]]
       )) +
         geom_line(size = 2) +
         geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
+        geom_ribbon(alpha = 0.02) +
         expand_limits(y = 0) +
         ggtitle("Mean p-value") +
         labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
@@ -208,6 +217,7 @@ plot_power <- function(df, power_threshold = 0.80) {
     )) +
     geom_line(size = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
+    geom_ribbon(alpha = 0.02) +
     expand_limits(y = c(0, 1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
