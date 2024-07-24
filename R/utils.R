@@ -158,34 +158,32 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     mutate(se.value = .data[["sd.value"]] / sqrt(.data[["n.value"]]),
            lower.ci.value = .data[["mean.value"]] - stats::qt(1 - (0.05 / 2), .data[["n.value"]] - 1) * .data[["se.value"]],
            upper.ci.value = .data[["mean.value"]] + stats::qt(1 - (0.05 / 2), .data[["n.value"]] - 1) * .data[["se.value"]]) %>%
-    {
-      ggplot(., aes(
-        x = .data[["sample_size"]],
-        y = .data[["mean.value"]],
-        color = .data[["test_name"]],
-        linetype = .data[["test_name"]],
-        fill = .data[["test_name"]],
-        ymin = .data[["lower.ci.value"]],
-        ymax = .data[["upper.ci.value"]]
-      )) +
-        geom_line(size = 2) +
-        geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
-        geom_ribbon(alpha = 0.02) +
-        expand_limits(y = 0) +
-        ggtitle("Mean p-value") +
-        labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
-        guides(fill = "none", linetype = "none") +
-        theme_bw() +
-        theme(
-          axis.text = element_text(face = "bold", size = 14),
-          axis.title = element_text(face = "bold", size = 18),
-          plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
-          axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-          axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16, face = "bold")
-        )
-    }
+    ggplot(aes(
+      x = .data[["sample_size"]],
+      y = .data[["mean.value"]],
+      color = .data[["test_name"]],
+      linetype = .data[["test_name"]],
+      fill = .data[["test_name"]],
+      ymin = .data[["lower.ci.value"]],
+      ymax = .data[["upper.ci.value"]]
+    )) +
+      geom_line(size = 2) +
+      geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
+      geom_ribbon(alpha = 0.02) +
+      expand_limits(y = 0) +
+      ggtitle("Mean p-value") +
+      labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
+      guides(fill = "none", linetype = "none") +
+      theme_bw() +
+      theme(
+        axis.text = element_text(face = "bold", size = 14),
+        axis.title = element_text(face = "bold", size = 18),
+        plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 16, face = "bold")
+      )
 }
 
 
