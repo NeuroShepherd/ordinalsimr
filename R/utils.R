@@ -140,7 +140,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
   levels <- df %>%
-    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
+    pivot_longer(cols = -.data[["sample_size"]], names_to = "test_name") %>%
     group_by(.data[["test_name"]]) %>%
     summarize(
       mean = mean(.data[["value"]], na.rm = T)
@@ -149,34 +149,41 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     pull(.data[["test_name"]])
 
   df %>%
-    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
-    mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    group_by(.data$sample_size, .data$test_name) %>%
-    summarise(value = mean(.data$value)) %>%
-    {
-      ggplot(., aes(
-        x = .data[["sample_size"]],
-        y = .data[["value"]],
-        color = .data[["test_name"]],
-        linetype = .data[["test_name"]]
-      )) +
-        geom_line(size = 2) +
-        geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
-        expand_limits(y = 0) +
-        ggtitle("Mean p-value") +
-        labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
-        guides(fill = "none", linetype = "none") +
-        theme_bw() +
-        theme(
-          axis.text = element_text(face = "bold", size = 14),
-          axis.title = element_text(face = "bold", size = 18),
-          plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
-          axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-          axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16, face = "bold")
-        )
-    }
+    pivot_longer(cols = -.data[["sample_size"]], names_to = "test_name") %>%
+    mutate(test_name = factor(.data[["test_name"]], levels = levels)) %>%
+    group_by(.data[["sample_size"]], .data[["test_name"]])  %>%
+    summarise(mean.value = mean(.data[["value"]], na.rm = TRUE),
+              sd.value = stats::sd(.data[["value"]], na.rm = TRUE),
+              n.value = n()) %>%
+    mutate(se.value = .data[["sd.value"]] / sqrt(.data[["n.value"]]),
+           lower.ci.value = .data[["mean.value"]] - stats::qt(1 - (0.05 / 2), .data[["n.value"]] - 1) * .data[["se.value"]],
+           upper.ci.value = .data[["mean.value"]] + stats::qt(1 - (0.05 / 2), .data[["n.value"]] - 1) * .data[["se.value"]]) %>%
+    ggplot(aes(
+      x = .data[["sample_size"]],
+      y = .data[["mean.value"]],
+      color = .data[["test_name"]],
+      linetype = .data[["test_name"]],
+      fill = .data[["test_name"]],
+      ymin = .data[["lower.ci.value"]],
+      ymax = .data[["upper.ci.value"]]
+    )) +
+      geom_line(size = 2) +
+      geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
+      geom_ribbon(alpha = 0.02) +
+      expand_limits(y = 0) +
+      ggtitle("Mean p-value") +
+      labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
+      guides(fill = "none", linetype = "none") +
+      theme_bw() +
+      theme(
+        axis.text = element_text(face = "bold", size = 14),
+        axis.title = element_text(face = "bold", size = 18),
+        plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+        axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+        axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 16, face = "bold")
+      )
 }
 
 
@@ -208,6 +215,7 @@ plot_power <- function(df, power_threshold = 0.80) {
     )) +
     geom_line(size = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
+    geom_ribbon(alpha = 0.02) +
     expand_limits(y = c(0, 1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
