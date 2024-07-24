@@ -53,39 +53,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     # usage example: parameters()$null_probs
 
     comparison_results <- eventReactive(run_simulation_button(), {
-      run_simulations(parameters()$sample_size,
-        prob0 = parameters()$prob0,
-        sample_prob = parameters()$sample_prob,
-        prob1 = parameters()$prob1,
-        niter = parameters()$iterations,
-        included = parameters()$included_tests,
-        .rng_kind = rng_info$rng_kind(),
-        .rng_normal_kind = rng_info$rng_normal_kind(),
-        .rng_sample_kind = rng_info$rng_sample_kind()
-      )
-    })
-
-    group1_results <- eventReactive(run_simulation_button(), {
-      if (parameters()$t1_error_toggle %in% c("both", "group1")) {
+      withProgress(message = "Comparisons:", value = 0, {
         run_simulations(parameters()$sample_size,
           prob0 = parameters()$prob0,
-          sample_prob = parameters()$sample_prob,
-          prob1 = parameters()$prob0,
-          niter = parameters()$iterations,
-          included = parameters()$included_tests,
-          .rng_kind = rng_info$rng_kind(),
-          .rng_normal_kind = rng_info$rng_normal_kind(),
-          .rng_sample_kind = rng_info$rng_sample_kind()
-        )
-      } else {
-        (data.frame())
-      }
-    })
-
-    group2_results <- eventReactive(run_simulation_button(), {
-      if (parameters()$t1_error_toggle %in% c("both", "group2")) {
-        run_simulations(parameters()$sample_size,
-          prob0 = parameters()$prob1,
           sample_prob = parameters()$sample_prob,
           prob1 = parameters()$prob1,
           niter = parameters()$iterations,
@@ -94,6 +64,42 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
           .rng_normal_kind = rng_info$rng_normal_kind(),
           .rng_sample_kind = rng_info$rng_sample_kind()
         )
+      })
+    })
+
+    group1_results <- eventReactive(run_simulation_button(), {
+      if (parameters()$t1_error_toggle %in% c("both", "group1")) {
+        withProgress(message = "Group 1:", value = 0, {
+          run_simulations(parameters()$sample_size,
+            prob0 = parameters()$prob0,
+            sample_prob = parameters()$sample_prob,
+            prob1 = parameters()$prob0,
+            niter = parameters()$iterations,
+            included = parameters()$included_tests,
+            .rng_kind = rng_info$rng_kind(),
+            .rng_normal_kind = rng_info$rng_normal_kind(),
+            .rng_sample_kind = rng_info$rng_sample_kind()
+          )
+        })
+      } else {
+        (data.frame())
+      }
+    })
+
+    group2_results <- eventReactive(run_simulation_button(), {
+      if (parameters()$t1_error_toggle %in% c("both", "group2")) {
+        withProgress(message = "Group 2:", value = 0, {
+          run_simulations(parameters()$sample_size,
+            prob0 = parameters()$prob1,
+            sample_prob = parameters()$sample_prob,
+            prob1 = parameters()$prob1,
+            niter = parameters()$iterations,
+            included = parameters()$included_tests,
+            .rng_kind = rng_info$rng_kind(),
+            .rng_normal_kind = rng_info$rng_normal_kind(),
+            .rng_sample_kind = rng_info$rng_sample_kind()
+          )
+        })
       } else {
         (data.frame())
       }

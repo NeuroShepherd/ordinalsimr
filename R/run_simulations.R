@@ -49,35 +49,42 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
     "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
   )
 
-  lapply(sample_size, function(x) {
-    sample_size_nested <- x
-    initial_groups <- lapply(1:niter, function(x) {
-      assign_groups(
-        sample_size = sample_size_nested,
-        sample_prob = sample_prob,
-        prob0 = prob0, prob1 = prob1,
-        seed = x,
-        .rng_kind = .rng_kind,
-        .rng_normal_kind = .rng_normal_kind,
-        .rng_sample_kind = .rng_sample_kind
-      )
-    })
 
-    p_values <- initial_groups %>%
-      sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
-      t()
+    lapply(sample_size, function(x) {
+      sample_size_nested <- x
+      initial_groups <- lapply(1:niter, function(x) {
+        assign_groups(
+          sample_size = sample_size_nested,
+          sample_prob = sample_prob,
+          prob0 = prob0, prob1 = prob1,
+          seed = x,
+          .rng_kind = .rng_kind,
+          .rng_normal_kind = .rng_normal_kind,
+          .rng_sample_kind = .rng_sample_kind
+        )
+      })
 
-    initial_groups_formatted <- lapply(initial_groups, function(groups) {
-      tibble(
-        y = list(groups[["y"]]), x = list(groups[["x"]]),
-        n_null = groups[["n_null"]], n_intervene = groups[["n_intervene"]],
-        sample_size = groups[["sample_size"]], K = groups[["K"]]
-      )
+      p_values <- initial_groups %>%
+        sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
+        t()
+
+      initial_groups_formatted <- lapply(initial_groups, function(groups) {
+        tibble(
+          y = list(groups[["y"]]), x = list(groups[["x"]]),
+          n_null = groups[["n_null"]], n_intervene = groups[["n_intervene"]],
+          sample_size = groups[["sample_size"]], K = groups[["K"]]
+        )
+      }) %>%
+        bind_rows() %>%
+        mutate(run = row_number(), .before = .data$y)
+
+      incProgress(
+        1/(max(sample_size)-min(sample_size)),
+        detail = paste("Sample size", sample_size_nested, "completed.")
+        )
+
+      return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
     }) %>%
-      bind_rows() %>%
-      mutate(run = row_number(), .before = .data$y)
+      magrittr::set_names(paste0("sample_size_", sample_size))
 
-    return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
-  }) %>%
-    magrittr::set_names(paste0("sample_size_", sample_size))
 }
