@@ -19,4 +19,3 @@ $run_dev.*
 ^pkgdown$
 ^.covrignore$
 ^codecov\.yml$
-^R/_disable_autoload\.R$
