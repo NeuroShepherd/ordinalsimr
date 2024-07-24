@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   coding-simulations: coding-simulations.html
   ordinalsimr: ordinalsimr.html
-last_built: 2024-07-24T19:46Z
+last_built: 2024-07-24T20:01Z
 urls:
   reference: https://neuroshepherd.github.io/ordinalsimr/reference
   article: https://neuroshepherd.github.io/ordinalsimr/articles
