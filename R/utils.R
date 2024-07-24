@@ -140,7 +140,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
   levels <- df %>%
-    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
+    pivot_longer(cols = -.data[["sample_size"]], names_to = "test_name") %>%
     group_by(.data[["test_name"]]) %>%
     summarize(
       mean = mean(.data[["value"]], na.rm = T)
@@ -149,15 +149,15 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     pull(.data[["test_name"]])
 
   df %>%
-    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
-    mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    group_by(.data$sample_size, .data$test_name)  %>%
-    summarise(mean.value = mean(value, na.rm = TRUE),
-              sd.value = sd(value, na.rm = TRUE),
+    pivot_longer(cols = -.data[["sample_size"]], names_to = "test_name") %>%
+    mutate(test_name = factor(.data[["test_name"]], levels = levels)) %>%
+    group_by(.data[["sample_size"]], .data[["test_name"]])  %>%
+    summarise(mean.value = mean(.data[["value"]], na.rm = TRUE),
+              sd.value = stats::sd(.data[["value"]], na.rm = TRUE),
               n.value = n()) %>%
-    mutate(se.value = sd.value / sqrt(n.value),
-           lower.ci.value = mean.value - qt(1 - (0.05 / 2), n.value - 1) * se.value,
-           upper.ci.value = mean.value + qt(1 - (0.05 / 2), n.value - 1) * se.value) %>%
+    mutate(se.value = .data[["sd.value"]] / sqrt(.data[["n.value"]]),
+           lower.ci.value = .data[["mean.value"]] - stats::qt(1 - (0.05 / 2), .data[["n.value"]] - 1) * .data[["se.value"]],
+           upper.ci.value = .data[["mean.value"]] + stats::qt(1 - (0.05 / 2), .data[["n.value"]] - 1) * .data[["se.value"]]) %>%
     {
       ggplot(., aes(
         x = .data[["sample_size"]],
