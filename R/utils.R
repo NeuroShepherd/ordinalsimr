@@ -157,8 +157,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
       ggplot(., aes(
         x = .data[["sample_size"]],
         y = .data[["value"]],
-        color = .data[["test_name"]],
-        linetype = .data[["test_name"]]
+        color = .data[["test_name"]]
       )) +
         geom_line(size = 2) +
         geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
@@ -204,7 +203,7 @@ plot_power <- function(df, power_threshold = 0.80) {
     ggplot(aes(
       x = .data[["Sample Size"]], y = .data[["power"]],
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
-      color = .data[["test"]], fill = .data[["test"]], linetype = .data[["test"]]
+      color = .data[["test"]], fill = .data[["test"]]
     )) +
     geom_line(size = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
