@@ -64,7 +64,9 @@ ordinal_tests <- function(x, y, included = "all", ...) {
   if ("Wilcoxon" %in% included) {
     wilcoxon <- tryCatch(
       {
-        stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]]
+        suppressWarnings(
+          stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]]
+        )
       },
       error = function(e) {
         NA_real_
@@ -90,7 +92,9 @@ ordinal_tests <- function(x, y, included = "all", ...) {
   if ("Chi Squared (No Correction)" %in% included) {
     chi_sq_no_correction <- tryCatch(
       {
-        stats::chisq.test(x, y, correct = FALSE)[["p.value"]]
+        suppressWarnings(
+          stats::chisq.test(x, y, correct = FALSE)[["p.value"]]
+        )
       },
       error = function(e) {
         NA_real_
@@ -103,7 +107,9 @@ ordinal_tests <- function(x, y, included = "all", ...) {
   if ("Chi Squared (Correction)" %in% included) {
     chi_sq_correction <- tryCatch(
       {
-        stats::chisq.test(x, y, correct = TRUE)[["p.value"]]
+        suppressWarnings(
+          stats::chisq.test(x, y, correct = TRUE)[["p.value"]]
+        )
       },
       error = function(e) {
         NA_real_
