@@ -12,7 +12,6 @@ mod_save_data_ui <- function(id) {
   list(
     save_rds = downloadButton(ns("save_button"), "Save Results as .rds"),
     save_excel = uiOutput(ns("save_xlsx_ui"))
-      # downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
   )
 }
 
@@ -72,7 +71,6 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     download_counter_excel <- reactiveVal(1)
     output$save_xlsx <- downloadHandler(
         filename = function() {
-          # Consider: use .RData in future for flexibility?
           paste0("data", Sys.Date(), session$token, download_counter_excel(), ".xlsx")
         },
         content = function(file) {
