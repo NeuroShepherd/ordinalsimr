@@ -44,23 +44,24 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     })
 
 
-    download_counter <- reactiveVal(1)
+    download_counter_rds <- reactiveVal(1)
     output$save_button <- downloadHandler(
       filename = function() {
         # Consider: use .RData in future for flexibility?
-        paste0("data", Sys.Date(), session$token, download_counter(), ".rds")
+        paste0("data", Sys.Date(), session$token, download_counter_rds(), ".rds")
       },
       content = function(file) {
         saveRDS(data_to_save(), file)
         # increment download number
-        download_counter(download_counter() + 1)
+        download_counter_rds(download_counter_rds() + 1)
       }
     )
 
+    download_counter_excel <- reactiveVal(1)
     output$save_xlsx <- downloadHandler(
       filename = function() {
         # Consider: use .RData in future for flexibility?
-        paste0("data", Sys.Date(), session$token, download_counter(), ".xlsx")
+        paste0("data", Sys.Date(), session$token, download_counter_excel(), ".xlsx")
       },
       content = function(file) {
         writexl::write_xlsx(
@@ -75,7 +76,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
           path = file
         )
         # increment download number
-        download_counter(download_counter() + 1)
+        download_counter_excel(download_counter_excel() + 1)
       }
     )
 
