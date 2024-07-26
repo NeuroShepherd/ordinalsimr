@@ -48,7 +48,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     output$save_button <- downloadHandler(
       filename = function() {
         # Consider: use .RData in future for flexibility?
-        paste0("data", Sys.Date(), session$token, download_counter_rds(), ".rds")
+        paste0("data-", Sys.Date(), "-", strtrim(session$token, 6), "-", download_counter_rds(), ".rds")
       },
       content = function(file) {
         saveRDS(data_to_save(), file)
@@ -71,7 +71,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
     download_counter_excel <- reactiveVal(1)
     output$save_xlsx <- downloadHandler(
         filename = function() {
-          paste0("data", Sys.Date(), session$token, download_counter_excel(), ".xlsx")
+          paste0("data-", Sys.Date(), "-", strtrim(session$token, 6), "-", download_counter_excel(), ".xlsx")
         },
         content = function(file) {
           writexl::write_xlsx(
