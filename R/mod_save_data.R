@@ -10,7 +10,7 @@
 mod_save_data_ui <- function(id) {
   ns <- NS(id)
   list(
-    save_rds = downloadButton(ns("save_button"), "Save Results as .RDS"),
+    save_rds = downloadButton(ns("save_button"), "Save Results as .rds"),
     save_excel = uiOutput(ns("save_xlsx_ui"))
       # downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
   )
@@ -60,7 +60,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
 
     output$save_xlsx_ui <- renderUI({
       if (requireNamespace("writexl", quietly = TRUE)) {
-        downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
+        downloadButton(ns("save_xlsx"), "Save Results as .xlsx")
       } else {
         tagList(
           h5("Excel Download:"),
