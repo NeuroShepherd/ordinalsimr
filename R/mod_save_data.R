@@ -11,7 +11,8 @@ mod_save_data_ui <- function(id) {
   ns <- NS(id)
   list(
     save_rds = downloadButton(ns("save_button"), "Save Results as .RDS"),
-    save_excel = downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
+    save_excel = uiOutput(ns("save_xlsx_ui"))
+      # downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
   )
 }
 
@@ -57,31 +58,42 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
       }
     )
 
+    output$save_xlsx_ui <- renderUI({
+      if (requireNamespace("writexl", quietly = TRUE)) {
+        downloadButton(ns("save_xlsx"), "Save Results as .Xlsx")
+      } else {
+        tagList(
+          h5("Excel Download:"),
+          p("Please install the {writexl} package.")
+        )
+      }
+    })
+
     download_counter_excel <- reactiveVal(1)
     output$save_xlsx <- downloadHandler(
-      filename = function() {
-        # Consider: use .RData in future for flexibility?
-        paste0("data", Sys.Date(), session$token, download_counter_excel(), ".xlsx")
-      },
-      content = function(file) {
-        writexl::write_xlsx(
-          list(
-            distribution_statistics = data_to_save()$comparison_data$distribution_statistics,
-            comparison_run_info = data_to_save()$comparison_data$run_info,
-            group1_type1_error = data_to_save()$group1_data$group1_t1error,
-            group1_run_info = data_to_save()$group1_data$run_info,
-            group2_type1_error = data_to_save()$group2_data$group2_t1error,
-            group2_run_info = data_to_save()$group2_data$run_info
-          ),
-          path = file
-        )
-        # increment download number
-        download_counter_excel(download_counter_excel() + 1)
-      }
-    )
-
+        filename = function() {
+          # Consider: use .RData in future for flexibility?
+          paste0("data", Sys.Date(), session$token, download_counter_excel(), ".xlsx")
+        },
+        content = function(file) {
+          writexl::write_xlsx(
+            list(
+              distribution_statistics = data_to_save()$comparison_data$distribution_statistics,
+              comparison_run_info = data_to_save()$comparison_data$run_info,
+              group1_type1_error = data_to_save()$group1_data$group1_t1error,
+              group1_run_info = data_to_save()$group1_data$run_info,
+              group2_type1_error = data_to_save()$group2_data$group2_t1error,
+              group2_run_info = data_to_save()$group2_data$run_info
+            ),
+            path = file
+          )
+          # increment download number
+          download_counter_excel(download_counter_excel() + 1)
+        }
+      )
 
     return(data_to_save)
+
   })
 }
 
