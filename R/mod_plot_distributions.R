@@ -60,14 +60,14 @@ mod_plot_distributions_ui <- function(id) {
         )
       ),
       nav_panel(
-        title = "Typer I Error: Group 1",
+        title = "Type I Error: Group 1",
         shinycssloaders::withSpinner(
           DT::dataTableOutput(ns("t1_error_group1")),
           type = 8
         )
       ),
       nav_panel(
-        title = "Typer I Error: Group 2",
+        title = "Type I Error: Group 2",
         shinycssloaders::withSpinner(
           DT::dataTableOutput(ns("t1_error_group2")),
           type = 8
@@ -159,27 +159,32 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
 
     # GROUP 1 TYPE 1 ERROR
     group1_t1_reactive_table <- reactive({
-      p_value_table$group1_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-          )),
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-          )),
-          .data$sample_size
-        ) %>%
-        group_by(.data$sample_size) %>%
-        calculate_t1_error(
-          alpha = p_val_threshold(),
-          t1_error_confidence_int = input$t1_error_group1_confidence_int
-        )
+      if (!is.null(p_value_table$group1_results())) {
+        p_value_table$group1_results() %>%
+          bind_rows() %>%
+          dplyr::select(
+            dplyr::any_of(c(
+              "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+              "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            )),
+            dplyr::any_of(c(
+              "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+              "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            )),
+            .data$sample_size
+          ) %>%
+          group_by(.data$sample_size) %>%
+          calculate_t1_error(
+            alpha = p_val_threshold(),
+            t1_error_confidence_int = input$t1_error_group1_confidence_int
+          )
+        }
     })
     output$t1_error_group1 <- DT::renderDataTable({
-      # browser()
+      validate(
+        need(group1_t1_reactive_table(), "No data available for Group 1")
+      )
+
       group1_t1_reactive_table() %>%
         select(-.data$lower_t1_bound, -.data$upper_t1_bound) %>%
         rename(
@@ -194,22 +199,30 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
 
     # GROUP 2 TYPE 1 ERROR
     group2_t1_reactive_table <- reactive({
-      p_value_table$group2_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-          )),
-          .data$sample_size
-        ) %>%
-        group_by(.data$sample_size) %>%
-        calculate_t1_error(
-          alpha = p_val_threshold(),
-          t1_error_confidence_int = input$t1_error_group2_confidence_int
-        )
+
+      if (!is.null(p_value_table$group1_results())) {
+        p_value_table$group2_results() %>%
+          bind_rows() %>%
+          dplyr::select(
+            dplyr::any_of(c(
+              "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+              "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            )),
+            .data$sample_size
+          ) %>%
+          group_by(.data$sample_size) %>%
+          calculate_t1_error(
+            alpha = p_val_threshold(),
+            t1_error_confidence_int = input$t1_error_group2_confidence_int
+          )
+      }
+
     })
     output$t1_error_group2 <- DT::renderDataTable({
+      validate(
+        need(group2_t1_reactive_table(), "No data available for Group 2")
+      )
+
       group2_t1_reactive_table() %>%
         select(-.data$lower_t1_bound, -.data$upper_t1_bound) %>%
         rename(
@@ -219,7 +232,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
         DT::datatable() %>%
         DT::formatRound(c(3), 3)
     })
-
 
     return(list(
       distribution_statistics = distribution_statistics,
