@@ -167,10 +167,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
               "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
               "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
             )),
-            dplyr::any_of(c(
-              "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-              "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-            )),
             .data$sample_size
           ) %>%
           group_by(.data$sample_size) %>%
