@@ -64,7 +64,26 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
         tagList(
           h5("Excel Download:"),
           p("Please install the {writexl} package.")
-        )
+         }
+       })
+
+    output$save_xlsx <- downloadHandler(
+      filename = function() {
+        # Consider: use .RData in future for flexibility?
+        paste0("data", Sys.Date(), session$token, download_counter(), ".xlsx")
+      },
+      content = function(file) {
+        writexl::write_xlsx(
+          list(
+            distribution_statistics = data_to_save()$comparison_data$distribution_statistics,
+            comparison_run_info = data_to_save()$comparison_data$run_info,
+            group1_type1_error = data_to_save()$group1_data$group1_t1error,
+            group1_run_info = data_to_save()$group1_data$run_info,
+            group2_type1_error = data_to_save()$group2_data$group2_t1error,
+            group2_run_info = data_to_save()$group2_data$run_info
+            ) %>%
+            lapply(function(x) {if (is.null(x)) {data.frame()} else {x}}),
+          path = file)
       }
     })
 
