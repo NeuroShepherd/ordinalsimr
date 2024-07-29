@@ -64,8 +64,9 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
         tagList(
           h5("Excel Download:"),
           p("Please install the {writexl} package.")
-         }
-       })
+        )
+        }
+      })
 
     output$save_xlsx <- downloadHandler(
       filename = function() {
@@ -85,7 +86,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
             lapply(function(x) {if (is.null(x)) {data.frame()} else {x}}),
           path = file)
       }
-    })
+    )
 
     download_counter_excel <- reactiveVal(1)
     output$save_xlsx <- downloadHandler(
