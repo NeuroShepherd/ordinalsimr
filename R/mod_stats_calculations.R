@@ -122,7 +122,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     # if not keeping these output tables, use observe({group1_results()}) to
     # ensure evaluation
     output$group1_pvalues <- DT::renderDataTable({
-      req(group1_results())
+      validate(
+        need(group1_results(), "No simulations run for Group 1.")
+      )
 
       g1_res <- group1_results() %>%
         bind_rows() %>%
@@ -141,7 +143,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
 
     output$group2_pvalues <- DT::renderDataTable({
-      req(group2_results())
+      validate(
+        need(group2_results(), "No simulations run for Group 2.")
+      )
 
       g2_res <- group2_results() %>%
         bind_rows() %>%

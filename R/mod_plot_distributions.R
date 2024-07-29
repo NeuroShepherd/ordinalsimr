@@ -200,7 +200,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     # GROUP 2 TYPE 1 ERROR
     group2_t1_reactive_table <- reactive({
 
-      if (!is.null(p_value_table$group1_results())) {
+      if (!is.null(p_value_table$group2_results())) {
         p_value_table$group2_results() %>%
           bind_rows() %>%
           dplyr::select(
