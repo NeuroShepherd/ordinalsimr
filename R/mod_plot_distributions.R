@@ -182,7 +182,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     })
     output$t1_error_group1 <- DT::renderDataTable({
       validate(
-        need(group1_t1_reactive_table(), "No data available for Group 1")
+        need(group1_t1_reactive_table(), "No Type I error calculated for Group 1.")
       )
 
       group1_t1_reactive_table() %>%
@@ -220,7 +220,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     })
     output$t1_error_group2 <- DT::renderDataTable({
       validate(
-        need(group2_t1_reactive_table(), "No data available for Group 2")
+        need(group2_t1_reactive_table(), "No Type I error calculated for Group 2.")
       )
 
       group2_t1_reactive_table() %>%
