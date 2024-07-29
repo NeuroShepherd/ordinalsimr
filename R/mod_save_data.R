@@ -71,7 +71,8 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
             group1_run_info = data_to_save()$group1_data$run_info,
             group2_type1_error = data_to_save()$group2_data$group2_t1error,
             group2_run_info = data_to_save()$group2_data$run_info
-          ),
+            ) %>%
+            lapply(function(x) {if (is.null(x)) {data.frame()} else {x}}),
           path = file
         )
         # increment download number
