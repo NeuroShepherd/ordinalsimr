@@ -197,7 +197,6 @@ plot_power <- function(df, power_threshold = 0.80) {
     arrange(desc(.data[["mean"]])) %>%
     pull(.data[["test"]])
 
-
   df %>%
     mutate(test = factor(.data[["test"]], levels = levels)) %>%
     ggplot(aes(
