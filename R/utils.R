@@ -197,14 +197,6 @@ plot_power <- function(df, power_threshold = 0.80) {
     arrange(desc(.data[["mean"]])) %>%
     pull(.data[["test"]])
 
-  if (!shiny::isRunning()) {
-    legend.text.call <- eval(rlang::call2("element_text", size = 8))
-    legend.title.call <- eval(rlang::call2("element_text", size = 10, face = "bold"))
-  } else {
-    legend.text.call <- eval(rlang::call2("element_text", size = 14))
-    legend.title.call <- eval(rlang::call2("element_text", size = 16, face = "bold"))
-  }
-
   df %>%
     mutate(test = factor(.data[["test"]], levels = levels)) %>%
     ggplot(aes(
@@ -225,7 +217,7 @@ plot_power <- function(df, power_threshold = 0.80) {
       plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
       axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
       axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-      legend.text = legend.text.call,
-      legend.title = legend.title.call
+      legend.text = element_text(size = 14),
+      legend.title = element_text(size = 16, face = "bold")
     )
 }
