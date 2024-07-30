@@ -18,8 +18,12 @@ knitr::opts_chunk$set(
 
 ## R Markdown
 
-```{r}
-params$data_object
+```{r, fig.width=12, fig.height=6}
+params$data_object +
+  theme(
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10, face = "bold")
+  )
 ```
 
 
