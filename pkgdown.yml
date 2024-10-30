@@ -1,10 +1,10 @@
 pandoc: 3.1.11
-pkgdown: 2.1.0
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   coding-simulations: coding-simulations.html
   ordinalsimr: ordinalsimr.html
-last_built: 2024-07-30T09:08Z
+last_built: 2024-10-30T16:48Z
 urls:
   reference: https://neuroshepherd.github.io/ordinalsimr/reference
   article: https://neuroshepherd.github.io/ordinalsimr/articles
