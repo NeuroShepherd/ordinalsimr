@@ -38,7 +38,11 @@ You can install the development version of ordinalsimr from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("NeuroShepherd/ordinalsimr")
+devtools::install_github(
+  "NeuroShepherd/ordinalsimr",
+  force = TRUE,
+  build_vignettes = TRUE
+)
 ```
 
 ## Recommendations
