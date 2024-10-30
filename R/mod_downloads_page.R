@@ -12,16 +12,20 @@ mod_downloads_page_ui <- function(id) {
   nav_panel(
     title = "Report & Downloads",
     layout_columns(
-      col_widths = c(2, 10, 2),
+      col_widths = c(3, 9),
       fillable = TRUE,
       card(
         card_header(
-          "Update and Download Report",
+          "Downloads",
           class = "bg-dark"
         ),
-        fill = TRUE,
+        fill = FALSE,
+        h6("Report Generation"),
         mod_report_generator_ui("report_generator_1")[["update_report"]],
-        mod_report_generator_ui("report_generator_1")[["download_report"]]
+        mod_report_generator_ui("report_generator_1")[["download_report"]],
+        h6("Download Raw Data"),
+        mod_save_data_ui("save_data_1")[["save_rds"]],
+        mod_save_data_ui("save_data_1")[["save_excel"]]
       ),
       card(
         card_header(
@@ -30,16 +34,7 @@ mod_downloads_page_ui <- function(id) {
         ),
         fill = TRUE,
         mod_report_generator_ui("report_generator_1")[["rendered_report"]]
-      ),
-      card(
-        card_header(
-          "Download Data",
-          class = "bg-dark"
-        ),
-        fill = TRUE,
-        mod_save_data_ui("save_data_1")[["save_rds"]],
-        mod_save_data_ui("save_data_1")[["save_excel"]]
-      ),
+      )
     )
   )
 }
