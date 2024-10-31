@@ -12,11 +12,16 @@ mod_distributions_page_ui <- function(id) {
   nav_panel(
     "Results and Plots",
     layout_columns(
-      col_widths = c(12, 4, 8),
       fillable = TRUE,
-      navset_card_pill(
+      navset_card_tab(
         full_screen = TRUE,
-        title = "Plot Output",
+        title = "Plots and Tables",
+        sidebar = sidebar(
+          title = "Inputs",
+          mod_plot_distributions_ui("plot_distributions_1")[["p_val_input"]],
+          mod_plot_distributions_ui("plot_distributions_1")[["power_val_input"]],
+          !!!mod_plot_distributions_ui("plot_distributions_1")[["ci_inputs"]],
+          mod_plot_distributions_ui("plot_distributions_1")[["outlier_input"]]),
         nav_panel(
           title = "Power",
           mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["power_plot"]]
@@ -24,35 +29,7 @@ mod_distributions_page_ui <- function(id) {
         nav_panel(
           title = "p-values",
           mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["p_val_plot"]]
-        )
-      ),
-      navset_card_tab(
-        full_screen = TRUE,
-        title = "Inputs",
-        nav_panel(
-          "Core Inputs",
-          layout_column_wrap(
-            width = 1 / 2,
-            heights_equal = "row",
-            card(
-              markdown("Confidence Intervals"),
-              !!!mod_plot_distributions_ui("plot_distributions_1")[["ci_inputs"]]
-            ),
-            card(
-              markdown("p-value Threshold"),
-              mod_plot_distributions_ui("plot_distributions_1")[["p_val_input"]],
-              markdown("Power Threshold"),
-              mod_plot_distributions_ui("plot_distributions_1")[["power_val_input"]]
-            )
-          )
         ),
-        nav_panel(
-          "Filter Outliers",
-          mod_plot_distributions_ui("plot_distributions_1")[["outlier_input"]]
-        )
-      ),
-      navset_card_pill(
-        title = "Results",
         !!!mod_plot_distributions_ui("plot_distributions_1")[["output_data"]]
       )
     )
