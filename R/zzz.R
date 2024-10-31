@@ -8,7 +8,6 @@
 #' @param pkgname package
 #'
 #' @return invisible
-#' @export
 #'
 .onLoad <- function(libname, pkgname) {
 
