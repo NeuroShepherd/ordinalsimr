@@ -9,10 +9,18 @@
 #' @importFrom shiny NS tagList
 mod_sample_probabilities_ui <- function(id) {
   ns <- NS(id)
+
+  default_ratio <- tryCatch(
+    getOption("ordinalsimr.default_ratio", default = "50:50") ,
+    error = function(e) {
+      "50:50"
+    }
+  )
+
   tagList(
     textInput(ns("sample_probabilities"),
       "Distribution Ratio (Control:Intervention)",
-      value = "50:50",
+      value = default_ratio,
       placeholder = "Enter desired control:intervention group ratio"
     )
   )

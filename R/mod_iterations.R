@@ -9,9 +9,11 @@
 #' @importFrom shiny NS tagList
 mod_iterations_ui <- function(id) {
   ns <- NS(id)
+
+  default_iterations <- getOption("ordinalsimr.default_iterations", default = 1000)
   tagList(
     shiny::numericInput(ns("iterations"), "Number of Iterations",
-      value = 50, min = 1, max = Inf
+      value = default_iterations, min = 1, max = Inf
     )
   )
 }
