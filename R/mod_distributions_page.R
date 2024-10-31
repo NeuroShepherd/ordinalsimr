@@ -18,9 +18,12 @@ mod_distributions_page_ui <- function(id) {
         title = "Plots and Tables",
         sidebar = sidebar(
           title = "Inputs",
+          h6("Testing"),
           mod_plot_distributions_ui("plot_distributions_1")[["p_val_input"]],
           mod_plot_distributions_ui("plot_distributions_1")[["power_val_input"]],
+          h6("Confidence Intervals"),
           !!!mod_plot_distributions_ui("plot_distributions_1")[["ci_inputs"]],
+          h6("Outlier Removal (Plot Only)"),
           mod_plot_distributions_ui("plot_distributions_1")[["outlier_input"]]),
         nav_panel(
           title = "Power",
