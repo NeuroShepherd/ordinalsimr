@@ -45,17 +45,19 @@
 #' @examples
 #'
 #' # Set the default values for the ordinalsimr Shiny app
+#'
 #' set_ordinalsimr_options(
 #'  default_iterations = 1000,
 #'  default_size_min = 10,
 #'  default_size_max = 100,
 #'  default_ratio = "50:50",
-#'  default_distributions = data.frame(c(0.4, 0.3, 0.3), c(0.8, 0.1, 0.1),
+#'  default_distributions = data.frame(c(0.4, 0.3, 0.3), c(0.8, 0.1, 0.1))
 #'  )
 #'
 #'  # Values can be either overwritten or unset by setting them to NULL. The Shiny
 #'  # app still has backup values if these options are not set. Not all arguments
 #'  # need to be provided
+#'
 #'  set_ordinalsimr_options(
 #'  default_iterations = 500, # Ex: update argument
 #'  default_size_min = NULL, # Ex: unset argument
