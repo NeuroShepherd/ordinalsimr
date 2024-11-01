@@ -10,8 +10,7 @@
 mod_rng_option_ui <- function(id) {
   ns <- NS(id)
 
-  tagList(
-    markdown("These Random Number Generators are advanced options, and they use the default values employed by R as of version 4.4. Run `?RNGkind` in an R session to see the associated help file."),
+  list(
     selectInput(ns("rng_kind"),
       label = "RNG Kind",
       choices = c(

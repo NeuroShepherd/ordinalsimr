@@ -10,10 +10,14 @@
 #' @importFrom shinyWidgets numericRangeInput
 mod_sample_size_ui <- function(id) {
   ns <- NS(id)
+
+  default_size_min <- getOption("ordinalsimr.default_size_min", default = 30)
+  default_size_max <- getOption("ordinalsimr.default_size_max", default = 100)
+
   tagList(
     numericRangeInput(
       inputId = ns("sample_n"), label = "Total Sample Size Range",
-      value = c(30, 80), step = 1
+      value = c(default_size_min, default_size_max), step = 1
     )
   )
 }

@@ -59,7 +59,7 @@ mod_save_data_server <- function(id, input_data, processed_data, rng_info, input
 
     output$save_xlsx_ui <- renderUI({
       if (requireNamespace("writexl", quietly = TRUE)) {
-        downloadButton(ns("save_xlsx"), "Save Results as .xlsx")
+        downloadButton(ns("save_xlsx"), "Save Results as .xlsx", style = "width:100%;")
       } else {
         tagList(
           h5("Excel Download:"),
