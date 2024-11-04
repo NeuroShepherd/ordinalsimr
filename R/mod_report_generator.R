@@ -11,7 +11,7 @@ mod_report_generator_ui <- function(id) {
   ns <- NS(id)
   list(
     update_report = actionButton(ns("update_report"), "Update Report"),
-    download_report = actionButton(ns("download_report"), "Download Report"),
+    download_report = downloadButton(ns("download_report"), "Download Report"),
     rendered_report = fluidPage(uiOutput(ns("rendered_report")))
   )
 }
@@ -48,6 +48,30 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
     output$rendered_report <- renderUI({
       custom_report()
     })
+
+
+    output$download_report <-  downloadHandler(
+        filename = function() {
+          paste("output", "zip", sep=".")
+        },
+        content = function(file) {
+
+          write(custom_report(), file.path(tempdir(), "report.html"))
+          # write other files to the archive here
+          # write( , file.path(tempdir(), ""))
+
+          zip(
+            zipfile = file,
+            files = c(file.path(tempdir(), "report.html")),
+            flags = '-r9Xb'
+            )
+
+        },
+        contentType = "application/zip"
+      )
+
+
+
   })
 }
 
