@@ -11,6 +11,8 @@
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/assign_groups.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/calculate_power_t2error.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/calculate_t1_error.html</loc></url>
+<url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/dot-onLoad.html</loc></url>
+<url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/dot-set_options_helper.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/index.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/ordinal_tests.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/ordinalsimr-package.html</loc></url>
@@ -20,6 +22,7 @@
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/plot_power.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/run_app.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/run_simulations.html</loc></url>
+<url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/set_ordinalsimr_options.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/simulation_data_one_group.html</loc></url>
 <url><loc>https://neuroshepherd.github.io/ordinalsimr/reference/simulation_data_two_groups.html</loc></url>
 </urlset>
