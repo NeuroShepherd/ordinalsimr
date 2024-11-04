@@ -17,6 +17,7 @@ reference:
   - title: Helper Functions
     desc: Constructors and utility functions
     contents:
+    - set_ordinalsimr_options
     - ordinal_tests
     - plot_distribution_results
     - plot_power

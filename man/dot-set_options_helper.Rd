@@ -19,3 +19,4 @@ invisible
 \description{
 Set Option Helper
 }
+\keyword{internal}

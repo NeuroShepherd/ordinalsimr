@@ -8,6 +8,7 @@
 #' @param pkgname package
 #'
 #' @return invisible
+#' @keywords internal
 #'
 .onLoad <- function(libname, pkgname) {
 

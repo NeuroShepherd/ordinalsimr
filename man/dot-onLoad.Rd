@@ -17,3 +17,4 @@ invisible
 \description{
 This function is called when the package is loaded. It sets the default options for the package.
 }
+\keyword{internal}

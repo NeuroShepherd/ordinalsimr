@@ -6,6 +6,7 @@
 #' @param additional_msg additional message to print after setting the option
 #'
 #' @return invisible
+#' @keywords internal
 #'
 .set_options_helper <- function(option_name, value, additional_msg = NULL) {
 
