@@ -1,0 +1,43 @@
+---
+title: "report"
+author: "(My Report)"
+date: "2024-06-17"
+output: pdf_document
+params:
+  params_list: !r NULL
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  message = FALSE,
+  warning = FALSE
+  )
+
+if (is.null(params$params_list)) {
+  try({
+    ordinalsimr_data <- readRDS("ordinalsimr_results.rds")
+    unlockBinding("params", env = .GlobalEnv)
+    params <- list()
+    params$data_object <- ordinalsimr_data$comparison_data$distribution_plot
+  })
+}
+
+```
+
+## R Markdown
+
+```{r, fig.width=12, fig.height=6}
+params$data_object +
+  theme(
+    legend.text = element_text(size = 8),
+    legend.title = element_text(size = 10, face = "bold")
+  )
+```
+
+
+```{r}
+params$rng_info
+```
+
+
