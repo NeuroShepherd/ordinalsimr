@@ -50,13 +50,17 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
     })
 
 
+    download_counter_zip <- reactiveVal(1)
     output$download_report <-  downloadHandler(
         filename = function() {
-          paste("output", "zip", sep=".")
+          paste0("ordinalsimr_session_", strtrim(session$token, 8),
+                 "_download_", download_counter_zip(),
+                 ".zip")
         },
         content = function(file) {
 
-          output_folder <- file.path("ordinalsimr_temp_zip_output")
+          output_folder <- file.path(paste0("ordinalsimr_session_", strtrim(session$token, 8),
+                                            "_download_", download_counter_zip()))
           dir.create(output_folder, showWarnings = FALSE)
 
           write(
@@ -85,6 +89,8 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
             )
 
           unlink(output_folder, recursive = TRUE, force = TRUE)
+
+          download_counter_zip(download_counter_zip() + 1)
 
         },
         contentType = "application/zip"
