@@ -56,15 +56,35 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
         },
         content = function(file) {
 
-          write(custom_report(), file.path(tempdir(), "report.html"))
-          # write other files to the archive here
-          # write( , file.path(tempdir(), ""))
+          output_folder <- file.path("ordinalsimr_output")
+          dir.create(output_folder, showWarnings = FALSE)
+
+          write(
+            custom_report(),
+            file.path(output_folder, "completed_report.html")
+            )
+          saveRDS(
+            formatted_data(),
+            file.path(output_folder, "ordinalsimr_results.rds")
+            )
+          write(
+            readLines(system.file("report_template_prefilled.Rmd", package = "ordinalsimr")),
+            file.path(output_folder, "report_template_prefilled.Rmd")
+            )
+
+          zip_files <- c(
+            file.path(output_folder, "completed_report.html"),
+            file.path(output_folder, "ordinalsimr_results.rds"),
+            file.path(output_folder, "report_template_prefilled.Rmd")
+          )
 
           zip(
             zipfile = file,
-            files = c(file.path(tempdir(), "report.html")),
-            flags = '-r9Xb'
+            files = zip_files
+            # flags = '-r9Xb'
             )
+
+          unlink(output_folder, recursive = TRUE, force = TRUE)
 
         },
         contentType = "application/zip"
