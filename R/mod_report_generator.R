@@ -56,7 +56,7 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
         },
         content = function(file) {
 
-          output_folder <- file.path("ordinalsimr_output")
+          output_folder <- file.path("ordinalsimr_temp_zip_output")
           dir.create(output_folder, showWarnings = FALSE)
 
           write(
