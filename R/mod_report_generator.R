@@ -87,7 +87,7 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
             )
 
           try({
-            zip(
+            utils::zip(
               zipfile = file,
               files = zip_files
               # flags = '-r9Xb'
