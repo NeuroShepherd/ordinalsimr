@@ -10,7 +10,6 @@
 mod_report_generator_ui <- function(id) {
   ns <- NS(id)
   list(
-    update_report = actionButton(ns("update_report"), "Update Report"),
     download_report = downloadButton(ns("download_report"), "Download Report"),
     rendered_report = fluidPage(uiOutput(ns("rendered_report")))
   )
@@ -23,8 +22,7 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
-    custom_report <- eventReactive(input$update_report, {
+    custom_report <- reactive({
       HTML(
         readLines(
           rmarkdown::render(
@@ -63,33 +61,40 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
                                             "_download_", download_counter_zip()))
           dir.create(output_folder, showWarnings = FALSE)
 
-          write(
-            custom_report(),
-            file.path(output_folder, "completed_report.html")
+          try({
+            write(
+              custom_report(),
+              file.path(output_folder, "completed_report.html")
             )
-          saveRDS(
-            formatted_data(),
-            file.path(output_folder, "ordinalsimr_results.rds")
+          })
+          try({
+            saveRDS(
+              formatted_data(),
+              file.path(output_folder, "ordinalsimr_results.rds")
             )
-          write(
-            readLines(system.file("report_template_prefilled.Rmd", package = "ordinalsimr")),
-            file.path(output_folder, "report_template_prefilled.Rmd")
+          })
+          try({
+            write(
+              readLines(system.file("report_template_prefilled.Rmd", package = "ordinalsimr")),
+              file.path(output_folder, "report_template_prefilled.Rmd")
+            )
+          })
+
+            zip_files <- c(
+              file.path(output_folder, "completed_report.html"),
+              file.path(output_folder, "ordinalsimr_results.rds"),
+              file.path(output_folder, "report_template_prefilled.Rmd")
             )
 
-          zip_files <- c(
-            file.path(output_folder, "completed_report.html"),
-            file.path(output_folder, "ordinalsimr_results.rds"),
-            file.path(output_folder, "report_template_prefilled.Rmd")
-          )
-
-          zip(
-            zipfile = file,
-            files = zip_files
-            # flags = '-r9Xb'
+          try({
+            zip(
+              zipfile = file,
+              files = zip_files
+              # flags = '-r9Xb'
             )
+          })
 
           unlink(output_folder, recursive = TRUE, force = TRUE)
-
           download_counter_zip(download_counter_zip() + 1)
 
         },
