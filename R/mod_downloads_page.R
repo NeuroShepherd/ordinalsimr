@@ -21,7 +21,6 @@ mod_downloads_page_ui <- function(id) {
         ),
         fill = FALSE,
         h6("Report Generation"),
-        mod_report_generator_ui("report_generator_1")[["update_report"]],
         mod_report_generator_ui("report_generator_1")[["download_report"]],
         h6("Download Raw Data"),
         mod_save_data_ui("save_data_1")[["save_rds"]],
