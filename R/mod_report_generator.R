@@ -30,7 +30,20 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
             quiet = TRUE,
             output_format = rmarkdown::html_fragment(),
             params = list(
-              data_object = formatted_data()$comparison_data$distribution_plot,
+              from_shiny_app = TRUE,
+              comparison_data = list(
+                run_info = formatted_data()$comparison_data$run_info,
+                distribution_statistics = formatted_data()$comparison_data$distribution_statistics,
+                distribution_plot = formatted_data()$comparison_data$distribution_plot
+                ),
+              group1_data = list(
+                run_info = formatted_data()$group1_data$run_info,
+                group1_t1error = formatted_data()$group1_data$group1_t1error
+              ),
+              group2_data = list(
+                run_info = formatted_data()$group2_data$run_info,
+                group2_t1error = formatted_data()$group2_data$group2_t1error
+              ),
               rng_info = list(
                 rng_info$rng_kind(),
                 rng_info$rng_normal_kind(),
@@ -75,15 +88,15 @@ mod_report_generator_server <- function(id, formatted_data, rng_info) {
           })
           try({
             write(
-              readLines(system.file("report_template_prefilled.Rmd", package = "ordinalsimr")),
-              file.path(output_folder, "report_template_prefilled.Rmd")
+              readLines(system.file("report_template.Rmd", package = "ordinalsimr")),
+              file.path(output_folder, "report_template.Rmd")
             )
           })
 
             zip_files <- c(
               file.path(output_folder, "completed_report.html"),
               file.path(output_folder, "ordinalsimr_results.rds"),
-              file.path(output_folder, "report_template_prefilled.Rmd")
+              file.path(output_folder, "report_template.Rmd")
             )
 
           try({
