@@ -8,6 +8,7 @@
 #' @importFrom rhandsontable rHandsontableOutput
 #' @importFrom rlang :=
 #' @importFrom rlang .data
+#' @importFrom utils zip
 ## usethis namespace: end
 NULL
 
