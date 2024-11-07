@@ -15,7 +15,7 @@
       options( rlang::list2({{option_name}} := value))
 
       if (is.null(value)) {
-        value <- "NULL"
+        NULL
       }
 
       message("Setting ", option_name, " to ", as.character(value))
