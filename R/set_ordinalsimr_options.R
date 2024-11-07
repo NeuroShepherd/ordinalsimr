@@ -12,7 +12,7 @@
 
   tryCatch(
     expr = {
-      options(option_name = value)
+      options( rlang::list2({{option_name}} := value))
 
       if (is.null(value)) {
         value <- "NULL"
@@ -87,5 +87,25 @@ set_ordinalsimr_options <- function(
 }
 
 
+
+#' Get ordinalsimr options
+#'
+#' Returns all of the ordinalsimr options to the console.
+#'
+#' @return list of ordinalsimr options
+#' @export
+#'
+#' @examples
+#' get_ordinalsimr_options()
+get_ordinalsimr_options <- function() {
+
+  options("ordinalsimr.default_iterations",
+          "ordinalsimr.default_size_min",
+          "ordinalsimr.default_size_max",
+          "ordinalsimr.default_ratio",
+          "ordinalsimr.default_distributions",
+          "ordinalsimr.default_entry_rows")
+
+}
 
 
