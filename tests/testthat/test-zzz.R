@@ -16,7 +16,7 @@ test_that("test .onLoad", {
 
 
     pkgload::load_all()
-    ordinalsimr_opts_postload <- ordinalsimr::get_ordinalsimr_options()
+    ordinalsimr_opts_postload <- get_ordinalsimr_options()
 
     return(
       list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
