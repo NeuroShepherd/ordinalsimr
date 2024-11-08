@@ -15,8 +15,10 @@ test_that("test .onLoad", {
 
 
 
-  if (is_chk && not_cran) {
-    print("Condition is_chk and !not_cran")
+  if (!not_cran) {
+    skip_on_cran()
+    } else if (is_chk && not_cran) {
+    print("Condition not_cran")
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
         purrr::set_names() |>
@@ -51,7 +53,7 @@ test_that("test .onLoad", {
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
-  } else {
+  } else if(!is_chk && not_cran) {
 
     print("Any other condition")
 
