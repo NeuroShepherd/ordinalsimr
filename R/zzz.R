@@ -14,12 +14,10 @@
 
   op <- options()
   op.ordinalsimr <- list(
-    list(
       ordinalsimr.default_iterations = 1000,
       ordinalsimr.default_size_min = 30,
       ordinalsimr.default_size_max = 200,
       ordinalsimr.default_ratio = "50:50"
-      )
   )
 
   toset <- !(names(op.ordinalsimr) %in% names(op))
