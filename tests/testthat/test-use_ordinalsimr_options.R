@@ -54,7 +54,6 @@ test_that("check that set_ordinalsimr_options() works", {
     # get options
     options <- get_ordinalsimr_options()
 
-    print(options)
 
     # check options
     expect_true(is.list(options))
@@ -106,19 +105,21 @@ test_that("check that set_ordinalsimr_options() works", {
 
 test_that("check that .set_options_helper() works", {
 
-  .set_options_helper("ordinalsimr.default_iterations", 1000)
-  expect_equal(get_ordinalsimr_options()$ordinalsimr.default_iterations, 1000)
+  suppressMessages({
+    .set_options_helper("ordinalsimr.default_iterations", 1000)
+    expect_equal(get_ordinalsimr_options()$ordinalsimr.default_iterations, 1000)
 
-  .set_options_helper("ordinalsimr.default_iterations", NULL)
-  expect_equal(get_ordinalsimr_options()$ordinalsimr.default_iterations, NULL)
+    .set_options_helper("ordinalsimr.default_iterations", NULL)
+    expect_equal(get_ordinalsimr_options()$ordinalsimr.default_iterations, NULL)
 
 
-  expect_invisible(.set_options_helper(rvafve, 1000))
+    expect_invisible(.set_options_helper(rvafve, 1000))
 
-  suppressMessages(expect_message(
-    .set_options_helper("ordinalsimr.default_size_min", 10,
-                        "The ordinalsimr.default_size_min option has been set to 10.")
-    ))
+    expect_message(
+      .set_options_helper("ordinalsimr.default_size_min", 10,
+                          "The ordinalsimr.default_size_min option has been set to 10.")
+      )
+  })
 
 })
 
