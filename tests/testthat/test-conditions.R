@@ -16,10 +16,10 @@ test_that("figure out how to do conditions right", {
 
   if (is_chk) {
     print("using library()")
-    library("ordinalsimr")
+    callr::r( function() {library("ordinalsimr")})
   } else if (!is_chk) {
     print("using load_all()")
-    pkgload::load_all()
+    callr::r( function() {pkgload::load_all()})
   }
 
 
