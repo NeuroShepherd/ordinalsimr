@@ -99,12 +99,14 @@ set_ordinalsimr_options <- function(
 #' get_ordinalsimr_options()
 get_ordinalsimr_options <- function() {
 
-  options("ordinalsimr.default_iterations",
-          "ordinalsimr.default_size_min",
-          "ordinalsimr.default_size_max",
-          "ordinalsimr.default_ratio",
-          "ordinalsimr.default_distributions",
-          "ordinalsimr.default_entry_rows")
+  c("ordinalsimr.default_iterations",
+    "ordinalsimr.default_size_min",
+    "ordinalsimr.default_size_max",
+    "ordinalsimr.default_ratio",
+    "ordinalsimr.default_distributions",
+    "ordinalsimr.default_entry_rows") %>%
+  setNames(., .) %>%
+  lapply(function(x) getOption(x))
 
 }
 
