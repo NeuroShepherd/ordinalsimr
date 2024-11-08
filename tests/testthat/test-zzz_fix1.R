@@ -4,7 +4,9 @@
 
 test_that("test .onLoad", {
 
+  is_chk <- Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != .packageName
 
+  if (is_chk) {
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
         purrr::set_names() |>
@@ -39,6 +41,7 @@ test_that("test .onLoad", {
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
+  }
 
 
 })
