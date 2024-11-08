@@ -1,7 +1,7 @@
 
 # potentially need an option to skip CRAN testin
 # if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
-# testthat::skip_on_cran()
+testthat::skip_on_cran()
 
 
 # use callr package to test the behavvior of .onLoad
@@ -16,7 +16,10 @@ test_that("test .onLoad", {
 
 
     pkgload::load_all()
-    ordinalsimr_opts_postload <- get_ordinalsimr_options()
+
+    ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+      purrr::set_names() |>
+      purrr::map(~getOption(.x))
 
     return(
       list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
