@@ -63,7 +63,7 @@ test_that("test .onLoad", {
         purrr::map(~getOption(.x))
 
 
-      devtools::load_all()
+      pkgload::load_all()
       ordinalsimr:::.onLoad()
 
       ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
