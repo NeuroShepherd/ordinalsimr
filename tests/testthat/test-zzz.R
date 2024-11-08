@@ -33,19 +33,17 @@ test_that("test .onLoad", {
 
   # check that options exist after loading the package
   expect_named(indep_session$ordinalsimr_opts_postload, c('ordinalsimr.default_iterations',
-                                                          'ordinalsimr.default_size_min',
-                                                          'ordinalsimr.default_size_max',
                                                           'ordinalsimr.default_ratio',
-                                                          'ordinalsimr.default_distributions',
-                                                          'ordinalsimr.default_entry_rows'))
-  expect_length(indep_session$ordinalsimr_opts_postload, 6)
+                                                          'ordinalsimr.default_size_max',
+                                                          'ordinalsimr.default_size_min'
+                                                          ))
+  expect_length(indep_session$ordinalsimr_opts_postload, 4)
 
   expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_iterations, 1000)
   expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
   expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
   expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
-  expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_distributions, NULL)
-  expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_entry_rows, NULL)
+
 
 
 })
