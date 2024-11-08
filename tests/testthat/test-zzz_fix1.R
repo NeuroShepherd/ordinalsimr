@@ -4,7 +4,7 @@
 
 test_that("test .onLoad", {
 
-  is_chk <- Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") != .packageName
+  is_chk <- Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") == .packageName
   not_cran <- Sys.getenv("NOT_CRAN") == "true"
 
   print(paste(".packageName is", .packageName))
@@ -13,7 +13,10 @@ test_that("test .onLoad", {
   print(paste("is_chk is", is_chk))
   print(paste("not_cran is", not_cran))
 
-  if (is_chk && !not_cran) {
+
+
+  if (is_chk && not_cran) {
+    print("Condition is_chk and !not_cran")
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
         purrr::set_names() |>
@@ -50,6 +53,7 @@ test_that("test .onLoad", {
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
   } else {
 
+    print("Any other condition")
 
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
