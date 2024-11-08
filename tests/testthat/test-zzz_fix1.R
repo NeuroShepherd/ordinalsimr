@@ -28,7 +28,7 @@ test_that("test .onLoad", {
       list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
            ordinalsimr_opts_postload = ordinalsimr_opts_postload))
   })
-  }
+
 
 
   # check that the options are empty on starting R
@@ -47,6 +47,6 @@ test_that("test .onLoad", {
   expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
   expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
 
-
+}
 
 })
