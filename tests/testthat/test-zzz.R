@@ -1,7 +1,7 @@
 
 # potentially need an option to skip CRAN testin
 # if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
-testthat::skip_on_cran()
+# testthat::skip_on_cran()
 
 
 # use callr package to test the behavvior of .onLoad
