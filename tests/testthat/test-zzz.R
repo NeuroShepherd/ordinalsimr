@@ -1,6 +1,7 @@
 
 
 skip_on_covr()
+skip_on_cran()
 
 test_that("test .onLoad", {
 
@@ -15,9 +16,7 @@ test_that("test .onLoad", {
 
 
 
-  if (!not_cran) {
-    skip_on_cran()
-    } else if (is_chk) {
+  if (is_chk) {
 
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
