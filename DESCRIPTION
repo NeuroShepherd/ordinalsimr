@@ -39,6 +39,8 @@ BugReports: https://github.com/NeuroShepherd/ordinalsimr/issues
 Suggests: 
     callr,
     knitr,
+    pkgload,
+    purrr,
     rmarkdown,
     testthat (>= 3.0.0),
     writexl

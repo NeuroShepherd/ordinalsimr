@@ -1,51 +1,98 @@
 
-# potentially need an option to skip CRAN testin
-# if (!identical(Sys.getenv("NOT_CRAN"), "true")) return()
-testthat::skip_on_cran()
 
-
-# use callr package to test the behavvior of .onLoad
-# https://forum.posit.co/t/executing-onload-in-different-test-instances/181269/2
+skip_on_covr()
+skip_on_cran()
 
 test_that("test .onLoad", {
 
-  indep_session <- callr::r(function() {
-    ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
-      purrr::set_names() |>
-      purrr::map(~getOption(.x))
+  is_chk <- Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") == .packageName
+  not_cran <- Sys.getenv("NOT_CRAN") == "true"
+
+  print(paste(".packageName is", .packageName))
+  print(paste("_R_CHECK_PACKAGE_NAME_ is", Sys.getenv("_R_CHECK_PACKAGE_NAME_", "")))
+  print(paste("NOT_CRAN is", Sys.getenv("NOT_CRAN")))
+  print(paste("is_chk is", is_chk))
+  print(paste("not_cran is", not_cran))
 
 
-    pkgload::load_all()
 
-    ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
-      purrr::set_names() |>
-      purrr::map(~getOption(.x))
+  if (is_chk) {
 
-    return(
-      list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
-           ordinalsimr_opts_postload = ordinalsimr_opts_postload))
+    indep_session <- callr::r(function() {
+      ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+        purrr::set_names() |>
+        purrr::map(~getOption(.x))
+
+
+      library(ordinalsimr)
+
+      ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+        purrr::set_names() |>
+        purrr::map(~getOption(.x))
+
+      return(
+        list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
+             ordinalsimr_opts_postload = ordinalsimr_opts_postload))
     })
 
 
 
-  # check that the options are empty on starting R
-  expect_length(indep_session$ordinalsimr_opts_preload, 0)
+    # check that the options are empty on starting R
+    expect_length(indep_session$ordinalsimr_opts_preload, 0)
 
-  # check that options exist after loading the package
-  expect_named(indep_session$ordinalsimr_opts_postload, c('ordinalsimr.default_iterations',
-                                                          'ordinalsimr.default_ratio',
-                                                          'ordinalsimr.default_size_max',
-                                                          'ordinalsimr.default_size_min'
-                                                          ))
-  expect_length(indep_session$ordinalsimr_opts_postload, 4)
+    # check that options exist after loading the package
+    expect_named(indep_session$ordinalsimr_opts_postload, c('ordinalsimr.default_iterations',
+                                                            'ordinalsimr.default_ratio',
+                                                            'ordinalsimr.default_size_max',
+                                                            'ordinalsimr.default_size_min'
+    ))
+    expect_length(indep_session$ordinalsimr_opts_postload, 4)
 
-  expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_iterations, 1000)
-  expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
-  expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
-  expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_iterations, 1000)
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
+  } else if(!is_chk) {
 
+    print("Any other condition")
+
+    indep_session <- callr::r(function() {
+      ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+        purrr::set_names() |>
+        purrr::map(~getOption(.x))
+
+
+      pkgload::load_all()
+      ordinalsimr:::.onLoad()
+
+      ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+        purrr::set_names() |>
+        purrr::map(~getOption(.x))
+
+      return(
+        list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
+             ordinalsimr_opts_postload = ordinalsimr_opts_postload))
+    })
+
+
+
+    # check that the options are empty on starting R
+    expect_length(indep_session$ordinalsimr_opts_preload, 0)
+
+    # check that options exist after loading the package
+    expect_named(indep_session$ordinalsimr_opts_postload, c('ordinalsimr.default_iterations',
+                                                            'ordinalsimr.default_ratio',
+                                                            'ordinalsimr.default_size_max',
+                                                            'ordinalsimr.default_size_min'
+    ))
+    expect_length(indep_session$ordinalsimr_opts_postload, 4)
+
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_iterations, 1000)
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
+    expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
+
+  }
 
 
 })
-
-
