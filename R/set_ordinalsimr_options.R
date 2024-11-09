@@ -105,7 +105,7 @@ get_ordinalsimr_options <- function() {
     "ordinalsimr.default_ratio",
     "ordinalsimr.default_distributions",
     "ordinalsimr.default_entry_rows") %>%
-  setNames(., .) %>%
+  stats::setNames(., .) %>%
   lapply(function(x) getOption(x))
 
 }
