@@ -1,6 +1,6 @@
 
 
-
+skip_on_covr()
 
 test_that("test .onLoad", {
 
