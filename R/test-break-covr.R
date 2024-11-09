@@ -9,13 +9,16 @@ test_that("test R_COVR env var", {
 
   if (testthat:::in_covr()) {
 
-    print("using load_all()")
-    pkgload::load_all()
+    callr::r(function() {
 
-    print("using library()")
-    # library(ordinalsimr)
+      print("using load_all()")
+      pkgload::load_all()
 
-  }
+      print("using library()")
+      library(ordinalsimr)
+
+    })
+    }
 
 
 })
