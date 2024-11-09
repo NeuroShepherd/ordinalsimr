@@ -13,7 +13,7 @@ test_that("test R_COVR env var", {
     pkgload::load_all()
 
     print("using library()")
-    library(ordinalsimr)
+    # library(ordinalsimr)
 
   }
 
