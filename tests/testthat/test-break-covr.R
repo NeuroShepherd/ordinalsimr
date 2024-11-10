@@ -24,7 +24,8 @@ test_that("test R_COVR env var", {
 
       return(
         list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
-             ordinalsimr_opts_postload = ordinalsimr_opts_postload))
+             ordinalsimr_opts_postload = ordinalsimr_opts_postload,
+             all_opts = options()))
 
 
     })
