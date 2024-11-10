@@ -15,6 +15,7 @@ test_that("test .onLoad", {
 
 
       library(ordinalsimr)
+      ordinalsimr:::.onLoad()
 
       ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
         purrr::set_names() |>
