@@ -1,22 +1,12 @@
 
 
-skip_on_covr()
 skip_on_cran()
 
 test_that("test .onLoad", {
 
-  is_chk <- Sys.getenv("_R_CHECK_PACKAGE_NAME_", "") == .packageName
-  not_cran <- Sys.getenv("NOT_CRAN") == "true"
-
-  print(paste(".packageName is", .packageName))
-  print(paste("_R_CHECK_PACKAGE_NAME_ is", Sys.getenv("_R_CHECK_PACKAGE_NAME_", "")))
-  print(paste("NOT_CRAN is", Sys.getenv("NOT_CRAN")))
-  print(paste("is_chk is", is_chk))
-  print(paste("not_cran is", not_cran))
 
 
-
-  if (is_chk) {
+  if (testthat:::in_rcmd_check() || testthat:::in_covr()) {
 
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
@@ -52,9 +42,8 @@ test_that("test .onLoad", {
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
-  } else if(!is_chk) {
+  } else if(!testthat:::in_rcmd_check()) {
 
-    print("Any other condition")
 
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
