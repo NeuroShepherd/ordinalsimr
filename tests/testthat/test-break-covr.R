@@ -15,8 +15,8 @@ test_that("test R_COVR env var", {
         purrr::set_names() |>
         purrr::map(~getOption(.x))
 
-      print("using load_all()")
-      pkgload::load_all()
+      print("using library()")
+      library("ordinalsimr")
 
       ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
         purrr::set_names() |>
