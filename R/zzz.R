@@ -10,7 +10,7 @@
 #' @return invisible
 #' @keywords internal
 #'
-.onLoad <- function(libname, pkgname) { # nocov start
+.onLoad <- function(libname, pkgname) {
 
   op <- options()
   op.ordinalsimr <- list(
@@ -25,4 +25,4 @@
 
   invisible()
 
-} # nocov end
+}

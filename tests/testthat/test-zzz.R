@@ -1,6 +1,5 @@
 
 
-skip_on_covr()
 skip_on_cran()
 
 test_that("test .onLoad", {
@@ -16,7 +15,7 @@ test_that("test .onLoad", {
 
 
 
-  if (is_chk) {
+  if (testthat:::in_rcmd_check() || testthat:::in_covr()) {
 
     indep_session <- callr::r(function() {
       ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
@@ -52,7 +51,7 @@ test_that("test .onLoad", {
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_min, 30)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_size_max, 200)
     expect_equal(indep_session$ordinalsimr_opts_postload$ordinalsimr.default_ratio, "50:50")
-  } else if(!is_chk) {
+  } else if(!testthat:::in_rcmd_check()) {
 
     print("Any other condition")
 

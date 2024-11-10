@@ -30,10 +30,10 @@ test_that("test R_COVR env var", {
 
     })
 
-  }
+    print(opts)
+    expect_length(opts$ordinalsimr_opts_preload, 0)
 
-  print(opts)
-  expect_length(opts$ordinalsimr_opts_preload, 0)
+  }
 
 
 
