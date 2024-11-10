@@ -21,7 +21,7 @@
   )
 
   toset <- !(names(op.ordinalsimr) %in% names(op))
-  if (any(toset)) options(op.ordinalsimr[toset])
+  if (any(toset)) options(op.ordinalsimr[toset]) # nocov
 
   invisible()
 
