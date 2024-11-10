@@ -9,16 +9,33 @@ test_that("test R_COVR env var", {
 
   if (testthat:::in_covr()) {
 
-    callr::r(function() {
+    opts <- callr::r(function() {
+
+      ordinalsimr_opts_preload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+        purrr::set_names() |>
+        purrr::map(~getOption(.x))
 
       print("using load_all()")
       pkgload::load_all()
 
-      print("using library()")
-      library(ordinalsimr)
+      ordinalsimr_opts_postload <- grep("ordinalsimr.", names(options()), value = TRUE) |>
+        purrr::set_names() |>
+        purrr::map(~getOption(.x))
+
+      return(
+        list(ordinalsimr_opts_preload = ordinalsimr_opts_preload,
+             ordinalsimr_opts_postload = ordinalsimr_opts_postload))
+
 
     })
-    }
+
+  }
+
+  print(opts)
+  expect_length(opts$ordinalsimr_opts_preload, 0)
+
+
+
 
 
 })
