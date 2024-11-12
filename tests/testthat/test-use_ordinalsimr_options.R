@@ -105,21 +105,37 @@ test_that("check that set_ordinalsimr_options() works", {
 
 test_that("check that .set_options_helper() works", {
 
-  suppressMessages({
+  option_sets <- callr::r(function() {
+    try(library(ordinalsimr))
+    try(pkgload::load_all())
+
+    opts <- list()
     .set_options_helper("ordinalsimr.default_iterations", 1000)
-    expect_equal(get_ordinalsimr_options()$ordinalsimr.default_iterations, 1000)
-
+    opts[["ordinalsimr.default_iterations1"]] <- getOption("ordinalsimr.default_iterations")
     .set_options_helper("ordinalsimr.default_iterations", NULL)
-    expect_equal(get_ordinalsimr_options()$ordinalsimr.default_iterations, NULL)
+    opts[["ordinalsimr.default_iterations2"]] <- getOption("ordinalsimr.default_iterations")
+
+    return(opts)
+  })
 
 
-    expect_invisible(.set_options_helper(rvafve, 1000))
+  expect_equal(option_sets$ordinalsimr.default_iterations1, 1000)
+  expect_equal(option_sets$ordinalsimr.default_iterations2, NULL)
 
+
+  suppressMessages({
+
+    opts <- options()
     expect_message(
       .set_options_helper("ordinalsimr.default_size_min", 10,
                           "The ordinalsimr.default_size_min option has been set to 10.")
-      )
+    )
+    options(opts)
+
   })
+
+  expect_invisible(.set_options_helper(rvafve, 1000))
+
 
 })
 
