@@ -64,3 +64,29 @@ test_that("test the plot_power() function", {
 
 
 })
+
+
+
+#### PLOT TESTS
+
+plot_obj <- simulation_data_two_groups %>%
+  select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
+  plot_distribution_results()
+
+test_that("test the plot_distribution_results() function labels", {
+
+  expect_equal(plot_obj$labels$x, "Sample Size")
+  expect_equal(plot_obj$labels$y, "Power (1-\U03B2)")
+  expect_equal(plot_obj$labels$title, "Estimated Power")
+  expect_equal(plot_obj$labels$colour, "Statistical Test")
+  expect_equal(plot_obj$labels$ymin, "lower_power_bound")
+  expect_equal(plot_obj$labels$ymax, "upper_power_bound")
+
+})
+
+
+test_that("test the plot_distribution_results() function data", {
+
+
+
+})
