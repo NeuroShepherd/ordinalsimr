@@ -1,10 +1,10 @@
 Package: ordinalsimr
-Title: Ordinal Endpoint Comparisons
-Version: 0.0.0.9003
+Title: Compare ordinal endpoints using simulations of different statistical tests. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included Shiny applications allows users to simulate outcomes given different ordinal data distributions.
+Version: 0.0.0.9004
 Authors@R: 
     person(given = "Pat",
            family = "Callahan",
-           role = c("aut", "cre"),
+           role = c("aut", "cre", "cph"),
            email = "patricktcallahan18@gmail.com",
            comment = c(ORCID = "0000-0003-1769-7580"))
 Description: Simultaneously evaluate multiple ordinal outcome measures.
@@ -46,5 +46,5 @@ Suggests:
     writexl
 Config/testthat/edition: 3
 Depends: 
-    R (>= 3.5.10)
+    R (>= 4.4.0)
 VignetteBuilder: knitr
