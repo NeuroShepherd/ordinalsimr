@@ -140,7 +140,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
   levels <- df %>%
-    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
+    pivot_longer(cols = all_of("sample_size"), names_to = "test_name") %>%
     group_by(.data[["test_name"]]) %>%
     summarize(
       mean = mean(.data[["value"]], na.rm = T)
@@ -149,9 +149,9 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     pull(.data[["test_name"]])
 
   df %>%
-    pivot_longer(cols = -.data$sample_size, names_to = "test_name") %>%
+    pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
     mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    group_by(.data$sample_size, .data$test_name) %>%
+    group_by(-.data[["sample_size"]], .data$test_name) %>%
     summarise(value = mean(.data$value)) %>%
     {
       ggplot(., aes(
