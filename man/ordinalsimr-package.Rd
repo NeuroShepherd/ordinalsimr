@@ -4,9 +4,9 @@
 \name{ordinalsimr-package}
 \alias{ordinalsimr}
 \alias{ordinalsimr-package}
-\title{ordinalsimr: Ordinal Endpoint Comparisons}
+\title{ordinalsimr: Compare Ordinal Endpoints Esing Simulations}
 \description{
-Simultaneously evaluate multiple ordinal outcome measures.
+Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included Shiny applications allows users to simulate outcomes given different ordinal data distributions.
 }
 \seealso{
 Useful links:
@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Pat Callahan \email{patricktcallahan18@gmail.com} (\href{https://orcid.org/0000-0003-1769-7580}{ORCID})
+\strong{Maintainer}: Pat Callahan \email{patricktcallahan18@gmail.com} (\href{https://orcid.org/0000-0003-1769-7580}{ORCID}) [copyright holder]
 
 }
 \keyword{internal}
