@@ -1,4 +1,4 @@
-# ordinalsimr (development version)
+# ordinalsimr 0.1.0
 
 * Significantly refined the UI
 * Allowed more options for pre-setting simulation inputs, created a .onLoad to set some of these values, and created the `set_ordinalsimr_options` function to allow users to set these values themselves.
