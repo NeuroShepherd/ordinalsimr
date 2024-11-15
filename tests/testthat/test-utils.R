@@ -49,3 +49,47 @@ test_that("data object names are consistent", {
   expect_equal(names(simulation_data_two_groups), expected_col_names)
   expect_equal(names(simulation_data_one_group), expected_col_names)
 })
+
+
+
+#### PLOT TESTS
+
+
+
+test_that("test the plot_power() function", {
+
+  plot_obj <- simulation_data_two_groups %>%
+    select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
+    calculate_power_t2error() %>%
+    plot_power()
+
+
+  expect_match(plot_obj$labels$x, "Sample Size")
+  # expect_match(plot_obj$labels$y, "Power (1-\U03B2)")
+  expect_match(plot_obj$labels$title, "Estimated Power")
+  expect_match(plot_obj$labels$colour, "Statistical Test")
+  expect_match(plot_obj$labels$ymin, "lower_power_bound")
+  expect_match(plot_obj$labels$ymax, "upper_power_bound")
+
+
+
+})
+
+
+
+
+test_that("test the plot_distribution_results() function labels", {
+
+  plot_obj <- simulation_data_two_groups %>%
+    select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
+    plot_distribution_results()
+
+  expect_match(plot_obj$labels$x, "Sample Size")
+  expect_match(plot_obj$labels$y, "p-value")
+  expect_match(plot_obj$labels$colour, "Statistical Test")
+  expect_match(plot_obj$labels$title, "Mean p-value")
+
+
+})
+
+

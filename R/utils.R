@@ -109,14 +109,14 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
                 !!ci_label := paste0("[", round(lower_t1_bound, 3), ", ", round(upper_t1_bound, 3), "]")
               )
             },
-            error = function(e) {
+            error = function(e) { # nocov start
               tibble(
                 lower_t1_bound = NA_real_,
                 upper_t1_bound = NA_real_,
                 t1_error = NA_real_,
                 !!ci_label := NA_character_
               )
-            }
+            } # nocov end
           )
         }) %>%
           bind_rows(.id = "test")
@@ -159,8 +159,8 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
         y = .data[["value"]],
         color = .data[["test_name"]]
       )) +
-        geom_line(size = 2) +
-        geom_hline(yintercept = alpha, linetype = "dashed", size = 1.5) +
+        geom_line(linewidth = 2) +
+        geom_hline(yintercept = alpha, linetype = "dashed", linewidth = 1.5) +
         expand_limits(y = 0) +
         ggtitle("Mean p-value") +
         labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
@@ -204,8 +204,8 @@ plot_power <- function(df, power_threshold = 0.80) {
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
       color = .data[["test"]], fill = .data[["test"]]
     )) +
-    geom_line(size = 2) +
-    geom_hline(yintercept = power_threshold, linetype = "dashed", size = 1.5) +
+    geom_line(linewidth = 2) +
+    geom_hline(yintercept = power_threshold, linetype = "dashed", linewidth = 1.5) +
     expand_limits(y = c(0, 1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
