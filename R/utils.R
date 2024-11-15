@@ -109,14 +109,14 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
                 !!ci_label := paste0("[", round(lower_t1_bound, 3), ", ", round(upper_t1_bound, 3), "]")
               )
             },
-            error = function(e) {
+            error = function(e) { # nocov start
               tibble(
                 lower_t1_bound = NA_real_,
                 upper_t1_bound = NA_real_,
                 t1_error = NA_real_,
                 !!ci_label := NA_character_
               )
-            }
+            } # nocov end
           )
         }) %>%
           bind_rows(.id = "test")

@@ -78,18 +78,18 @@ test_that("test the plot_power() function", {
 
 
 
-# plot_obj <- simulation_data_two_groups %>%
-#   select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
-#   plot_distribution_results()
-#
-# test_that("test the plot_distribution_results() function labels", {
-#
-#
-# })
-#
-#
-# test_that("test the plot_distribution_results() function data", {
-#
-#
-#
-# })
+test_that("test the plot_distribution_results() function labels", {
+
+  plot_obj <- simulation_data_two_groups %>%
+    select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
+    plot_distribution_results()
+
+  expect_match(plot_obj$labels$x, "Sample Size")
+  expect_match(plot_obj$labels$y, "p-value")
+  expect_match(plot_obj$labels$colour, "Statistical Test")
+  expect_match(plot_obj$labels$title, "Mean p-value")
+
+
+})
+
+
