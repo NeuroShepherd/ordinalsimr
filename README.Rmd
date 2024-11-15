@@ -41,9 +41,8 @@ devtools::install_github(
 
 ## Recommendations
 
-The application is available at [link], but may be down due to account usage limitations on ShinyApps.io. There is not currently a plan to increase the usage limits so it is *strongly recommended that you run the application locally*. 
+Simulations with 1000s of iterations *will* take minutes to hours to run. This should generally be ok on the Shiny app, but if you encounter issues, consider running the simulations in a separate R session using the functions provided in this package (rather than the Shiny app).
 
-Informative progressive bars have not been implemented in the Shiny application, but a simulation that fails to run will almost always fail at the beginning rather than in the middle of the run. Simulations with 1000s of iterations *will* take minutes to hours to run.
 
 
 
