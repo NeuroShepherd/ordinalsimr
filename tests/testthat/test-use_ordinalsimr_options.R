@@ -41,8 +41,10 @@ test_that("get_ordinalsimr_options() returns a list of ordinalsimr options", {
 
 test_that("check that set_ordinalsimr_options() works", {
 
+  opts < options()
 
   suppressMessages({
+
     # set options
     set_ordinalsimr_options(default_iterations = 1000,
                             default_size_min = NULL,
@@ -98,6 +100,7 @@ test_that("check that set_ordinalsimr_options() works", {
   })
 
 
+  options(opts)
 
 })
 
