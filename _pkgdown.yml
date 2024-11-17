@@ -3,7 +3,7 @@ template:
   bootstrap: 5
 
 authors:
-  Pat Callahan
+  Pat Callahan:
     href: https://neuroshepherd.github.io/
 
 articles:
