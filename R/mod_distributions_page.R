@@ -24,7 +24,8 @@ mod_distributions_page_ui <- function(id) {
           h6("Confidence Intervals"),
           !!!mod_plot_distributions_ui("plot_distributions_1")[["ci_inputs"]],
           h6("Outlier Removal (Plot Only)"),
-          mod_plot_distributions_ui("plot_distributions_1")[["outlier_input"]]),
+          mod_plot_distributions_ui("plot_distributions_1")[["outlier_input"]]
+        ),
         nav_panel(
           title = "Power",
           mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["power_plot"]]

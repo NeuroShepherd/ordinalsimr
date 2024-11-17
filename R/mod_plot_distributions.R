@@ -174,7 +174,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
             alpha = p_val_threshold(),
             t1_error_confidence_int = input$t1_error_group1_confidence_int
           )
-        }
+      }
     })
     output$t1_error_group1 <- DT::renderDataTable({
       validate(
@@ -195,7 +195,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
 
     # GROUP 2 TYPE 1 ERROR
     group2_t1_reactive_table <- reactive({
-
       if (!is.null(p_value_table$group2_results())) {
         p_value_table$group2_results() %>%
           bind_rows() %>%
@@ -212,7 +211,6 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
             t1_error_confidence_int = input$t1_error_group2_confidence_int
           )
       }
-
     })
     output$t1_error_group2 <- DT::renderDataTable({
       validate(
