@@ -1,0 +1,101 @@
+---
+title: "{ordinalsimr} Options"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{set_options}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(ordinalsimr)
+```
+
+# Options
+
+If you're already familiar with the concept of options in R, you can skip this section and jump straight to the next one.
+
+## What are options?
+
+If you've never encountered the term "options" or the base R functions `options()`, `getOption()`, or, much less commonly, `.Options()` before, don't worry! Simply put, options are a way to customize the behavior of a function or package, and are typically used to control the appearance of output or the behavior of a function. A fresh, bare installation of R has several dozen default options such as the number of significant figures to be displayed; this specific option can be viewed with `getOption("digits")`, and a list of all options currently set can be viewed with `options()`.
+
+```{r}
+# the default value for R installations should be 7
+getOption("digits")
+
+# this number will be printed to 7 *significant* digits
+0.093573827689
+
+```
+
+
+You don't typically need to adjust options yourself because the pre-chosen values are supposed to reflect sensible defaults. However, if you find that you're frequently changing same setting over and over again, you might want to set an option to a different value. To change an option, you can use the `options()` function. Extending the previous note on significant figures, to change the number of digits displayed in significant notation, you can use `options(digits = 3)`.
+
+```{r}
+# change the number of significant digits to 3
+options(digits = 3)
+
+# this number will be printed to 3 *significant* digits because
+0.093573827689
+
+```
+
+
+# {ordinalsimr} Options
+
+The {ordinalsimr} package has a few options that you can set to customize the behavior of the package. In particular, these options will **alter behavior of the Shiny application only**. Other functions in the package will not be affected by these options, and you will still need to pass arguments to the functions to change their behavior.
+
+The options, their default values, and explanations are listed below.
+
+## Automatically Set Options
+
+These options are set automatically when the package is loaded. However, if you have set these options to different values, the package will respect your settings.
+
+* `ordinalsimr.default_iterations = 1000`: The default number of iterations to run in the simulation.
+* `ordinalsimr.default_size_min = 30`: The default minimum sample size for the simulation.
+* `ordinalsimr.default_size_max = 200`: The default maximum sample size for the simulation.
+* `ordinalsimr.default_ratio = "50:50"`: The default ratio of the two groups in the simulation.
+
+## Non-Required Options
+
+These options are not required to be set, but can be set to further customize the behavior of the Shiny application.
+
+* `ordinalsimr.default_entry_rows = NULL`: The default number of rows to display in the data entry table. If set to `NULL`, the application has a fallback value of 3 rows.
+* `ordinalsimr.default_distributions = NULL`: The default data set or distribution to use in the simulation. If set to `NULL`, the Shiny app will initialize with an empty data set. **This option overrides any value set for `ordinalsimr.default_entry_rows`.**
+
+
+## Setting and Getting Options
+
+To get or set options for the package, you can use the `options()` function as discussed in the first section of this vignette. For example, to set the default number of iterations to 500, you can use `options(ordinalsimr.default_iterations = 500)`.
+
+There are also two short-cut functions available for setting and getting options: `set_ordinalsimr_options()` and `get_ordinalsimr_options()`. These functions are wrappers around `options()` and are provided for convenience.
+
+```{r, eval=FALSE}
+# get all package options
+get_ordinalsimr_options()
+
+# set the default number of iterations to 500
+opt <- options()
+ordinalsimr::set_ordinalsimr_options(default_iterations = 500)
+
+# get the current value of the default number of iterations
+get_ordinalsimr_options("default_iterations")
+
+# reset options
+options(opt)
+```
+
+
+
+
+
+
+
+
