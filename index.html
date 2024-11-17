@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Ordinal Endpoint Comparisons • ordinalsimr</title>
+<title>Compare Ordinal Endpoints Esing Simulations • ordinalsimr</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Ordinal Endpoint Comparisons">
-<meta name="description" content="Simultaneously evaluate multiple ordinal outcome measures.">
-<meta property="og:description" content="Simultaneously evaluate multiple ordinal outcome measures.">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Compare Ordinal Endpoints Esing Simulations">
+<meta name="description" content="Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included Shiny applications allows users to simulate outcomes given different ordinal data distributions.">
+<meta property="og:description" content="Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included Shiny applications allows users to simulate outcomes given different ordinal data distributions.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ordinalsimr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,7 +36,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/coding-simulations.html">Coding Simulations</a></li>
+<li><a class="dropdown-item" href="articles/ordinalsimr-options.html">{ordinalsimr} Options</a></li>
+    <li><a class="dropdown-item" href="articles/coding-simulations.html">Coding Simulations</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -75,8 +76,7 @@
 <div class="section level2">
 <h2 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
 </h2>
-<p>The application is available at [link], but may be down due to account usage limitations on ShinyApps.io. There is not currently a plan to increase the usage limits so it is <em>strongly recommended that you run the application locally</em>.</p>
-<p>Informative progressive bars have not been implemented in the Shiny application, but a simulation that fails to run will almost always fail at the beginning rather than in the middle of the run. Simulations with 1000s of iterations <em>will</em> take minutes to hours to run.</p>
+<p>Simulations with 1000s of iterations <em>will</em> take minutes to hours to run. This should generally be ok on the Shiny app, but if you encounter issues, consider running the simulations in a separate R session using the functions provided in this package (rather than the Shiny app).</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -106,7 +106,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Pat Callahan <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1769-7580" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>
+<a href="https://neuroshepherd.github.io/" class="external-link">Pat Callahan</a> <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0003-1769-7580" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -125,7 +126,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Pat Callahan.</p>
+  <p>Developed by <a href="https://neuroshepherd.github.io/" class="external-link">Pat Callahan</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
