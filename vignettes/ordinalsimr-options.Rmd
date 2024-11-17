@@ -35,6 +35,7 @@ getOption("digits")
 
 ```
 
+## Changing Options
 
 You don't typically need to adjust options yourself because the pre-chosen values are supposed to reflect sensible defaults. However, if you find that you're frequently changing same setting over and over again, you might want to set an option to a different value. To change an option, you can use the `options()` function. Extending the previous note on significant figures, to change the number of digits displayed in significant notation, you can use `options(digits = 3)`.
 
@@ -71,7 +72,7 @@ These options are not required to be set, but can be set to further customize th
 * `ordinalsimr.default_distributions = NULL`: The default data set or distribution to use in the simulation. If set to `NULL`, the Shiny app will initialize with an empty data set. **This option overrides any value set for `ordinalsimr.default_entry_rows`.**
 
 
-## Setting and Getting Options
+## Setting and Getting {ordinalsimr} Options
 
 To get or set options for the package, you can use the `options()` function as discussed in the first section of this vignette. For example, to set the default number of iterations to 500, you can use `options(ordinalsimr.default_iterations = 500)`.
 
