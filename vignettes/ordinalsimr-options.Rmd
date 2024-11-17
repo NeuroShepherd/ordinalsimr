@@ -42,7 +42,7 @@ You don't typically need to adjust options yourself because the pre-chosen value
 # change the number of significant digits to 3
 options(digits = 3)
 
-# this number will be printed to 3 *significant* digits because
+# this number will be printed to 3 *significant* digits
 0.093573827689
 
 ```
@@ -83,7 +83,7 @@ get_ordinalsimr_options()
 
 # set the default number of iterations to 500
 opt <- options()
-ordinalsimr::set_ordinalsimr_options(default_iterations = 500)
+set_ordinalsimr_options(default_iterations = 500)
 
 # get the current value of the default number of iterations
 get_ordinalsimr_options("default_iterations")

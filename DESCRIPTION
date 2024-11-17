@@ -1,5 +1,5 @@
 Package: ordinalsimr
-Title: Compare Ordinal Endpoints Esing Simulations
+Title: Compare Ordinal Endpoints Using Simulations
 Version: 0.1.0
 Authors@R: 
     person(given = "Pat",
