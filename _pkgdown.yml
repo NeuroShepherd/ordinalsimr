@@ -7,12 +7,12 @@ authors:
     href: https://neuroshepherd.github.io/
 
 articles:
-  - title: Using {ordinalsimr}
-    navbar: ~
-    contents:
-      - ordinalsimr
-      - ordinalsimr-options
-      - coding-simulations
+- title: Using {ordinalsimr}
+  navbar: ~
+  contents:
+    - ordinalsimr
+    - ordinalsimr-options
+    - coding-simulations
 
 
 
