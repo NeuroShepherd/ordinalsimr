@@ -32,7 +32,6 @@ getOption("digits")
 
 # this number will be printed to 7 *significant* digits
 0.093573827689
-
 ```
 
 ## Changing Options
@@ -45,7 +44,6 @@ options(digits = 3)
 
 # this number will be printed to 3 *significant* digits
 0.093573827689
-
 ```
 
 
