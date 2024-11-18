@@ -15,9 +15,8 @@ mod_simulation_inputs_page_ui <- function(id) {
     layout_columns(
       fill = TRUE,
       fillable = TRUE,
-      col_widths = c(-1,10,-1,-1,10,-1),
+      col_widths = c(-1, 10, -1, -1, 10, -1),
       row_heights = c(9, 7),
-
       card(
         card_header("Data Entry", class = "bg-dark"),
         layout_sidebar(
@@ -37,29 +36,27 @@ mod_simulation_inputs_page_ui <- function(id) {
           "Core Inputs",
           card_title("Iterations, Samples, and Tests"),
           layout_column_wrap(
-            width = 1/3,
-              mod_iterations_ui("iterations_1"),
-              mod_sample_size_ui("sample_size_1"),
-              mod_sample_probabilities_ui("sample_probabilities_1")
+            width = 1 / 3,
+            mod_iterations_ui("iterations_1"),
+            mod_sample_size_ui("sample_size_1"),
+            mod_sample_probabilities_ui("sample_probabilities_1")
           ),
           layout_column_wrap(
             width = 1,
-              mod_select_tests_ui("select_tests_1")
-            )
+            mod_select_tests_ui("select_tests_1")
+          )
         ),
-
         nav_panel(
           "Type I Erorr",
           card_title("TI Error by Group"),
           mod_type_one_error_ui("type_one_error_1")
         ),
-
         nav_panel(
           "RNG Options",
           card_title("Advanced: Random Number Generator Adjustments"),
           markdown("These Random Number Generators are advanced options, and they use the default values employed by R as of version 4.4. Run `?RNGkind` in an R session to see the associated help file."),
           layout_column_wrap(
-            width = 1/3,
+            width = 1 / 3,
             !!!mod_rng_option_ui("rng_option_1")
           )
         )

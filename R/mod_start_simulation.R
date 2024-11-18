@@ -11,7 +11,7 @@ mod_start_simulation_ui <- function(id) {
   ns <- NS(id)
   tagList(
     actionButton(ns("run_button"), "Run Tests") %>%
-      tagAppendAttributes(class="btn btn-success")
+      tagAppendAttributes(class = "btn btn-success")
   )
 }
 
