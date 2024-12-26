@@ -15,7 +15,7 @@
 #' @param included a character vector of the tests to be included. Default is "all"
 #' @param ... Placeholder for additional arguments to functions
 #'
-#' @return A named vector of probabilities for each test
+#' @return A named matrix of probabilities for each test
 #'
 #' The function is designed to run all 6 tests by default. If you want to run only a subset of the tests, you can specify them in the `included` argument. The following values are possible:
 #'
@@ -145,15 +145,17 @@ ordinal_tests <- function(x, y, included = "all", ...) {
     coin_indep_test <- NULL
   }
 
+  output <- matrix(c(
+    Wilcoxon = wilcoxon,
+    Fisher = fisher,
+    "Chi Squared\n(No Correction)" = chi_sq_no_correction,
+    "Chi Squared\n(Correction)" = chi_sq_correction,
+    "Prop. Odds" = prop_odds,
+    "Coin Indep. Test" = coin_indep_test
+  ),
+  ncol = length(included))
 
-  return(
-    c(
-      Wilcoxon = wilcoxon,
-      Fisher = fisher,
-      "Chi Squared\n(No Correction)" = chi_sq_no_correction,
-      "Chi Squared\n(Correction)" = chi_sq_correction,
-      "Prop. Odds" = prop_odds,
-      "Coin Indep. Test" = coin_indep_test
-    )
-  )
+  colnames(output) <- included
+
+  return(output)
 }

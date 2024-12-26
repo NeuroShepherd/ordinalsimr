@@ -41,13 +41,37 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
     near(sum(prob1), 1),
     msg = "prob0 must sum to 1"
   )
+  # Check included argument
+  assertthat::assert_that(
+    length(included) > 0,
+    msg = "No tests included in the simulation. Please include at least one test."
+  )
+  assertthat::assert_that(
+    all(included %in% c(
+      "all", "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+      "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
+    )),
+    msg = "included tests must be any of 'all', 'Wilcoxon', 'Fisher', 'Chi Squared (No Correction)',
+      'Chi Squared (Correction)', 'Prop. Odds', 'Coin Indep. Test'"
+  )
+
+
+  if ("all" %in% included) {
+    included <- c(
+      "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+      "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
+    )
+  }
+
 
   K <- length(prob0)
-  p_values <- matrix(NA, niter, 6)
-  colnames(p_values) <- c(
-    "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-    "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
-  )
+  p_values <- matrix(NA, niter, length(included))
+  colnames(p_values) <- included
+
+  # c(
+  #   "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
+  #   "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+  # )
 
 
   lapply(sample_size, function(x) {
@@ -66,7 +90,9 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
 
     p_values <- initial_groups %>%
       sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
-      t()
+      matrix(byrow = TRUE, nrow = niter)
+
+    colnames(p_values) <- included
 
     initial_groups_formatted <- lapply(initial_groups, function(groups) {
       tibble(

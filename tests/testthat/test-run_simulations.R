@@ -60,8 +60,8 @@ test_that("run_simulations returns data frames with the correct column names", {
   expect_named(
     run_sims_output[["sample_size_40"]],
     c(
-      "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-      "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test",
+      "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+      "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test",
       "run", "y", "x", "n_null", "n_intervene", "sample_size", "K"
     )
   )

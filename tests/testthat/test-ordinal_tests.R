@@ -30,9 +30,9 @@ test_that("ordinal_tests returns a vector of length 3", {
 
 test_that("ordinal_tests names the vector correctly", {
   suppressWarnings(
-    expect_named(
-      ordinal_tests(groups[["x"]], groups[["y"]]),
-      c("Wilcoxon", "Fisher", "Chi Squared\n(No Correction)", "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test")
+    expect_equal(
+      colnames(ordinal_tests(groups[["x"]], groups[["y"]])),
+      c("Wilcoxon", "Fisher", "Chi Squared (No Correction)", "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test")
     )
   )
 })
@@ -59,8 +59,8 @@ test_that("ordinal_tests functions correctly on a subset of tests", {
       included = c("Wilcoxon", "Fisher")
     )
   )
-  expect_vector(subset_results)
-  expect_named(subset_results)
+  expect_true(is.matrix(subset_results))
+  expect_equal(colnames(subset_results), c("Wilcoxon", "Fisher"))
   expect_equal(as.vector(subset_results)[1],
     c(0.002205771),
     tolerance = 0.0000001
