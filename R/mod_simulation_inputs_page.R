@@ -40,7 +40,10 @@ mod_simulation_inputs_page_ui <- function(id) {
             mod_iterations_ui("iterations_1"),
             mod_sample_size_ui("sample_size_1"),
             mod_sample_probabilities_ui("sample_probabilities_1")
-          ),
+          )
+        ),
+        nav_panel(
+          "Select Tests",
           layout_column_wrap(
             width = 1,
             mod_select_tests_ui("select_tests_1")

@@ -101,8 +101,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
       p_value_reactive_table() %>%
         dplyr::select(
           dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
           )),
           .data$sample_size
         ) %>%
@@ -122,8 +122,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
       p_value_reactive_table() %>%
         select(
           dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
           )),
           .data$sample_size
         ) %>%
@@ -164,8 +164,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           bind_rows() %>%
           dplyr::select(
             dplyr::any_of(c(
-              "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-              "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+              "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+              "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
             )),
             .data$sample_size
           ) %>%
@@ -200,8 +200,8 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
           bind_rows() %>%
           dplyr::select(
             dplyr::any_of(c(
-              "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-              "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+              "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+              "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
             )),
             .data$sample_size
           ) %>%

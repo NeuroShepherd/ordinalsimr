@@ -10,16 +10,15 @@
 mod_select_tests_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    selectizeInput(
+    checkboxGroupInput(
       ns("included"),
-      label = "Select Tests",
+      label = "Tests",
       choices = c(
         "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
         "Chi Squared (Correction)",
         "Proportional Odds" = "Prop. Odds",
         "Coin Independence Test" = "Coin Indep. Test"
       ),
-      multiple = TRUE,
       selected = c(
         "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
         "Chi Squared (Correction)",
