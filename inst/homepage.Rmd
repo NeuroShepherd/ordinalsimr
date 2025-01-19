@@ -8,10 +8,18 @@ The {ordinalsimr} package is intended to assist applied statisticians with runni
 
 ## Help Files
 
-If the Shiny application is not flexible enough for your purposes, this package also provides a variety of helper functions. See the package for vignettes for more information on coding your own simulation studies.
 
+
+Three vignettes are included with this package:
+
+1. `ordinalsimr-options`: options available in the `ordinalsimr` package. This vignette is intended for those who wish to change the default settings of the Shiny app.
+2. `coding-simulations`: how to code your own simulation studies using the `ordinalsimr` package, particularly for simulation scenarios that are not supported by the Shiny app.
+3. `ordinalsimr`: overview of the `ordinalsimr` package itself, including the included tests and the Shiny app. It also provides some details on how to interact with objects downloaded from the Shiny application.
+
+The package vignettes can be accessed using the following code:
 
 ```{r, eval=FALSE}
+vignette("ordinalsimr-options", package = "ordinalsimr")
 vignette("coding-simulations", package = "ordinalsimr")
 vignette("ordinalsimr", package = "ordinalsimr")
 ```
@@ -36,14 +44,12 @@ This page is for parameter entries, and includes a "Run Test" button to press on
 
 Results of a simulation run can be seen here included a visualization of the p-value densities by test as well as Power, Type II error, Type I error, and associated confidence intervals for these values. The CI percentiles can be adjusted as well as the nominal significance level \alpha.
 
-### Report
+### Report & Downloads
 
-Experimental page: will include a report generated from the simulation results.
+The metadata, data, and results of the simulation can be downloaded here. The metadata includes the parameters used in the simulation, the data includes the simulated data, and the results include the p-values and test statistics for each iteration.
 
+**Experimental feature: a report can be generated in PDF format. This feature is still in development.**
 
-### Data Download
-
-This page is under development, but does currently include an option to download the metadata (i.e. input parameters), p-values from tests, summary statistics, and the ggplot as an `.rds` file.
 
 
 

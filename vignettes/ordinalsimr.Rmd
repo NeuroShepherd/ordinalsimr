@@ -10,8 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
 ```
 
@@ -31,7 +30,6 @@ The {ordinalsimr} package wraps a Shiny application and supporting functions for
 
 In addition to these parameters for running the simulation, the following can be adjusted in the Distributions page
 
-* Filtering out the top x% of observations from view in the plot. *This does not remove or alter data from any other processes. It is only included as a convenience function for observing smaller windows of the data.*
 * Setting the alpha significance level/p-value threshold
 * Setting the confidence intervals for the Power/T2 Error calculations
 * Setting the confidence intervals (separately) for the Type I Error in Group 1 and Group 2
@@ -44,7 +42,7 @@ Bug reports and feature requests can be submitted as issues at [https://github.c
 Data downloaded after running a simulation is stored as a `.rds` file, and can be loaded into your R session using `readRDS()`. The data is structured as a named list with 3 elements at the top level, and several sub-elements. A summary of the available information is available in the code below.
 
 ```{r}
-output <- readRDS("data-2024-02-16-049dcfcd9afdad1402588ca3a3f73f95-1.rds")
+output <- readRDS("data-2025-01-19-d8621b-1.rds")
 output$comparison_data$distribution_statistics
 str(output, max.level = 2)
 ```
@@ -54,10 +52,8 @@ str(output, max.level = 2)
   * `group1_data` are results from comparing Group 1 data against itself (for TI error of this group)
   * `group2_data` are results from comparing Group 2 data against itself (for TI error of this group)
 * Second level items
-  * `p_values` are tables of p-values for all of the tests (columns) in each simulation runs (rows)
   * `run_info` are tables of detailed metainformation about the parameters used for each run
   * `distribution_statistics` are tables of computed TII error, power, and associated confidence intervals
-  * `distribution_plot` is a {ggplot2} plot of the distributions of p-values
   * `group1_t1error` and `group2_t1error` are tables of TI error and associated confidence intervals
 
 
