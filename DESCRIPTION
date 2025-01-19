@@ -2,7 +2,7 @@ Package: ordinalsimr
 Title: Compare Ordinal Endpoints Using Simulations
 Version: 0.1.0
 Authors@R: 
-    person(given = "Pat",
+    person(given = "Patrick",
            family = "Callahan",
            role = c("aut", "cre", "cph"),
            email = "patricktcallahan18@gmail.com",
