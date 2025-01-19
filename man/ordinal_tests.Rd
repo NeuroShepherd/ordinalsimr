@@ -16,7 +16,7 @@ ordinal_tests(x, y, included = "all", ...)
 \item{...}{Placeholder for additional arguments to functions}
 }
 \value{
-A named vector of probabilities for each test
+A named matrix of probabilities for each test
 
 The function is designed to run all 6 tests by default. If you want to run only a subset of the tests, you can specify them in the `included` argument. The following values are possible:
 
