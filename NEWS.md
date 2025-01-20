@@ -1,3 +1,7 @@
+# ordinalsimr 0.1.1
+
+* Create DOI via Zenodo and add to CITATION file
+
 # ordinalsimr 0.1.0
 
 * Significantly refined the UI
