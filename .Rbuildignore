@@ -22,3 +22,4 @@ $run_dev.*
 ^.lintr$
 ^cran-comments\.md$
 ^CITATION\.cff$
+^CRAN-SUBMISSION$
