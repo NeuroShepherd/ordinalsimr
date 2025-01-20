@@ -1,4 +1,3 @@
-
 #' Set Option Helper
 #'
 #' @param option_name name of the ordinalsimr option to set
@@ -9,23 +8,23 @@
 #' @keywords internal
 #'
 .set_options_helper <- function(option_name, value, additional_msg = NULL) {
-
   tryCatch(
     expr = {
-      options( rlang::list2({{option_name}} := value))
+      options(rlang::list2({{ option_name }} := value))
 
       if (is.null(value)) {
         NULL
       }
 
       message("Setting ", option_name, " to ", as.character(value))
-      if (!is.null(additional_msg)) { message(additional_msg) }
+      if (!is.null(additional_msg)) {
+        message(additional_msg)
+      }
     },
     error = function(e) {
       invisible()
-      }
+    }
   )
-
 }
 
 
@@ -48,24 +47,24 @@
 #' # Set the default values for the ordinalsimr Shiny app
 #'
 #' set_ordinalsimr_options(
-#'  default_iterations = 1000,
-#'  default_size_min = 10,
-#'  default_size_max = 100,
-#'  default_ratio = "50:50",
-#'  default_distributions = data.frame(c(0.4, 0.3, 0.3), c(0.8, 0.1, 0.1))
-#'  )
+#'   default_iterations = 1000,
+#'   default_size_min = 10,
+#'   default_size_max = 100,
+#'   default_ratio = "50:50",
+#'   default_distributions = data.frame(c(0.4, 0.3, 0.3), c(0.8, 0.1, 0.1))
+#' )
 #'
-#'  # Values can be either overwritten or unset by setting them to NULL. The Shiny
-#'  # app still has backup values if these options are not set. Not all arguments
-#'  # need to be provided
+#' # Values can be either overwritten or unset by setting them to NULL. The Shiny
+#' # app still has backup values if these options are not set. Not all arguments
+#' # need to be provided
 #'
-#'  set_ordinalsimr_options(
-#'  default_iterations = 500, # Ex: update argument
-#'  default_size_min = NULL, # Ex: unset argument
-#'  default_size_max = NULL, # Ex: unset argument
-#'  # default_ratio = NULL, # Ex: arg not provided (by commenting out)
-#'  default_distributions = NULL
-#'  )
+#' set_ordinalsimr_options(
+#'   default_iterations = 500, # Ex: update argument
+#'   default_size_min = NULL, # Ex: unset argument
+#'   default_size_max = NULL, # Ex: unset argument
+#'   # default_ratio = NULL, # Ex: arg not provided (by commenting out)
+#'   default_distributions = NULL
+#' )
 #'
 set_ordinalsimr_options <- function(
     default_iterations,
@@ -73,17 +72,13 @@ set_ordinalsimr_options <- function(
     default_size_max,
     default_ratio,
     default_distributions,
-    default_entry_rows
-    ) {
-
-
+    default_entry_rows) {
   .set_options_helper("ordinalsimr.default_iterations", default_iterations)
   .set_options_helper("ordinalsimr.default_size_min", default_size_min)
   .set_options_helper("ordinalsimr.default_size_max", default_size_max)
   .set_options_helper("ordinalsimr.default_ratio", default_ratio)
   .set_options_helper("ordinalsimr.default_distributions", default_distributions)
   .set_options_helper("ordinalsimr.default_entry_rows", default_entry_rows, additional_msg = "The ordinalsimr.default_distributions option takes precedence over the ordinalsimr.default_entry_rows option if it has been set.")
-
 }
 
 
@@ -98,16 +93,14 @@ set_ordinalsimr_options <- function(
 #' @examples
 #' get_ordinalsimr_options()
 get_ordinalsimr_options <- function() {
-
-  c("ordinalsimr.default_iterations",
+  c(
+    "ordinalsimr.default_iterations",
     "ordinalsimr.default_size_min",
     "ordinalsimr.default_size_max",
     "ordinalsimr.default_ratio",
     "ordinalsimr.default_distributions",
-    "ordinalsimr.default_entry_rows") %>%
-  stats::setNames(., .) %>%
-  lapply(function(x) getOption(x))
-
+    "ordinalsimr.default_entry_rows"
+  ) %>%
+    stats::setNames(., .) %>%
+    lapply(function(x) getOption(x))
 }
-
-

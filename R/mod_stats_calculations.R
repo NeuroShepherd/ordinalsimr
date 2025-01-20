@@ -108,8 +108,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         dplyr::select(
           .data$sample_size,
           dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
           ))
         )
 
@@ -131,8 +131,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         dplyr::select(
           .data$sample_size,
           dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
           ))
         )
 
@@ -152,8 +152,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         dplyr::select(
           .data$sample_size,
           dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared\n(No Correction)",
-            "Chi Squared\n(Correction)", "Prop. Odds", "Coin Indep. Test"
+            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
+            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
           ))
         )
 

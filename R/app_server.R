@@ -52,4 +52,10 @@ app_server <- function(input, output, session) {
     formatted_data = formatted_data,
     rng_info = rng_selections
   )
+
+  session$onSessionEnded(function() {
+    report_path <- system.file("report_template.html", package = "ordinalsimr")
+    if (report_path != "") {file.remove(report_path)}
+  })
+
 }

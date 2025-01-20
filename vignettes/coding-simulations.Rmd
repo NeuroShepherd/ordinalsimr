@@ -10,8 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
 ```
 
@@ -24,8 +23,8 @@ library(ordinalsimr)
 
 This guide will provide a rough overview of how to code your own simulations using the components of this package should you find the Shiny application too limiting for your own purposes. Key information on functions:
 
-* `run_simulations()` will take simulation input parameters and return a list. The first element contains a matrix of p-values for each run of the simulation, while the second element is multiple lists of information describing group allocations in detail.
-* `bind_rows()` is recommended for reformatting the two list elements mentioned above.
+* `run_simulations()` will take simulation input parameters and return a named list of tibbles. Each tibble represents the results of a simulation at a given sample size, with names e.g. "sample_size_32".
+* `bind_rows()` is used to combine the tibbles into a single tibble.
 * `calculate_power_t2error()` and `calculate_t1_error()` can receive the p-value data frames for performing T1 Error, Power, and T2 Error calculations with confidence intervals. See function documentation for additional arguments.
 
 ## Power and Type II Error
@@ -39,14 +38,13 @@ sim_results <- run_simulations(
   niter = 20
 )
 
-formatted_results <- bind_rows(sim_results)
+formatted_results <- dplyr::bind_rows(sim_results)
 names(formatted_results)
-head(formatted_results$p_values)
 
 formatted_results %>%
-  select(
-    Wilcoxon, Fisher, `Chi Squared\n(No Correction)`,
-    `Chi Squared\n(Correction)`, `Prop. Odds`,
+  dplyr::select(
+    Wilcoxon, Fisher, `Chi Squared (No Correction)`,
+    `Chi Squared (Correction)`, `Prop. Odds`,
     `Coin Indep. Test`,
     sample_size
   ) %>%
@@ -68,15 +66,14 @@ sim_results <- run_simulations(
   niter = 50
 )
 
-formatted_results <- bind_rows(sim_results)
+formatted_results <- dplyr::bind_rows(sim_results)
 names(formatted_results)
-head(formatted_results$p_values)
 
 
 formatted_results %>%
-  select(
-    Wilcoxon, Fisher, `Chi Squared\n(No Correction)`,
-    `Chi Squared\n(Correction)`, `Prop. Odds`,
+  dplyr::select(
+    Wilcoxon, Fisher, `Chi Squared (No Correction)`,
+    `Chi Squared (Correction)`, `Prop. Odds`,
     `Coin Indep. Test`,
     sample_size
   ) %>%
@@ -87,12 +84,16 @@ formatted_results %>%
 
 ## Mapping Over Many Sample Sizes
 
-The current version of the application can only accept one sample size at a time. A future iteration of the application will ideally implement this feature, but, in the meantime, there are many situations where it would be advantageous to model test results over many different sample sizes. Depending on how big the number of iterations per sample sizes (`niter`) and the actual number of sample sizes being checked, it may only be practical to do this in a parallelized manner with e.g. {furrr} or {parallel}. In any case, an example of such code is included below:
+The current version of the Shiny application can only accept a range of sample sizes. However, you may find it useful to iterate over a discrete set of sample sizes and calculate the Power and Type II error for each rather than a range. This can save time and computation power when you are only interested in a few specific sample sizes.
+
+Depending on how big the number of iterations per sample sizes (`niter`) and the actual number of sample sizes being checked, it may only be practical to do this in a parallelized manner with e.g. {furrr} or {parallel}. In any case, an example of such code is included below:
 
 
 ```{r, warning=FALSE}
+# Create a vector of sample sizes
 sample_sizes <- c(30, 50, 100)
 
+# Map over the sample sizes
 lapply(sample_sizes, function(x) {
   run_simulations(
     sample_size = x,
@@ -101,17 +102,17 @@ lapply(sample_sizes, function(x) {
     prob1 = c(0.6, 0.2, 0.1, 0.1),
     niter = 100
   ) %>%
-    bind_rows() %>%
-    select(
-      Wilcoxon, Fisher, `Chi Squared\n(No Correction)`,
-      `Chi Squared\n(Correction)`, `Prop. Odds`,
+    dplyr::bind_rows() %>%
+    dplyr::select(
+      Wilcoxon, Fisher, `Chi Squared (No Correction)`,
+      `Chi Squared (Correction)`, `Prop. Odds`,
       `Coin Indep. Test`, sample_size
     ) %>%
     calculate_power_t2error()
 })
 ```
 
-Equivalent code with purrr
+And if you're more of a {purrr} person:
 
 ``` r
 sample_sizes %>%
@@ -194,7 +195,7 @@ many_sims[1]
 ```
 
 
-Equivalent Code with {purrr}
+And again for the {purrr} folks:
 
 ``` r
 info_table %>%

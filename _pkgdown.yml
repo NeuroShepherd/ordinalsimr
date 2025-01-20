@@ -2,6 +2,19 @@ url: https://neuroshepherd.github.io/ordinalsimr/
 template:
   bootstrap: 5
 
+authors:
+  Pat Callahan:
+    href: https://neuroshepherd.github.io/
+
+articles:
+- title: Using {ordinalsimr}
+  navbar: ~
+  contents:
+    - ordinalsimr
+    - ordinalsimr-options
+    - coding-simulations
+
+
 
 reference:
   - title: Run Shiny App

@@ -1,0 +1,25 @@
+bibentry(
+  bibtype = "Misc",
+  header = "Consider also citing:",
+  key = "callahan_ordinalsimr_2025",
+  title = "ordinalsimr",
+  author = c(
+    person(
+      given = "Pat",
+      family = "Callahan",
+      role = c("aut", "cre", "cph"),
+      email = "patricktcallahan18@gmail.com",
+      comment = c(ORCID = "0000-0003-1769-7580")
+    )
+  ),
+  doi = "10.5281/zenodo.14697216",
+  year = "2025",
+  month = "jan",
+  url = "https://github.com/neuroshepherd/ordinalsimr",
+  urldate = "2025-01-19",
+  copyright = "MIT",
+  date = "2025-01",
+  abstract = "Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included Shiny applications allows users to simulate outcomes given different ordinal data distributions."
+)
+
+

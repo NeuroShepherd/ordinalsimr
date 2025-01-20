@@ -12,6 +12,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/ordinalsimr)](https://CRAN.R-project.org/package=ordinalsimr)
 [![Codecov test
 coverage](https://codecov.io/gh/NeuroShepherd/ordinalsimr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/NeuroShepherd/ordinalsimr?branch=master)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14697216.svg)](https://doi.org/10.5281/zenodo.14697216)
 <!-- badges: end -->
 
 The {ordinalsimr} package assists in constructing simulation studies of
@@ -33,26 +34,34 @@ up your own simulations manually.
 
 ## Installation
 
-You can install the development version of ordinalsimr from
-[GitHub](https://github.com/) with:
+You can install the development version of ordinalsimr from GitHub with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github(
   "NeuroShepherd/ordinalsimr",
-  force = TRUE,
   build_vignettes = TRUE
 )
 ```
 
+## Running the App
+
+The app can be started with the following code:
+
+``` r
+ordinalsimr::run_app()
+```
+
+If using the app repeatedly, it may be useful to change some of the
+options in the application to suit your needs. See the vignette
+“ordinalsimr-options” for more information,
+`vignette("ordinalsimr-options", package = "ordinalsimr")`.
+
 ## Recommendations
 
-The application is available at \[link\], but may be down due to account
-usage limitations on ShinyApps.io. There is not currently a plan to
-increase the usage limits so it is *strongly recommended that you run
-the application locally*.
-
-Informative progressive bars have not been implemented in the Shiny
-application, but a simulation that fails to run will almost always fail
-at the beginning rather than in the middle of the run. Simulations with
-1000s of iterations *will* take minutes to hours to run.
+Simulations with 1000s of iterations *will* take minutes to hours to
+run. This should generally be ok on the Shiny app, but if you encounter
+issues, consider running the simulations in a separate R session using
+the functions provided in this package (rather than the Shiny app). See
+the vignette “coding-simulations” for more information,
+`vignette("coding-simulations", package = "ordinalsimr")`.
