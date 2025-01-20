@@ -8,7 +8,7 @@ message: 'To cite package "ordinalsimr" in publications use:'
 type: software
 license: MIT
 title: 'ordinalsimr: Compare Ordinal Endpoints Using Simulations'
-version: 0.1.0
+version: 0.1.1
 doi: 10.5281/zenodo.14697216
 abstract: Simultaneously evaluate multiple ordinal outcome measures. Applied data
   analysts in particular are faced with uncertainty in choosing appropriate statistical
