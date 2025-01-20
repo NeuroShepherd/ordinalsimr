@@ -61,7 +61,7 @@
       <h1>{ordinalsimr} Options</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/pkgdown_fix/vignettes/ordinalsimr-options.Rmd" class="external-link"><code>vignettes/ordinalsimr-options.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.1.0-devel/vignettes/ordinalsimr-options.Rmd" class="external-link"><code>vignettes/ordinalsimr-options.Rmd</code></a></small>
       <div class="d-none name"><code>ordinalsimr-options.Rmd</code></div>
     </div>
 
@@ -73,7 +73,7 @@
 <h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
 </h2>
 <p>If you’re already familiar with the concept of options in R, you can
-skip this section and jump straight to the next one.</p>
+skip this section and jump straight to next section.</p>
 <div class="section level3">
 <h3 id="what-are-options">What are options?<a class="anchor" aria-label="anchor" href="#what-are-options"></a>
 </h3>
@@ -95,6 +95,10 @@ set can be viewed with <code><a href="https://rdrr.io/r/base/options.html" class
 <span><span class="co"># this number will be printed to 7 *significant* digits</span></span>
 <span><span class="fl">0.093573827689</span></span>
 <span><span class="co">#&gt; [1] 0.09357383</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="changing-options">Changing Options<a class="anchor" aria-label="anchor" href="#changing-options"></a>
+</h3>
 <p>You don’t typically need to adjust options yourself because the
 pre-chosen values are supposed to reflect sensible defaults. However, if
 you find that you’re frequently changing same setting over and over
@@ -107,7 +111,7 @@ displayed in significant notation, you can use
 <code class="sourceCode R"><span><span class="co"># change the number of significant digits to 3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># this number will be printed to 3 *significant* digits because</span></span>
+<span><span class="co"># this number will be printed to 3 *significant* digits</span></span>
 <span><span class="fl">0.093573827689</span></span>
 <span><span class="co">#&gt; [1] 0.0936</span></span></code></pre></div>
 </div>
@@ -164,7 +168,7 @@ data set or distribution to use in the simulation. If set to
 </ul>
 </div>
 <div class="section level3">
-<h3 id="setting-and-getting-options">Setting and Getting Options<a class="anchor" aria-label="anchor" href="#setting-and-getting-options"></a>
+<h3 id="setting-and-getting-ordinalsimr-options">Setting and Getting {ordinalsimr} Options<a class="anchor" aria-label="anchor" href="#setting-and-getting-ordinalsimr-options"></a>
 </h3>
 <p>To get or set options for the package, you can use the
 <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code> function as discussed in the first section of
@@ -181,13 +185,21 @@ around <code><a href="https://rdrr.io/r/base/options.html" class="external-link"
 <span></span>
 <span><span class="co"># set the default number of iterations to 500</span></span>
 <span><span class="va">opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">ordinalsimr</span><span class="fu">::</span><span class="fu"><a href="../reference/set_ordinalsimr_options.html">set_ordinalsimr_options</a></span><span class="op">(</span>default_iterations <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/set_ordinalsimr_options.html">set_ordinalsimr_options</a></span><span class="op">(</span></span>
+<span>  default_iterations <span class="op">=</span> <span class="fl">1000</span>,</span>
+<span>  default_size_min <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  default_size_max <span class="op">=</span> <span class="fl">175</span>,</span>
+<span>  default_ratio <span class="op">=</span> <span class="st">"66:34"</span>,</span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># get the current value of the default number of iterations</span></span>
-<span><span class="fu"><a href="../reference/get_ordinalsimr_options.html">get_ordinalsimr_options</a></span><span class="op">(</span><span class="st">"default_iterations"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/get_ordinalsimr_options.html">get_ordinalsimr_options</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># reset options</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">opt</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">opt</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># display that the options have been reset</span></span>
+<span><span class="fu"><a href="../reference/get_ordinalsimr_options.html">get_ordinalsimr_options</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

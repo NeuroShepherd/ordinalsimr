@@ -61,7 +61,7 @@
       <h1>Using {ordinalsimr}</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/pkgdown_fix/vignettes/ordinalsimr.Rmd" class="external-link"><code>vignettes/ordinalsimr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.1.0-devel/vignettes/ordinalsimr.Rmd" class="external-link"><code>vignettes/ordinalsimr.Rmd</code></a></small>
       <div class="d-none name"><code>ordinalsimr.Rmd</code></div>
     </div>
 
@@ -89,11 +89,6 @@ ordinal outcome</li>
 <p>In addition to these parameters for running the simulation, the
 following can be adjusted in the Distributions page</p>
 <ul>
-<li>Filtering out the top x% of observations from view in the plot.
-<em>This does not remove or alter data from any other processes. It is
-only included as a convenience function for observing smaller windows of
-the data.</em>
-</li>
 <li>Setting the alpha significance level/p-value threshold</li>
 <li>Setting the confidence intervals for the Power/T2 Error
 calculations</li>
@@ -110,9 +105,44 @@ in Group 1 and Group 2</li>
 elements at the top level, and several sub-elements. A summary of the
 available information is available in the code below.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"data-2024-02-16-049dcfcd9afdad1402588ca3a3f73f95-1.rds"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"data-2025-01-19-d8621b-1.rds"</span><span class="op">)</span></span>
 <span><span class="va">output</span><span class="op">$</span><span class="va">comparison_data</span><span class="op">$</span><span class="va">distribution_statistics</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span>, max.level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 36 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [6]</span></span></span>
+<span><span class="co">#&gt;    `Sample Size` test   lower_power_bound upper_power_bound power `Power 95% CI`</span></span>
+<span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            30 Wilco…             0.452             0.736  0.6  [0.452, 0.736]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            30 Fisher             0.337             0.626  0.48 [0.337, 0.626]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            30 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            30 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            30 Prop.…             0.472             0.753  0.62 [0.472, 0.753]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            30 Coin …             0.472             0.753  0.62 [0.472, 0.753]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            31 Wilco…             0.512             0.788  0.66 [0.512, 0.788]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            31 Fisher             0.337             0.626  0.48 [0.337, 0.626]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            31 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            31 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 26 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: lower_t2error_bound &lt;dbl&gt;, upper_t2error_bound &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI` &lt;chr&gt;</span></span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span>, max.level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; List of 3</span></span>
+<span><span class="co">#&gt;  $ comparison_data:List of 3</span></span>
+<span><span class="co">#&gt;   ..$ run_info               : tibble [300 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ distribution_statistics: gropd_df [36 × 10] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "groups")= tibble [6 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   .. .. ..- attr(*, ".drop")= logi TRUE</span></span>
+<span><span class="co">#&gt;   ..$ distribution_plot      :List of 11</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"</span></span>
+<span><span class="co">#&gt;  $ group1_data    :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ run_info      : tibble [300 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ group1_t1error: gropd_df [36 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "groups")= tibble [6 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   .. .. ..- attr(*, ".drop")= logi TRUE</span></span>
+<span><span class="co">#&gt;  $ group2_data    :List of 2</span></span>
+<span><span class="co">#&gt;   ..$ run_info      : tibble [300 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   ..$ group2_t1error: gropd_df [36 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   .. ..- attr(*, "groups")= tibble [6 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
+<span><span class="co">#&gt;   .. .. ..- attr(*, ".drop")= logi TRUE</span></span></code></pre></div>
 <ul>
 <li>Top level items
 <ul>
@@ -130,17 +160,11 @@ against itself (for TI error of this group)</li>
 <li>Second level items
 <ul>
 <li>
-<code>p_values</code> are tables of p-values for all of the tests
-(columns) in each simulation runs (rows)</li>
-<li>
 <code>run_info</code> are tables of detailed metainformation about
 the parameters used for each run</li>
 <li>
 <code>distribution_statistics</code> are tables of computed TII
 error, power, and associated confidence intervals</li>
-<li>
-<code>distribution_plot</code> is a {ggplot2} plot of the
-distributions of p-values</li>
 <li>
 <code>group1_t1error</code> and <code>group2_t1error</code> are
 tables of TI error and associated confidence intervals</li>

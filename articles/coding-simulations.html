@@ -61,7 +61,7 @@
       <h1>Coding Simulations</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/pkgdown_fix/vignettes/coding-simulations.Rmd" class="external-link"><code>vignettes/coding-simulations.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.1.0-devel/vignettes/coding-simulations.Rmd" class="external-link"><code>vignettes/coding-simulations.Rmd</code></a></small>
       <div class="d-none name"><code>coding-simulations.Rmd</code></div>
     </div>
 
@@ -79,12 +79,12 @@ functions:</p>
 <ul>
 <li>
 <code><a href="../reference/run_simulations.html">run_simulations()</a></code> will take simulation input parameters
-and return a list. The first element contains a matrix of p-values for
-each run of the simulation, while the second element is multiple lists
-of information describing group allocations in detail.</li>
+and return a named list of tibbles. Each tibble represents the results
+of a simulation at a given sample size, with names
+e.g. “sample_size_32”.</li>
 <li>
-<code>bind_rows()</code> is recommended for reformatting the two
-list elements mentioned above.</li>
+<code>bind_rows()</code> is used to combine the tibbles into a
+single tibble.</li>
 <li>
 <code><a href="../reference/calculate_power_t2error.html">calculate_power_t2error()</a></code> and
 <code><a href="../reference/calculate_t1_error.html">calculate_t1_error()</a></code> can receive the p-value data frames
@@ -104,18 +104,36 @@ arguments.</li>
 <span>  niter <span class="op">=</span> <span class="fl">20</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">formatted_results</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span>
+<span><span class="va">formatted_results</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">$</span><span class="va">p_values</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "Wilcoxon"                    "Fisher"                     </span></span>
+<span><span class="co">#&gt;  [3] "Chi Squared (No Correction)" "Chi Squared (Correction)"   </span></span>
+<span><span class="co">#&gt;  [5] "Prop. Odds"                  "Coin Indep. Test"           </span></span>
+<span><span class="co">#&gt;  [7] "run"                         "y"                          </span></span>
+<span><span class="co">#&gt;  [9] "x"                           "n_null"                     </span></span>
+<span><span class="co">#&gt; [11] "n_intervene"                 "sample_size"                </span></span>
+<span><span class="co">#&gt; [13] "K"</span></span>
 <span></span>
 <span><span class="va">formatted_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">select</span><span class="op">(</span></span>
-<span>    <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>,</span>
-<span>    <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared (No Correction)`</span>,</span>
+<span>    <span class="va">`Chi Squared (Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
 <span>    <span class="va">`Coin Indep. Test`</span>,</span>
 <span>    <span class="va">sample_size</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, power_confidence_int <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, power_confidence_int <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [1]</span></span></span>
+<span><span class="co">#&gt;   `Sample Size` test    lower_power_bound upper_power_bound power `Power 95% CI`</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            80 Wilcox…             0.832                 1     1 [0.832, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            80 Fisher              0.832                 1     1 [0.832, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            80 Chi Sq…             0.832                 1     1 [0.832, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            80 Chi Sq…             0.832                 1     1 [0.832, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            80 Prop. …             0.832                 1     1 [0.832, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            80 Coin I…             0.832                 1     1 [0.832, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: lower_t2error_bound &lt;dbl&gt;, upper_t2error_bound &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI` &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="type-i-error">Type I Error<a class="anchor" aria-label="anchor" href="#type-i-error"></a>
@@ -133,35 +151,59 @@ in <code>run_simulations</code> must now be equivalent and the
 <span>  niter <span class="op">=</span> <span class="fl">50</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">formatted_results</span> <span class="op">&lt;-</span> <span class="fu">bind_rows</span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span>
+<span><span class="va">formatted_results</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">sim_results</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">formatted_results</span><span class="op">$</span><span class="va">p_values</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "Wilcoxon"                    "Fisher"                     </span></span>
+<span><span class="co">#&gt;  [3] "Chi Squared (No Correction)" "Chi Squared (Correction)"   </span></span>
+<span><span class="co">#&gt;  [5] "Prop. Odds"                  "Coin Indep. Test"           </span></span>
+<span><span class="co">#&gt;  [7] "run"                         "y"                          </span></span>
+<span><span class="co">#&gt;  [9] "x"                           "n_null"                     </span></span>
+<span><span class="co">#&gt; [11] "n_intervene"                 "sample_size"                </span></span>
+<span><span class="co">#&gt; [13] "K"</span></span>
 <span></span>
 <span></span>
 <span><span class="va">formatted_results</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">select</span><span class="op">(</span></span>
-<span>    <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>,</span>
-<span>    <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared (No Correction)`</span>,</span>
+<span>    <span class="va">`Chi Squared (Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
 <span>    <span class="va">`Coin Indep. Test`</span>,</span>
 <span>    <span class="va">sample_size</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/calculate_t1_error.html">calculate_t1_error</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, t1_error_confidence_int <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/calculate_t1_error.html">calculate_t1_error</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.05</span>, t1_error_confidence_int <span class="op">=</span> <span class="fl">95</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 36 × 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [6]</span></span></span>
+<span><span class="co">#&gt;    `Sample Size` test            lower_t1_bound upper_t1_bound t1_error `95% CI`</span></span>
+<span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            30 Wilcoxon                 0.452          0.736     0.6  [0.452,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            30 Fisher                   0.337          0.626     0.48 [0.337,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            30 Chi Squared (N…          0.374          0.663     0.52 [0.374,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            30 Chi Squared (C…          0.374          0.663     0.52 [0.374,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            30 Prop. Odds               0.472          0.753     0.62 [0.472,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            30 Coin Indep. Te…          0.472          0.753     0.62 [0.472,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            31 Wilcoxon                 0.512          0.788     0.66 [0.512,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            31 Fisher                   0.337          0.626     0.48 [0.337,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            31 Chi Squared (N…          0.374          0.663     0.52 [0.374,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            31 Chi Squared (C…          0.374          0.663     0.52 [0.374,…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 26 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="mapping-over-many-sample-sizes">Mapping Over Many Sample Sizes<a class="anchor" aria-label="anchor" href="#mapping-over-many-sample-sizes"></a>
 </h3>
-<p>The current version of the application can only accept one sample
-size at a time. A future iteration of the application will ideally
-implement this feature, but, in the meantime, there are many situations
-where it would be advantageous to model test results over many different
-sample sizes. Depending on how big the number of iterations per sample
-sizes (<code>niter</code>) and the actual number of sample sizes being
+<p>The current version of the Shiny application can only accept a range
+of sample sizes. However, you may find it useful to iterate over a
+discrete set of sample sizes and calculate the Power and Type II error
+for each rather than a range. This can save time and computation power
+when you are only interested in a few specific sample sizes.</p>
+<p>Depending on how big the number of iterations per sample sizes
+(<code>niter</code>) and the actual number of sample sizes being
 checked, it may only be practical to do this in a parallelized manner
 with e.g. {furrr} or {parallel}. In any case, an example of such code is
 included below:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Create a vector of sample sizes</span></span>
+<span><span class="va">sample_sizes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">50</span>, <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Map over the sample sizes</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">sample_sizes</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/run_simulations.html">run_simulations</a></span><span class="op">(</span></span>
 <span>    sample_size <span class="op">=</span> <span class="va">x</span>,</span>
@@ -170,15 +212,56 @@ included below:</p>
 <span>    prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
 <span>    niter <span class="op">=</span> <span class="fl">100</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu">bind_rows</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>    <span class="fu">select</span><span class="op">(</span></span>
-<span>      <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared\n(No Correction)`</span>,</span>
-<span>      <span class="va">`Chi Squared\n(Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>      <span class="va">Wilcoxon</span>, <span class="va">Fisher</span>, <span class="va">`Chi Squared (No Correction)`</span>,</span>
+<span>      <span class="va">`Chi Squared (Correction)`</span>, <span class="va">`Prop. Odds`</span>,</span>
 <span>      <span class="va">`Coin Indep. Test`</span>, <span class="va">sample_size</span></span>
 <span>    <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="fu"><a href="../reference/calculate_power_t2error.html">calculate_power_t2error</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Equivalent code with purrr</p>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [1]</span></span></span>
+<span><span class="co">#&gt;   `Sample Size` test    lower_power_bound upper_power_bound power `Power 95% CI`</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            30 Wilcox…             0.765             0.914  0.85 [0.765, 0.914]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            30 Fisher              0.643             0.823  0.74 [0.643, 0.823]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            30 Chi Sq…             0.600             0.788  0.7  [0.6, 0.788]  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            30 Chi Sq…             0.600             0.788  0.7  [0.6, 0.788]  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            30 Prop. …             0.788             0.929  0.87 [0.788, 0.929]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            30 Coin I…             0.765             0.914  0.85 [0.765, 0.914]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: lower_t2error_bound &lt;dbl&gt;, upper_t2error_bound &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI` &lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [1]</span></span></span>
+<span><span class="co">#&gt;   `Sample Size` test    lower_power_bound upper_power_bound power `Power 95% CI`</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>            50 Wilcox…             0.930             0.998  0.98 [0.93, 0.998] </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>            50 Fisher              0.887             0.984  0.95 [0.887, 0.984]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>            50 Chi Sq…             0.874             0.978  0.94 [0.874, 0.978]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>            50 Chi Sq…             0.874             0.978  0.94 [0.874, 0.978]</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>            50 Prop. …             0.930             0.998  0.98 [0.93, 0.998] </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>            50 Coin I…             0.930             0.998  0.98 [0.93, 0.998] </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: lower_t2error_bound &lt;dbl&gt;, upper_t2error_bound &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI` &lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 10</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [1]</span></span></span>
+<span><span class="co">#&gt;   `Sample Size` test    lower_power_bound upper_power_bound power `Power 95% CI`</span></span>
+<span><span class="co">#&gt;           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           100 Wilcox…             0.964                 1     1 [0.964, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           100 Fisher              0.964                 1     1 [0.964, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>           100 Chi Sq…             0.964                 1     1 [0.964, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>           100 Chi Sq…             0.964                 1     1 [0.964, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>           100 Prop. …             0.964                 1     1 [0.964, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span>           100 Coin I…             0.964                 1     1 [0.964, 1]    </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: lower_t2error_bound &lt;dbl&gt;, upper_t2error_bound &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI` &lt;chr&gt;</span></span></span></code></pre></div>
+<p>And if you’re more of a {purrr} person:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_sizes</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
@@ -245,7 +328,21 @@ on. (This can, of course, be approached in other ways if desired.)</p>
 <span>  <span class="va">niter</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">info_table</span></span></code></pre></div>
+<span><span class="va">info_table</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 32 × 5</span></span></span>
+<span><span class="co">#&gt;    sample_size sample_prob prob0_list   prob1_list   niter</span></span>
+<span><span class="co">#&gt;          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>       20</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>      100</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>       20</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>      100</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>       20</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>      100</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>       20</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>      100</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>       20</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>          50 <span style="color: #949494;">&lt;dbl [2]&gt;</span>   <span style="color: #949494;">&lt;dbl [4]&gt;</span>    <span style="color: #949494;">&lt;dbl [4]&gt;</span>      100</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 22 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="run-simulation">Run Simulation<a class="anchor" aria-label="anchor" href="#run-simulation"></a>
@@ -267,8 +364,37 @@ other purposes.</p>
 <span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">many_sims</span><span class="op">)</span></span>
-<span><span class="va">many_sims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span></code></pre></div>
-<p>Equivalent Code with {purrr}</p>
+<span><span class="co">#&gt; [1] 32</span></span>
+<span><span class="va">many_sims</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span><span class="co">#&gt; $sample_size_50</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 13</span></span></span>
+<span><span class="co">#&gt;    Wilcoxon Fisher Chi Squared (No Correct…¹ Chi Squared (Correct…² `Prop. Odds`</span></span>
+<span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  0.585   0.789                     0.725                  0.725       0.572  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  0.967   0.787                     0.768                  0.768       0.958  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  0.719   0.439                     0.422                  0.422       0.707  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  0.818   0.450                     0.407                  0.407       0.802  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  0.205   0.319                     0.297                  0.297       0.193  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  0.346   0.446                     0.419                  0.419       0.340  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  0.626   0.527                     0.418                  0.418       0.617  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  0.852   0.324                     0.302                  0.302       0.841  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  0.859   0.944                     0.891                  0.891       0.849  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  0.857   0.810                     0.808                  0.808       0.848  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  0.637   0.849                     0.798                  0.798       0.629  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  0.331   0.508                     0.485                  0.485       0.323  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  0.004<span style="text-decoration: underline;">47</span> 0.030<span style="text-decoration: underline;">8</span>                    0.033<span style="text-decoration: underline;">0</span>                 0.033<span style="text-decoration: underline;">0</span>      0.003<span style="text-decoration: underline;">17</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>  0.777   0.886                     0.823                  0.823       0.765  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>  0.301   0.048<span style="text-decoration: underline;">8</span>                    0.048<span style="text-decoration: underline;">1</span>                 0.048<span style="text-decoration: underline;">1</span>      0.287  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>  0.647   0.506                     0.447                  0.447       0.634  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span>  0.054<span style="text-decoration: underline;">8</span>  0.154                     0.152                  0.152       0.048<span style="text-decoration: underline;">6</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span>  0.271   0.321                     0.292                  0.292       0.253  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span>  0.483   0.883                     0.820                  0.820       0.473  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span>  0.332   0.179                     0.189                  0.189       0.315  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ abbreviated names: ¹​`Chi Squared (No Correction)`,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ²​`Chi Squared (Correction)`</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: `Coin Indep. Test` &lt;dbl&gt;, run &lt;int&gt;, y &lt;list&gt;, x &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   n_null &lt;int&gt;, n_intervene &lt;dbl&gt;, sample_size &lt;dbl&gt;, K &lt;int&gt;</span></span></span></code></pre></div>
+<p>And again for the {purrr} folks:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">info_table</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/pmap.html" class="external-link">pmap</a></span><span class="op">(</span></span>
