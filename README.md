@@ -33,21 +33,34 @@ up your own simulations manually.
 
 ## Installation
 
-You can install the development version of ordinalsimr from
-[GitHub](https://github.com/) with:
+You can install the development version of ordinalsimr from GitHub with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github(
   "NeuroShepherd/ordinalsimr",
-  force = TRUE,
   build_vignettes = TRUE
 )
 ```
+
+## Running the App
+
+The app can be started with the following code:
+
+``` r
+ordinalsimr::run_app()
+```
+
+If using the app repeatedly, it may be useful to change some of the
+options in the application to suit your needs. See the vignette
+“ordinalsimr-options” for more information,
+`vignette("ordinalsimr-options", package = "ordinalsimr")`.
 
 ## Recommendations
 
 Simulations with 1000s of iterations *will* take minutes to hours to
 run. This should generally be ok on the Shiny app, but if you encounter
 issues, consider running the simulations in a separate R session using
-the functions provided in this package (rather than the Shiny app).
+the functions provided in this package (rather than the Shiny app). See
+the vignette “coding-simulations” for more information,
+`vignette("coding-simulations", package = "ordinalsimr")`.
