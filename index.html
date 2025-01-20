@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ordinalsimr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,19 +64,26 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of ordinalsimr from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of ordinalsimr from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span></span>
 <span>  <span class="st">"NeuroShepherd/ordinalsimr"</span>,</span>
-<span>  force <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  build_vignettes <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="running-the-app">Running the App<a class="anchor" aria-label="anchor" href="#running-the-app"></a>
+</h2>
+<p>The app can be started with the following code:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ordinalsimr</span><span class="fu">::</span><span class="fu"><a href="reference/run_app.html">run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If using the app repeatedly, it may be useful to change some of the options in the application to suit your needs. See the vignette “ordinalsimr-options” for more information, <code><a href="articles/ordinalsimr-options.html">vignette("ordinalsimr-options", package = "ordinalsimr")</a></code>.</p>
+</div>
+<div class="section level2">
 <h2 id="recommendations">Recommendations<a class="anchor" aria-label="anchor" href="#recommendations"></a>
 </h2>
-<p>Simulations with 1000s of iterations <em>will</em> take minutes to hours to run. This should generally be ok on the Shiny app, but if you encounter issues, consider running the simulations in a separate R session using the functions provided in this package (rather than the Shiny app).</p>
+<p>Simulations with 1000s of iterations <em>will</em> take minutes to hours to run. This should generally be ok on the Shiny app, but if you encounter issues, consider running the simulations in a separate R session using the functions provided in this package (rather than the Shiny app). See the vignette “coding-simulations” for more information, <code><a href="articles/coding-simulations.html">vignette("coding-simulations", package = "ordinalsimr")</a></code>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
@@ -118,6 +125,7 @@
 <li><a href="https://github.com/NeuroShepherd/ordinalsimr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/NeuroShepherd/ordinalsimr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://CRAN.R-project.org/package=ordinalsimr" class="external-link"><img src="https://www.r-pkg.org/badges/version/ordinalsimr" alt="CRAN status"></a></li>
 <li><a href="https://app.codecov.io/gh/NeuroShepherd/ordinalsimr?branch=master" class="external-link"><img src="https://codecov.io/gh/NeuroShepherd/ordinalsimr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://doi.org/10.5281/zenodo.14697216" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.14697216.svg" alt="DOI"></a></li>
 </ul>
 </div>
 
