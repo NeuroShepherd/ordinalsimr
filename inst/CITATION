@@ -19,7 +19,7 @@ bibentry(
   urldate = "2025-01-19",
   copyright = "MIT",
   date = "2025-01",
-  abstract = "Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included Shiny applications allows users to simulate outcomes given different ordinal data distributions."
+  abstract = "Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included "shiny" applications allows users to simulate outcomes given different ordinal data distributions."
 )
 
 
