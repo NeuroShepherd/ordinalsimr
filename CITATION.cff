@@ -8,11 +8,11 @@ message: 'To cite package "ordinalsimr" in publications use:'
 type: software
 license: MIT
 title: 'ordinalsimr: Compare Ordinal Endpoints Using Simulations'
-version: 0.1.1
+version: 0.1.2
 doi: 10.5281/zenodo.14697216
 abstract: Simultaneously evaluate multiple ordinal outcome measures. Applied data
   analysts in particular are faced with uncertainty in choosing appropriate statistical
-  tests for ordinal data. The included Shiny applications allows users to simulate
+  tests for ordinal data. The included "shiny" application allows users to simulate
   outcomes given different ordinal data distributions.
 authors:
 - family-names: Callahan
