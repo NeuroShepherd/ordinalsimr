@@ -1,4 +1,4 @@
-# ordinalsimr 0.1.2
+# ordinalsimr 0.1.3
 
 * Updates to match CRAN submission standards
 
