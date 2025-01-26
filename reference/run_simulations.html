@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ordinalsimr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Run Simulations</h1>
-      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.1.1/R/run_simulations.R" class="external-link"><code>R/run_simulations.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.1.3-devel/R/run_simulations.R" class="external-link"><code>R/run_simulations.R</code></a></small>
       <div class="d-none name"><code>run_simulations.Rd</code></div>
     </div>
 
@@ -110,10 +110,10 @@
 <span class="r-in"><span>  sample_prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  prob0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  prob1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  niter <span class="op">=</span> <span class="fl">50</span></span></span>
+<span class="r-in"><span>  niter <span class="op">=</span> <span class="fl">40</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sample_size_40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 50 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Wilcoxon  Fisher Chi Squared (No Corr…¹ Chi Squared (Correct…² `Prop. Odds`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 0.000<span style="text-decoration: underline;">695</span>   3.07<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>              0.001<span style="text-decoration: underline;">34</span>                0.001<span style="text-decoration: underline;">34</span>   0.000<span style="text-decoration: underline;">310</span>    </span>
@@ -126,14 +126,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 0.007<span style="text-decoration: underline;">24</span>    3.11<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>              0.031<span style="text-decoration: underline;">5</span>                 0.031<span style="text-decoration: underline;">5</span>    0.005<span style="text-decoration: underline;">07</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 0.004<span style="text-decoration: underline;">20</span>    2.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span>              0.023<span style="text-decoration: underline;">5</span>                 0.023<span style="text-decoration: underline;">5</span>    0.002<span style="text-decoration: underline;">61</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 0.000<span style="text-decoration: underline;">001</span>69 7.49<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span>              0.000<span style="text-decoration: underline;">014</span>4              0.000<span style="text-decoration: underline;">014</span>4 0.000<span style="text-decoration: underline;">000</span>074<span style="text-decoration: underline;">3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 30 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated names: ¹​`Chi Squared (No Correction)`,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​`Chi Squared (Correction)`</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: `Coin Indep. Test` &lt;dbl&gt;, run &lt;int&gt;, y &lt;list&gt;, x &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   n_null &lt;int&gt;, n_intervene &lt;dbl&gt;, sample_size &lt;dbl&gt;, K &lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sample_size_50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 50 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Wilcoxon  Fisher Chi Squared (No Corr…¹ Chi Squared (Correct…² `Prop. Odds`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    4.73<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 2.27<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>             0.000<span style="text-decoration: underline;">059</span>2              0.000<span style="text-decoration: underline;">059</span>2       4.87<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span></span>
@@ -146,14 +146,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    2.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 1.32<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>             0.000<span style="text-decoration: underline;">328</span>               0.000<span style="text-decoration: underline;">328</span>        6.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    2.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 7.29<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span>             0.000<span style="text-decoration: underline;">262</span>               0.000<span style="text-decoration: underline;">262</span>        8.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    1.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 7.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span>             0.000<span style="text-decoration: underline;">001</span>38             0.000<span style="text-decoration: underline;">001</span>38      4.25<span style="color: #949494;">e</span><span style="color: #BB0000;">-9</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 30 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated names: ¹​`Chi Squared (No Correction)`,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​`Chi Squared (Correction)`</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: `Coin Indep. Test` &lt;dbl&gt;, run &lt;int&gt;, y &lt;list&gt;, x &lt;list&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   n_null &lt;int&gt;, n_intervene &lt;dbl&gt;, sample_size &lt;dbl&gt;, K &lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sample_size_60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 50 × 13</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 40 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Wilcoxon  Fisher Chi Squared (No Corr…¹ Chi Squared (Correct…² `Prop. Odds`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>    1.74<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 1.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>            0.000<span style="text-decoration: underline;">238</span>               0.000<span style="text-decoration: underline;">238</span>    0.000<span style="text-decoration: underline;">005</span>11  </span>
@@ -166,7 +166,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>    1.41<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 1.17<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span>            0.000<span style="text-decoration: underline;">214</span>               0.000<span style="text-decoration: underline;">214</span>    0.000<span style="text-decoration: underline;">003</span>92  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>    2.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 7.16<span style="color: #949494;">e</span><span style="color: #BB0000;">-8</span>            0.000<span style="text-decoration: underline;">000</span>823            0.000<span style="text-decoration: underline;">000</span>823 0.000<span style="text-decoration: underline;">000</span>013<span style="text-decoration: underline;">7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    5.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 7.52<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span>            0.000<span style="text-decoration: underline;">004</span>21             0.000<span style="text-decoration: underline;">004</span>21  0.000<span style="text-decoration: underline;">000</span>051<span style="text-decoration: underline;">6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 40 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 30 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ abbreviated names: ¹​`Chi Squared (No Correction)`,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​`Chi Squared (Correction)`</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: `Coin Indep. Test` &lt;dbl&gt;, run &lt;int&gt;, y &lt;list&gt;, x &lt;list&gt;,</span></span>
