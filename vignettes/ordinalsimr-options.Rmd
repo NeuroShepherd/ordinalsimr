@@ -12,6 +12,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+start_options <- options()
 ```
 
 ```{r setup}
@@ -101,6 +103,9 @@ get_ordinalsimr_options()
 
 
 
+```{r, include = FALSE}
+options(start_options)
+```
 
 
 
