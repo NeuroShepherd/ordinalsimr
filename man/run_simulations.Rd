@@ -47,7 +47,7 @@ run_simulations(
   sample_prob = c(0.5, 0.5),
   prob0 = c(0.1, 0.2, 0.3, 0.4),
   prob1 = c(0.6, 0.2, 0.1, 0.1),
-  niter = 50
+  niter = 40
 )
 
 }
