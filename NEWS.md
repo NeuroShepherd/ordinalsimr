@@ -1,3 +1,7 @@
+# ordinalsimr 0.1.3
+
+* Updates to match CRAN submission standards
+
 # ordinalsimr 0.1.1
 
 * Create DOI via Zenodo and add to CITATION file
