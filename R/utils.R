@@ -69,9 +69,6 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
               )
             },
             error = function(e) {
-              print(paste("error at", x))
-              browser()
-              try(write(paste(e$message, stderr()), "error_messages"))
               tibble(
                 lower_power_bound = NA_real_,
                 upper_power_bound = NA_real_,
