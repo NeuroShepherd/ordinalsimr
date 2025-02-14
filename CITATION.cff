@@ -2,17 +2,20 @@
 # CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
 # --------------------------------------------
- 
+
 cff-version: 1.2.0
 message: 'To cite package "ordinalsimr" in publications use:'
 type: software
 license: MIT
 title: 'ordinalsimr: Compare Ordinal Endpoints Using Simulations'
 version: 0.1.3
-doi: 10.5281/zenodo.14697215
 identifiers:
 - type: doi
   value: 10.32614/CRAN.package.ordinalsimr
+  description: CRAN release of package
+- type: doi
+  value: doi: 10.5281/zenodo.14697215
+  description: Zenodo identifier of code repository
 abstract: Simultaneously evaluate multiple ordinal outcome measures. Applied data
   analysts in particular are faced with uncertainty in choosing appropriate statistical
   tests for ordinal data. The included 'shiny' application allows users to simulate
