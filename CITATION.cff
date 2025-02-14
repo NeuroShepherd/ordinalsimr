@@ -33,7 +33,13 @@ preferred-citation:
     given-names: Pat
     email: patricktcallahan18@gmail.com
     orcid: https://orcid.org/0000-0003-1769-7580
-  doi: 10.5281/zenodo.14697215
+  identifiers:
+  - type: doi
+    value: 10.32614/CRAN.package.ordinalsimr
+    description: CRAN release of package
+  - type: doi
+    value: doi: 10.5281/zenodo.14697215
+    description: Zenodo identifier of code repository
   year: '2025'
   month: '1'
   url: https://github.com/neuroshepherd/ordinalsimr
