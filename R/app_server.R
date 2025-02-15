@@ -20,6 +20,7 @@ app_server <- function(input, output, session) {
   rng_selections <- mod_rng_option_server("rng_option_1")
   run_simulation_button <- mod_start_simulation_server("start_simulation_1")
   t1_error_toggle <- mod_type_one_error_server("type_one_error_1")
+  kill_button <- mod_kill_simulations_server("kill_simulations_1")
 
 
   # Pass collected data to stats calculations
@@ -31,7 +32,8 @@ app_server <- function(input, output, session) {
     rng_info = rng_selections,
     included_tests = data_entered_tests,
     run_simulation_button = run_simulation_button,
-    t1_error_toggle = t1_error_toggle
+    t1_error_toggle = t1_error_toggle,
+    kill_button = kill_button
   )
 
   # Plot the distribution of values

@@ -22,6 +22,13 @@ mod_kill_simulations_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
 
+    kill_simulation_button <- reactive({
+      input$kill_simulations
+    })
+
+    # Return the stop_process reactive value to be used in other modules
+    return(kill_simulation_button)
+
   })
 }
 

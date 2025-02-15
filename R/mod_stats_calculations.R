@@ -30,7 +30,7 @@ mod_stats_calculations_ui <- function(id) {
 #'
 #' @noRd
 mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info, included_tests,
-                                          run_simulation_button, t1_error_toggle) {
+                                          run_simulation_button, t1_error_toggle, kill_button) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
