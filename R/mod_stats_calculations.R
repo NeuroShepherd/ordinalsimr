@@ -48,24 +48,82 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
+
+    background_process <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
+                                   .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
+
+      run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
+                                         .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
+        ordinalsimr::run_simulations(sample_size, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
+                                     .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind)
+      }
+
+
+      tmepte <- callr::r_bg(run_simulation_wrapper,
+                            args = list(sample_size = 100:500, sample_prob = c(0.5, 0.5), prob0 = c(0.5, 0.5),
+                                        prob1 = c(0.5, 0.5), niter = 100, included = "all"))
+
+
+    }
+
+
+    empty_table <- data.frame(matrix(ncol = 13))
+    colnames(empty_table) <- c('Wilcoxon', 'Fisher', 'Chi Squared (No Correction)', 'Chi Squared (Correction)', 'Prop. Odds', 'Coin Indep. Test', 'run', 'y', 'x', 'n_null', 'n_intervene', 'sample_size', 'K')
+
+
+    reactive_bg_process <- reactiveValues(bg_process = NULL,
+                                          empty_table = empty_table)
+
+
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
     # usage example: parameters()$null_probs
 
-    comparison_results <- eventReactive(run_simulation_button(), {
-      withProgress(message = "Comparisons:", value = 0, {
-        run_simulations(parameters()$sample_size,
-          prob0 = parameters()$prob0,
-          sample_prob = parameters()$sample_prob,
-          prob1 = parameters()$prob1,
-          niter = parameters()$iterations,
-          included = parameters()$included_tests,
-          .rng_kind = rng_info$rng_kind(),
-          .rng_normal_kind = rng_info$rng_normal_kind(),
-          .rng_sample_kind = rng_info$rng_sample_kind()
-        )
-      })
+    intermediate_results <- eventReactive(run_simulation_button(), {
+      background_process()
     })
+
+    comparison_results <- reactive({
+
+      req(intermediate_results())
+
+      if (intermediate_results()$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+        reactive_bg_process$empty_table
+      } else {
+        intermediate_results()$get_result()
+        }
+    })
+
+
+    observeEvent(kill_button(), {
+      cat(paste("Killing process - PID:", intermediate_results()$get_pid(), "\n"))
+      intermediate_results()$kill()
+    })
+
+    # comparison_results <- reactive({
+    #   invalidateLater(millis = 1000, session = session)
+    #
+    #   if (reactive_bg_process$bg_process()$is_alive()) {
+    #     reactive_bg_process$empty_table()
+    #   } else {
+    #     reactive_bg_process$bg_process()$get_result()}
+    # })
+
+
+    # observe({
+    #   invalidateLater(1000)
+    #   req(reactive_bg_process$bg_process)
+    #   if(reactive_bg_process$bg_process$poll_io(0)[["process"]] == "ready") {
+    #     print(reactive_bg_process$bg_process$get_result())
+    #     reactive_bg_process$bg_process <- NULL
+    #   }
+    # })
+
+
+
+
+
 
     group1_results <- eventReactive(run_simulation_button(), {
       if (parameters()$t1_error_toggle %in% c("both", "group1")) {
@@ -103,6 +161,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
     output$results_table <- DT::renderDataTable({
+      validate(
+        need(comparison_results(), "No results yet or simulation killed.")
+      )
       comp_res <- comparison_results() %>%
         bind_rows() %>%
         dplyr::select(
