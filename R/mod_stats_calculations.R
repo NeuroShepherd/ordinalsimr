@@ -52,20 +52,20 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     background_process <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                                    .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
 
-      run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
-                                         .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
+      run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
+                                         .rng_kind, .rng_normal_kind, .rng_sample_kind) {
         ordinalsimr::run_simulations(sample_size, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
                                      .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind)
       }
 
 
       tmepte <- callr::r_bg(run_simulation_wrapper,
-                            args = list(sample_size = 100:107, sample_prob = c(0.5, 0.5), prob0 = c(0.5, 0.5),
-                                        prob1 = c(0.5, 0.5), niter = 10, included = "all"))
+                            args = list(sample_size = sample_size, sample_prob = sample_prob, prob0 = prob0,
+                                        prob1 = prob1, niter = niter, included = included,
+                                        .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind))
 
 
     }
-
 
 
 
@@ -75,11 +75,28 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
     observeEvent(run_simulation_button(), {
       reactive_bg_process$bg_cancelled <- FALSE
-      reactive_bg_process$bg_process <- background_process()
+      reactive_bg_process$bg_process <- background_process(
+        parameters()$sample_size,
+        parameters()$sample_prob,
+        parameters()$prob0,
+        parameters()$prob1,
+        parameters()$iterations,
+        parameters()$included_tests,
+        .rng_kind = rng_info$rng_kind(),
+        .rng_normal_kind = rng_info$rng_normal_kind(),
+        .rng_sample_kind = rng_info$rng_sample_kind()
+        )
       reactive_bg_process$bg_started <- TRUE
       reactive_bg_process$bg_running <- TRUE
 
     }, ignoreInit = TRUE)
+
+    observeEvent(kill_button(), {
+      cat(paste("Killing process - PID:", reactive_bg_process$bg_process$get_pid(), "\n"))
+      reactive_bg_process$bg_process$kill()
+      reactive_bg_process$bg_cancelled <- TRUE
+    })
+
 
     comparison_results <- reactive({
       req(reactive_bg_process$bg_started)
@@ -93,11 +110,9 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
-    observeEvent(kill_button(), {
-      cat(paste("Killing process - PID:", reactive_bg_process$bg_process$get_pid(), "\n"))
-      reactive_bg_process$bg_process$kill()
-      reactive_bg_process$bg_cancelled <- TRUE
-    })
+
+
+
 
 
 
