@@ -94,6 +94,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     observeEvent(kill_button(), {
       cat(paste("Killing process - PID:", reactive_bg_process$bg_process_comparison$get_pid(), "\n"))
       reactive_bg_process$bg_process_comparison$kill()
+      reactive_bg_process$bg_process_group1$kill()
+      reactive_bg_process$bg_process_group2$kill()
       reactive_bg_process$bg_cancelled <- TRUE
     })
 
@@ -167,69 +169,6 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
-    output$results_table <- DT::renderDataTable({
-      validate(
-        need(comparison_results(), "No results yet or simulation killed.")
-      )
-      comp_res <- comparison_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          .data$sample_size,
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
-          ))
-        )
-
-      comp_res %>%
-        DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:ncol(comp_res), digits = 5)
-    })
-    outputOptions(output, "results_table", suspendWhenHidden = FALSE)
-
-    # if not keeping these output tables, use observe({group1_results()}) to
-    # ensure evaluation
-    output$group1_pvalues <- DT::renderDataTable({
-      validate(
-        need(group1_results(), "No simulations run for Group 1.")
-      )
-
-      g1_res <- group1_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          .data$sample_size,
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
-          ))
-        )
-
-      g1_res %>%
-        DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:ncol(g1_res), digits = 5)
-    })
-    outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
-
-    output$group2_pvalues <- DT::renderDataTable({
-      validate(
-        need(group2_results(), "No simulations run for Group 2.")
-      )
-
-      g2_res <- group2_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          .data$sample_size,
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
-          ))
-        )
-
-      g2_res %>%
-        DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:ncol(g2_res), digits = 5)
-    })
-    outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
 
 
     return(list(
