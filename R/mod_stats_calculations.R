@@ -99,28 +99,6 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       reactive_bg_process$bg_cancelled <- TRUE
     })
 
-    # comparison_results <- reactive({
-    #   invalidateLater(millis = 1000, session = session)
-    #
-    #   if (reactive_bg_process$bg_process()$is_alive()) {
-    #     reactive_bg_process$empty_table()
-    #   } else {
-    #     reactive_bg_process$bg_process()$get_result()}
-    # })
-
-
-    # observe({
-    #   invalidateLater(1000)
-    #   req(reactive_bg_process$bg_process)
-    #   if(reactive_bg_process$bg_process$poll_io(0)[["process"]] == "ready") {
-    #     print(reactive_bg_process$bg_process$get_result())
-    #     reactive_bg_process$bg_process <- NULL
-    #   }
-    # })
-
-
-
-
 
 
     group1_results <- eventReactive(run_simulation_button(), {
