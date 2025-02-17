@@ -24,17 +24,13 @@ app_server <- function(input, output, session) {
 
 
 
-  empty_table <- data.frame(matrix(ncol = 13))
-  colnames(empty_table) <- c('Wilcoxon', 'Fisher', 'Chi Squared (No Correction)',
-                             'Chi Squared (Correction)', 'Prop. Odds', 'Coin Indep. Test',
-                             'run', 'y', 'x', 'n_null', 'n_intervene', 'sample_size', 'K')
-
-
-  reactive_bg_process <- reactiveValues(bg_process = NULL,
+  # Create a reactive value to store the background processes
+  reactive_bg_process <- reactiveValues(bg_process_comparison = NULL,
+                                        bg_process_group1 = NULL,
+                                        bg_process_group2 = NULL,
                                         bg_started = FALSE,
                                         bg_cancelled = FALSE,
-                                        bg_running = FALSE,
-                                        empty_table = empty_table)
+                                        bg_running = FALSE)
 
 
   # Pass collected data to stats calculations

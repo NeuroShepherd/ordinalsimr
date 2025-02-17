@@ -75,7 +75,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
     observeEvent(run_simulation_button(), {
       reactive_bg_process$bg_cancelled <- FALSE
-      reactive_bg_process$bg_process <- background_process(
+      reactive_bg_process$bg_process_comparison <- background_process(
         parameters()$sample_size,
         parameters()$sample_prob,
         parameters()$prob0,
@@ -92,8 +92,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     }, ignoreInit = TRUE)
 
     observeEvent(kill_button(), {
-      cat(paste("Killing process - PID:", reactive_bg_process$bg_process$get_pid(), "\n"))
-      reactive_bg_process$bg_process$kill()
+      cat(paste("Killing process - PID:", reactive_bg_process$bg_process_comparison$get_pid(), "\n"))
+      reactive_bg_process$bg_process_comparison$kill()
       reactive_bg_process$bg_cancelled <- TRUE
     })
 
@@ -101,11 +101,11 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     comparison_results <- reactive({
       req(reactive_bg_process$bg_started)
 
-      if (reactive_bg_process$bg_process$is_alive()) {
+      if (reactive_bg_process$bg_process_comparison$is_alive()) {
         invalidateLater(millis = 3000, session = session)
       } else {
         reactive_bg_process$bg_running <- FALSE
-        reactive_bg_process$bg_process$get_result()
+        reactive_bg_process$bg_process_comparison$get_result()
         }
     })
 
@@ -114,39 +114,55 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
+    observeEvent(run_simulation_button(), {
+      reactive_bg_process$bg_process_group1 <- background_process(
+        parameters()$sample_size,
+        parameters()$sample_prob,
+        parameters()$prob0,
+        parameters()$prob0,
+        parameters()$iterations,
+        parameters()$included_tests,
+        .rng_kind = rng_info$rng_kind(),
+        .rng_normal_kind = rng_info$rng_normal_kind(),
+        .rng_sample_kind = rng_info$rng_sample_kind()
+      )
+    }, ignoreInit = TRUE)
 
 
-    group1_results <- eventReactive(run_simulation_button(), {
-      if (parameters()$t1_error_toggle %in% c("both", "group1")) {
-        withProgress(message = "Group 1:", value = 0, {
-          run_simulations(parameters()$sample_size,
-            prob0 = parameters()$prob0,
-            sample_prob = parameters()$sample_prob,
-            prob1 = parameters()$prob0,
-            niter = parameters()$iterations,
-            included = parameters()$included_tests,
-            .rng_kind = rng_info$rng_kind(),
-            .rng_normal_kind = rng_info$rng_normal_kind(),
-            .rng_sample_kind = rng_info$rng_sample_kind()
-          )
-        })
+    group1_results <- reactive({
+      req(reactive_bg_process$bg_started)
+      req(parameters()$t1_error_toggle %in% c("both", "group1"))
+
+      if (reactive_bg_process$bg_process_group1$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+      } else {
+        reactive_bg_process$bg_process_group1$get_result()
       }
     })
 
-    group2_results <- eventReactive(run_simulation_button(), {
-      if (parameters()$t1_error_toggle %in% c("both", "group2")) {
-        withProgress(message = "Group 2:", value = 0, {
-          run_simulations(parameters()$sample_size,
-            prob0 = parameters()$prob1,
-            sample_prob = parameters()$sample_prob,
-            prob1 = parameters()$prob1,
-            niter = parameters()$iterations,
-            included = parameters()$included_tests,
-            .rng_kind = rng_info$rng_kind(),
-            .rng_normal_kind = rng_info$rng_normal_kind(),
-            .rng_sample_kind = rng_info$rng_sample_kind()
-          )
-        })
+
+    observeEvent(run_simulation_button(), {
+      reactive_bg_process$bg_process_group2 <- background_process(
+        parameters()$sample_size,
+        parameters()$sample_prob,
+        parameters()$prob1,
+        parameters()$prob1,
+        parameters()$iterations,
+        parameters()$included_tests,
+        .rng_kind = rng_info$rng_kind(),
+        .rng_normal_kind = rng_info$rng_normal_kind(),
+        .rng_sample_kind = rng_info$rng_sample_kind()
+      )
+    }, ignoreInit = TRUE)
+
+    group2_results <- reactive({
+      req(reactive_bg_process$bg_started)
+      req(parameters()$t1_error_toggle %in% c("both", "group2"))
+
+      if (reactive_bg_process$bg_process_group2$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+      } else {
+        reactive_bg_process$bg_process_group2$get_result()
       }
     })
 
