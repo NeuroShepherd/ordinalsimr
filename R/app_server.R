@@ -23,6 +23,20 @@ app_server <- function(input, output, session) {
   kill_button <- mod_kill_simulations_server("kill_simulations_1")
 
 
+
+  empty_table <- data.frame(matrix(ncol = 13))
+  colnames(empty_table) <- c('Wilcoxon', 'Fisher', 'Chi Squared (No Correction)',
+                             'Chi Squared (Correction)', 'Prop. Odds', 'Coin Indep. Test',
+                             'run', 'y', 'x', 'n_null', 'n_intervene', 'sample_size', 'K')
+
+
+  reactive_bg_process <- reactiveValues(bg_process = NULL,
+                                        bg_started = FALSE,
+                                        bg_cancelled = FALSE,
+                                        bg_running = FALSE,
+                                        empty_table = empty_table)
+
+
   # Pass collected data to stats calculations
   results_output <- mod_stats_calculations_server("stats_calculations_1",
     probability_data = data_entered_probs,
@@ -33,13 +47,15 @@ app_server <- function(input, output, session) {
     included_tests = data_entered_tests,
     run_simulation_button = run_simulation_button,
     t1_error_toggle = t1_error_toggle,
-    kill_button = kill_button
+    kill_button = kill_button,
+    reactive_bg_process = reactive_bg_process
   )
 
   # Plot the distribution of values
   distributions_power_error <- mod_plot_distributions_server("plot_distributions_1",
     p_value_table = results_output,
-    n = data_entered_sample_size
+    n = data_entered_sample_size,
+    reactive_bg_process = reactive_bg_process
   )
 
   # format the data and plots into a list, and make this object available for

@@ -30,7 +30,7 @@ mod_stats_calculations_ui <- function(id) {
 #'
 #' @noRd
 mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info, included_tests,
-                                          run_simulation_button, t1_error_toggle, kill_button) {
+                                          run_simulation_button, t1_error_toggle, kill_button, reactive_bg_process) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -60,45 +60,43 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
       tmepte <- callr::r_bg(run_simulation_wrapper,
-                            args = list(sample_size = 100:500, sample_prob = c(0.5, 0.5), prob0 = c(0.5, 0.5),
-                                        prob1 = c(0.5, 0.5), niter = 100, included = "all"))
+                            args = list(sample_size = 100:107, sample_prob = c(0.5, 0.5), prob0 = c(0.5, 0.5),
+                                        prob1 = c(0.5, 0.5), niter = 10, included = "all"))
 
 
     }
 
 
-    empty_table <- data.frame(matrix(ncol = 13))
-    colnames(empty_table) <- c('Wilcoxon', 'Fisher', 'Chi Squared (No Correction)', 'Chi Squared (Correction)', 'Prop. Odds', 'Coin Indep. Test', 'run', 'y', 'x', 'n_null', 'n_intervene', 'sample_size', 'K')
-
-
-    reactive_bg_process <- reactiveValues(bg_process = NULL,
-                                          empty_table = empty_table)
 
 
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
     # usage example: parameters()$null_probs
 
-    intermediate_results <- eventReactive(run_simulation_button(), {
-      background_process()
-    })
+    observeEvent(run_simulation_button(), {
+      reactive_bg_process$bg_cancelled <- FALSE
+      reactive_bg_process$bg_process <- background_process()
+      reactive_bg_process$bg_started <- TRUE
+      reactive_bg_process$bg_running <- TRUE
+
+    }, ignoreInit = TRUE)
 
     comparison_results <- reactive({
+      req(reactive_bg_process$bg_started)
 
-      req(intermediate_results())
-
-      if (intermediate_results()$is_alive()) {
+      if (reactive_bg_process$bg_process$is_alive()) {
         invalidateLater(millis = 3000, session = session)
-        reactive_bg_process$empty_table
       } else {
-        intermediate_results()$get_result()
+        reactive_bg_process$bg_running <- FALSE
+        reactive_bg_process$bg_process$get_result()
         }
     })
 
 
     observeEvent(kill_button(), {
-      cat(paste("Killing process - PID:", intermediate_results()$get_pid(), "\n"))
-      intermediate_results()$kill()
+      cat(paste("Killing process - PID:", reactive_bg_process$bg_process$get_pid(), "\n"))
+      reactive_bg_process$bg_process$kill()
+      reactive_bg_process$bg_cancelled <- TRUE
     })
 
     # comparison_results <- reactive({
