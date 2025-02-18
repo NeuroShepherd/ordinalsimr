@@ -23,7 +23,9 @@ mod_stats_calculations_ui <- function(id) {
       "Group 2 p-values",
       shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8)
     ),
-    progress = shinyWidgets::progressBar(ns("progress"), value = 0, title = "Simulation Completion")
+    comparison_progress = shinyWidgets::progressBar(ns("comparison_progress"), value = 0, title = "Comparison Progress"),
+    group1_progress = shinyWidgets::progressBar(ns("group1_progress"), value = 0, title = "Group 1 Progress"),
+    group2_progress = shinyWidgets::progressBar(ns("group2_progress"), value = 0, title = "Group 1 Progress")
   )
 }
 
@@ -109,12 +111,11 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       if (file.exists(reactive_bg_process$comparison_output_tracker_file) && !is.null(reactive_bg_process$comparison_output_tracker_file)) {
         shinyWidgets::updateProgressBar(
           session = session,
-          id = "progress",
+          id = "comparison_progress",
           value = as.numeric(readLines(reactive_bg_process$comparison_output_tracker_file)) - min(parameters()$sample_size),
           total = max(parameters()$sample_size) - min(parameters()$sample_size)
           )
       }
-
     })
 
 
@@ -158,6 +159,26 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
+    observe({
+      req(reactive_bg_process$bg_process_group1_started)
+      req(reactive_bg_process$group1_output_tracker_file)
+      invalidateLater(100, session)
+      if (file.exists(reactive_bg_process$group1_output_tracker_file) && !is.null(reactive_bg_process$group1_output_tracker_file)) {
+        shinyWidgets::updateProgressBar(
+          session = session,
+          id = "group1_progress",
+          value = as.numeric(readLines(reactive_bg_process$group1_output_tracker_file)) - min(parameters()$sample_size),
+          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+        )
+      }
+    })
+
+
+
+
+
+
+
     observeEvent(run_simulation_button(), {
       reactive_bg_process$group2_output_tracker_file <- tempfile(fileext = ".txt")
       reactive_bg_process$bg_process_group2 <- run_simulations_in_background(
@@ -183,6 +204,21 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         invalidateLater(millis = 3000, session = session)
       } else {
         reactive_bg_process$bg_process_group2$get_result()
+      }
+    })
+
+
+    observe({
+      req(reactive_bg_process$bg_process_group2_started)
+      req(reactive_bg_process$group2_output_tracker_file)
+      invalidateLater(100, session)
+      if (file.exists(reactive_bg_process$group2_output_tracker_file) && !is.null(reactive_bg_process$group2_output_tracker_file)) {
+        shinyWidgets::updateProgressBar(
+          session = session,
+          id = "group2_progress",
+          value = as.numeric(readLines(reactive_bg_process$group2_output_tracker_file)) - min(parameters()$sample_size),
+          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+        )
       }
     })
 
