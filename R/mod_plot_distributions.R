@@ -113,6 +113,9 @@ mod_plot_distributions_server <- function(id, p_value_table, n, reactive_bg_proc
     })
 
     output$distribution_plot_results <- renderPlot({
+      validate(
+        need(nrow(p_value_reactive_table()) > 0 , "Calculation ongoing")
+      )
       distribution_plot()
     })
 
@@ -134,6 +137,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n, reactive_bg_proc
         )
     })
     output$distribution_statistics <- DT::renderDataTable({
+      validate(need(nrow(p_value_reactive_table()) > 0 , "Calculation ongoing"))
       distribution_statistics() %>%
         select(
           -.data$lower_power_bound, -.data$upper_power_bound,
