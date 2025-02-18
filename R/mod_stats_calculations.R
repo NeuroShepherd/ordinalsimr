@@ -77,6 +77,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     # calling reactivity
     # usage example: parameters()$null_probs
 
+    ### COMPARISONS
+
     # Start the comparison processing
     observeEvent(run_simulation_button(), {
       reactive_bg_process$bg_cancelled <- FALSE
@@ -94,7 +96,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         tempfile = reactive_bg_process$comparison_output_tracker_file
         )
       reactive_bg_process$bg_process_comparison_started <- TRUE
-      reactive_bg_process$bg_running <- TRUE
+      reactive_bg_process$bg_running_comparisons <- TRUE
 
     }, ignoreInit = TRUE)
 
@@ -105,8 +107,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       if (reactive_bg_process$bg_process_comparison$is_alive()) {
         invalidateLater(millis = 3000, session = session)
       } else {
-        reactive_bg_process$bg_running <- FALSE
-        reactive_bg_process$comparison_output_tracker_file <- NULL
+        reactive_bg_process$bg_running_comparisons <- FALSE
         reactive_bg_process$bg_process_comparison$get_result()
       }
     })
@@ -115,9 +116,10 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     # Check progress and update the progress bar
     observe({
       req(reactive_bg_process$bg_process_comparison_started)
-      req(reactive_bg_process$comparison_output_tracker_file)
+      # req(reactive_bg_process$comparison_output_tracker_file)
       invalidateLater(100, session)
-      if (file.exists(reactive_bg_process$comparison_output_tracker_file) && !is.null(reactive_bg_process$comparison_output_tracker_file)) {
+      if (file.exists(reactive_bg_process$comparison_output_tracker_file) &&
+          !is.null(reactive_bg_process$comparison_output_tracker_file)) {
         shinyWidgets::updateProgressBar(
           session = session,
           id = "comparison_progress",
@@ -132,11 +134,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
-
-
-
-
-
+    ### GROUP 1
 
     observeEvent(run_simulation_button(), {
       reactive_bg_process$group1_output_tracker_file <- tempfile(fileext = ".txt")
@@ -153,6 +151,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         tempfile = reactive_bg_process$group1_output_tracker_file
       )
       reactive_bg_process$bg_process_group1_started <- TRUE
+      reactive_bg_process$bg_running_group1 <- TRUE
     }, ignoreInit = TRUE)
 
 
@@ -163,6 +162,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       if (reactive_bg_process$bg_process_group1$is_alive()) {
         invalidateLater(millis = 3000, session = session)
       } else {
+        reactive_bg_process$bg_running_group1 <- FALSE
         reactive_bg_process$bg_process_group1$get_result()
       }
     })
@@ -172,7 +172,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       req(reactive_bg_process$bg_process_group1_started)
       req(reactive_bg_process$group1_output_tracker_file)
       invalidateLater(100, session)
-      if (file.exists(reactive_bg_process$group1_output_tracker_file) && !is.null(reactive_bg_process$group1_output_tracker_file)) {
+      if (file.exists(reactive_bg_process$group1_output_tracker_file) &&
+          !is.null(reactive_bg_process$group1_output_tracker_file)) {
         shinyWidgets::updateProgressBar(
           session = session,
           id = "group1_progress",
@@ -185,8 +186,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
-
-
+    #### GROUP 2
 
     observeEvent(run_simulation_button(), {
       reactive_bg_process$group2_output_tracker_file <- tempfile(fileext = ".txt")
@@ -203,6 +203,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         tempfile = reactive_bg_process$group2_output_tracker_file
       )
       reactive_bg_process$bg_process_group2_started <- TRUE
+      reactive_bg_process$bg_running_group2 <- TRUE
     }, ignoreInit = TRUE)
 
     group2_results <- reactive({
@@ -212,6 +213,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       if (reactive_bg_process$bg_process_group2$is_alive()) {
         invalidateLater(millis = 3000, session = session)
       } else {
+        reactive_bg_process$bg_running_group2 <- FALSE
         reactive_bg_process$bg_process_group2$get_result()
       }
     })
@@ -221,7 +223,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       req(reactive_bg_process$bg_process_group2_started)
       req(reactive_bg_process$group2_output_tracker_file)
       invalidateLater(100, session)
-      if (file.exists(reactive_bg_process$group2_output_tracker_file) && !is.null(reactive_bg_process$group2_output_tracker_file)) {
+      if (file.exists(reactive_bg_process$group2_output_tracker_file) &&
+          !is.null(reactive_bg_process$group2_output_tracker_file)) {
         shinyWidgets::updateProgressBar(
           session = session,
           id = "group2_progress",
@@ -232,13 +235,12 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
-
-
     return(list(
       comparison_results = comparison_results,
       group1_results = group1_results,
       group2_results = group2_results
     ))
+
   })
 }
 
