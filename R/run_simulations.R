@@ -104,12 +104,12 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
       bind_rows() %>%
       mutate(run = row_number(), .before = .data$y)
 
-    if (shiny::isRunning()) {
-      incProgress(
-        1 / (max(sample_size) - min(sample_size)),
-        detail = paste("Sample size", sample_size_nested, "completed.")
-      )
-    }
+    # if (shiny::isRunning()) {
+    #   incProgress(
+    #     1 / (max(sample_size) - min(sample_size)),
+    #     detail = paste("Sample size", sample_size_nested, "completed.")
+    #   )
+    # }
 
     return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
   }) %>%
