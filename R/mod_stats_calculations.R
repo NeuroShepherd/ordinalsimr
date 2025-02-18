@@ -22,7 +22,8 @@ mod_stats_calculations_ui <- function(id) {
     nav_panel(
       "Group 2 p-values",
       shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8)
-    )
+    ),
+    progress = shinyWidgets::progressBar(ns("progress"), value = 0, title = "Simulation Completion")
   )
 }
 
@@ -49,20 +50,29 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
+
     background_process <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
-                                   .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
+                                   .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL,
+                                   tempfile = NULL) {
 
       run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
-                                         .rng_kind, .rng_normal_kind, .rng_sample_kind) {
-        ordinalsimr::run_simulations(sample_size, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
-                                     .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind)
+                                         .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
+
+        lapply(sample_size, function(x) {
+          writeLines(as.character(x), con = tempfile)
+          ordinalsimr::run_simulations(x, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
+                                       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind)
+        }) |>
+          unlist(recursive = FALSE)
+
       }
 
 
       tmepte <- callr::r_bg(run_simulation_wrapper,
                             args = list(sample_size = sample_size, sample_prob = sample_prob, prob0 = prob0,
                                         prob1 = prob1, niter = niter, included = included,
-                                        .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind))
+                                        .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind,
+                                        tempfile = tempfile))
 
 
     }
@@ -75,6 +85,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
     observeEvent(run_simulation_button(), {
       reactive_bg_process$bg_cancelled <- FALSE
+      reactive_bg_process$comparison_output_tracker_file <- tempfile(fileext = ".txt")
+      # browser()
       reactive_bg_process$bg_process_comparison <- background_process(
         parameters()$sample_size,
         parameters()$sample_prob,
@@ -84,7 +96,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         parameters()$included_tests,
         .rng_kind = rng_info$rng_kind(),
         .rng_normal_kind = rng_info$rng_normal_kind(),
-        .rng_sample_kind = rng_info$rng_sample_kind()
+        .rng_sample_kind = rng_info$rng_sample_kind(),
+        tempfile = reactive_bg_process$comparison_output_tracker_file
         )
       reactive_bg_process$bg_started <- TRUE
       reactive_bg_process$bg_running <- TRUE
@@ -100,16 +113,40 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
+
+    observe({
+      req(reactive_bg_process$bg_started)
+      req(reactive_bg_process$comparison_output_tracker_file)
+      invalidateLater(100, session)
+      if (file.exists(reactive_bg_process$comparison_output_tracker_file) && !is.null(reactive_bg_process$comparison_output_tracker_file)) {
+        shinyWidgets::updateProgressBar(
+          session = session,
+          id = "progress",
+          value = as.numeric(readLines(reactive_bg_process$comparison_output_tracker_file)) - min(parameters()$sample_size),
+          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+          )
+      }
+
+    })
+
+
+
+
     comparison_results <- reactive({
       req(reactive_bg_process$bg_started)
-
       if (reactive_bg_process$bg_process_comparison$is_alive()) {
         invalidateLater(millis = 3000, session = session)
       } else {
         reactive_bg_process$bg_running <- FALSE
+        reactive_bg_process$comparison_output_tracker_file <- NULL
         reactive_bg_process$bg_process_comparison$get_result()
         }
     })
+
+
+
+
+
 
 
 
