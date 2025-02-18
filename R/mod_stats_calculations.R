@@ -11,21 +11,30 @@ mod_stats_calculations_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    nav_panel(
-      "Comparison p-values",
-      shinycssloaders::withSpinner(DT::dataTableOutput(ns("results_table")), type = 8)
-    ),
-    nav_panel(
-      "Group 1 p-values",
-      shinycssloaders::withSpinner(DT::dataTableOutput(ns("group1_pvalues")), type = 8)
-    ),
-    nav_panel(
-      "Group 2 p-values",
-      shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8)
-    ),
-    comparison_progress = shinyWidgets::progressBar(ns("comparison_progress"), value = 0, title = "Comparison Progress"),
-    group1_progress = shinyWidgets::progressBar(ns("group1_progress"), value = 0, title = "Group 1 Progress"),
-    group2_progress = shinyWidgets::progressBar(ns("group2_progress"), value = 0, title = "Group 1 Progress")
+    comparison_progress = list(
+      tags$b("Comparison Progress"), br(),
+      shinyWidgets::progressBar(
+        ns("comparison_progress"),
+        value = 0,
+        display_pct = TRUE
+      )
+      ),
+    group1_progress = list(
+      tags$b("Group 1 Progress"), br(),
+      shinyWidgets::progressBar(
+        ns("group1_progress"),
+        value = 0,
+        display_pct = TRUE
+      )
+      ),
+    group2_progress = list(
+      tags$b("Group 2 Progress"), br(),
+      shinyWidgets::progressBar(
+        ns("group2_progress"),
+        value = 0,
+        display_pct = TRUE
+      )
+    )
   )
 }
 
