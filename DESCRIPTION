@@ -11,7 +11,7 @@ Description: Simultaneously evaluate multiple ordinal outcome measures. Applied 
 License: MIT + file LICENSE
 Imports: 
     assertthat,
-    bslib,
+    bslib (>= 0.9.0),
     callr,
     coin,
     config (>= 0.3.1),
