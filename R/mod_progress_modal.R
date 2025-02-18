@@ -23,10 +23,14 @@ mod_progress_modal_server <- function(id, open_modal_from_sim_start){
 
     observeEvent({input$show_progress_modal; open_modal_from_sim_start()}, {
       showModal(modalDialog(
-        title = "Somewhat important message",
-        mod_stats_calculations_ui("stats_calculations_1")[["comparison_progress"]], br(),
-        mod_stats_calculations_ui("stats_calculations_1")[["group1_progress"]], br(),
-        mod_stats_calculations_ui("stats_calculations_1")[["group2_progress"]],
+        title = "Progress Status",
+        fluidRow(
+          mod_stats_calculations_ui("stats_calculations_1")[["comparison_progress"]],
+          br(),
+          mod_stats_calculations_ui("stats_calculations_1")[["group1_progress"]],
+          br(),
+          mod_stats_calculations_ui("stats_calculations_1")[["group2_progress"]]
+        ),
         easyClose = TRUE,
         footer = NULL,
         size = "xl"
