@@ -30,7 +30,11 @@ app_server <- function(input, output, session) {
                                         bg_process_group2 = NULL,
                                         bg_started = FALSE,
                                         bg_cancelled = FALSE,
-                                        bg_running = FALSE)
+                                        bg_running = FALSE,
+                                        comparison_output_tracker_file = NULL,
+                                        group1_output_tracker_file = NULL,
+                                        group2_output_tracker_file = NULL,
+                                        progress = NULL)
 
 
   # Pass collected data to stats calculations
@@ -70,9 +74,9 @@ app_server <- function(input, output, session) {
   session$onSessionEnded(function() {
     report_path <- system.file("report_template.html", package = "ordinalsimr")
     if (report_path != "") {file.remove(report_path)}
-    reactive_bg_process$bg_process_comparison$kill()
-    reactive_bg_process$bg_process_group1$kill()
-    reactive_bg_process$bg_process_group2$kill()
+    try(reactive_bg_process$bg_process_comparison$kill(), silent = TRUE)
+    try(reactive_bg_process$bg_process_group1$kill(), silent = TRUE)
+    try(reactive_bg_process$bg_process_group2$kill(), silent = TRUE)
   })
 
 }
