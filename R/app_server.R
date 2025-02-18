@@ -70,6 +70,9 @@ app_server <- function(input, output, session) {
   session$onSessionEnded(function() {
     report_path <- system.file("report_template.html", package = "ordinalsimr")
     if (report_path != "") {file.remove(report_path)}
+    reactive_bg_process$bg_process_comparison$kill()
+    reactive_bg_process$bg_process_group1$kill()
+    reactive_bg_process$bg_process_group2$kill()
   })
 
 }
