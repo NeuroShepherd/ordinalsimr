@@ -50,35 +50,6 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
-
-    background_process <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
-                                   .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL,
-                                   tempfile = NULL) {
-
-      run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
-                                         .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
-
-        lapply(sample_size, function(x) {
-          writeLines(as.character(x), con = tempfile)
-          ordinalsimr::run_simulations(x, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
-                                       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind)
-        }) |>
-          unlist(recursive = FALSE)
-
-      }
-
-
-      tmepte <- callr::r_bg(run_simulation_wrapper,
-                            args = list(sample_size = sample_size, sample_prob = sample_prob, prob0 = prob0,
-                                        prob1 = prob1, niter = niter, included = included,
-                                        .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind,
-                                        tempfile = tempfile))
-
-
-    }
-
-
-
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
     # usage example: parameters()$null_probs
