@@ -50,15 +50,27 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
+    # Kill all 3 background processes on push
+    observeEvent(kill_button(), {
+      try(cat(paste("Killing process - PID:", reactive_bg_process$bg_process_comparison$get_pid(), "\n")), silent = TRUE)
+      try(cat(paste("Killing process - PID:", reactive_bg_process$bg_process_group1$get_pid(), "\n")), silent = TRUE)
+      try(cat(paste("Killing process - PID:", reactive_bg_process$bg_process_group2$get_pid(), "\n")), silent = TRUE)
+      try(reactive_bg_process$bg_process_comparison$kill(), silent = TRUE)
+      try(reactive_bg_process$bg_process_group1$kill(), silent = TRUE)
+      try(reactive_bg_process$bg_process_group2$kill(), silent = TRUE)
+      reactive_bg_process$bg_cancelled <- TRUE
+    })
+
+
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
     # usage example: parameters()$null_probs
 
+    # Start the comparison processing
     observeEvent(run_simulation_button(), {
       reactive_bg_process$bg_cancelled <- FALSE
       reactive_bg_process$comparison_output_tracker_file <- tempfile(fileext = ".txt")
-      # browser()
-      reactive_bg_process$bg_process_comparison <- background_process(
+      reactive_bg_process$bg_process_comparison <- run_simulations_in_background(
         parameters()$sample_size,
         parameters()$sample_prob,
         parameters()$prob0,
@@ -70,23 +82,28 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         .rng_sample_kind = rng_info$rng_sample_kind(),
         tempfile = reactive_bg_process$comparison_output_tracker_file
         )
-      reactive_bg_process$bg_started <- TRUE
+      reactive_bg_process$bg_process_comparison_started <- TRUE
       reactive_bg_process$bg_running <- TRUE
 
     }, ignoreInit = TRUE)
 
-    observeEvent(kill_button(), {
-      cat(paste("Killing process - PID:", reactive_bg_process$bg_process_comparison$get_pid(), "\n"))
-      reactive_bg_process$bg_process_comparison$kill()
-      reactive_bg_process$bg_process_group1$kill()
-      reactive_bg_process$bg_process_group2$kill()
-      reactive_bg_process$bg_cancelled <- TRUE
+
+    # Wait for and eventually return the comparison results
+    comparison_results <- reactive({
+      req(reactive_bg_process$bg_process_comparison_started)
+      if (reactive_bg_process$bg_process_comparison$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+      } else {
+        reactive_bg_process$bg_running <- FALSE
+        reactive_bg_process$comparison_output_tracker_file <- NULL
+        reactive_bg_process$bg_process_comparison$get_result()
+      }
     })
 
 
-
+    # Check progress and update the progress bar
     observe({
-      req(reactive_bg_process$bg_started)
+      req(reactive_bg_process$bg_process_comparison_started)
       req(reactive_bg_process$comparison_output_tracker_file)
       invalidateLater(100, session)
       if (file.exists(reactive_bg_process$comparison_output_tracker_file) && !is.null(reactive_bg_process$comparison_output_tracker_file)) {
@@ -103,19 +120,6 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
 
-    comparison_results <- reactive({
-      req(reactive_bg_process$bg_started)
-      if (reactive_bg_process$bg_process_comparison$is_alive()) {
-        invalidateLater(millis = 3000, session = session)
-      } else {
-        reactive_bg_process$bg_running <- FALSE
-        reactive_bg_process$comparison_output_tracker_file <- NULL
-        reactive_bg_process$bg_process_comparison$get_result()
-        }
-    })
-
-
-
 
 
 
@@ -125,7 +129,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
     observeEvent(run_simulation_button(), {
-      reactive_bg_process$bg_process_group1 <- background_process(
+      reactive_bg_process$group1_output_tracker_file <- tempfile(fileext = ".txt")
+      reactive_bg_process$bg_process_group1 <- run_simulations_in_background(
         parameters()$sample_size,
         parameters()$sample_prob,
         parameters()$prob0,
@@ -134,13 +139,15 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         parameters()$included_tests,
         .rng_kind = rng_info$rng_kind(),
         .rng_normal_kind = rng_info$rng_normal_kind(),
-        .rng_sample_kind = rng_info$rng_sample_kind()
+        .rng_sample_kind = rng_info$rng_sample_kind(),
+        tempfile = reactive_bg_process$group1_output_tracker_file
       )
+      reactive_bg_process$bg_process_group1_started <- TRUE
     }, ignoreInit = TRUE)
 
 
     group1_results <- reactive({
-      req(reactive_bg_process$bg_started)
+      req(reactive_bg_process$bg_process_group1_started)
       req(parameters()$t1_error_toggle %in% c("both", "group1"))
 
       if (reactive_bg_process$bg_process_group1$is_alive()) {
@@ -152,7 +159,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
 
 
     observeEvent(run_simulation_button(), {
-      reactive_bg_process$bg_process_group2 <- background_process(
+      reactive_bg_process$group2_output_tracker_file <- tempfile(fileext = ".txt")
+      reactive_bg_process$bg_process_group2 <- run_simulations_in_background(
         parameters()$sample_size,
         parameters()$sample_prob,
         parameters()$prob1,
@@ -161,12 +169,14 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         parameters()$included_tests,
         .rng_kind = rng_info$rng_kind(),
         .rng_normal_kind = rng_info$rng_normal_kind(),
-        .rng_sample_kind = rng_info$rng_sample_kind()
+        .rng_sample_kind = rng_info$rng_sample_kind(),
+        tempfile = reactive_bg_process$group2_output_tracker_file
       )
+      reactive_bg_process$bg_process_group2_started <- TRUE
     }, ignoreInit = TRUE)
 
     group2_results <- reactive({
-      req(reactive_bg_process$bg_started)
+      req(reactive_bg_process$bg_process_group2_started)
       req(parameters()$t1_error_toggle %in% c("both", "group2"))
 
       if (reactive_bg_process$bg_process_group2$is_alive()) {
