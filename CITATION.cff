@@ -84,6 +84,22 @@ references:
     orcid: https://orcid.org/0000-0002-7111-0077
   year: '2025'
   doi: 10.32614/CRAN.package.bslib
+  version: '>= 0.9.0'
+- type: software
+  title: callr
+  abstract: 'callr: Call R from R'
+  notes: Imports
+  url: https://callr.r-lib.org
+  repository: https://CRAN.R-project.org/package=callr
+  authors:
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+    orcid: https://orcid.org/0000-0001-7098-9676
+  - family-names: Chang
+    given-names: Winston
+  year: '2025'
+  doi: 10.32614/CRAN.package.callr
 - type: software
   title: coin
   abstract: 'coin: Conditional Inference Procedures in a Permutation Test Framework'
@@ -342,21 +358,6 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.shinycssloaders
 - type: software
-  title: shinydashboard
-  abstract: 'shinydashboard: Create Dashboards with ''Shiny'''
-  notes: Imports
-  url: http://rstudio.github.io/shinydashboard/
-  repository: https://CRAN.R-project.org/package=shinydashboard
-  authors:
-  - family-names: Chang
-    given-names: Winston
-    email: winston@rstudio.com
-  - family-names: Borges Ribeiro
-    given-names: Barbara
-    email: barbara@rstudio.com
-  year: '2025'
-  doi: 10.32614/CRAN.package.shinydashboard
-- type: software
   title: shinyWidgets
   abstract: 'shinyWidgets: Custom Inputs Widgets for Shiny'
   notes: Imports
@@ -434,21 +435,6 @@ references:
     given-names: Winston
   year: '2025'
   doi: 10.32614/CRAN.package.withr
-- type: software
-  title: callr
-  abstract: 'callr: Call R from R'
-  notes: Suggests
-  url: https://callr.r-lib.org
-  repository: https://CRAN.R-project.org/package=callr
-  authors:
-  - family-names: Csárdi
-    given-names: Gábor
-    email: csardi.gabor@gmail.com
-    orcid: https://orcid.org/0000-0001-7098-9676
-  - family-names: Chang
-    given-names: Winston
-  year: '2025'
-  doi: 10.32614/CRAN.package.callr
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
