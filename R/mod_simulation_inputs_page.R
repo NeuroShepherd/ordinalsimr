@@ -25,7 +25,8 @@ mod_simulation_inputs_page_ui <- function(id) {
             mod_row_delete_ui("row_delete_1"),
             br(), br(), br(), br(),
             mod_start_simulation_ui("start_simulation_1"),
-            mod_kill_simulations_ui("kill_simulations_1")
+            mod_kill_simulations_ui("kill_simulations_1"),
+            mod_progress_modal_ui("progress_modal_1")
           ),
           mod_data_entry_ui("data_entry_1")
         )
@@ -40,8 +41,7 @@ mod_simulation_inputs_page_ui <- function(id) {
             width = 1 / 3,
             mod_iterations_ui("iterations_1"),
             mod_sample_size_ui("sample_size_1"),
-            mod_sample_probabilities_ui("sample_probabilities_1"),
-            mod_stats_calculations_ui("stats_calculations_1")[["progress"]]
+            mod_sample_probabilities_ui("sample_probabilities_1")
           )
         ),
         nav_panel(

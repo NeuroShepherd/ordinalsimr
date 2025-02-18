@@ -22,6 +22,7 @@ app_server <- function(input, output, session) {
   t1_error_toggle <- mod_type_one_error_server("type_one_error_1")
   kill_button <- mod_kill_simulations_server("kill_simulations_1")
 
+  mod_progress_modal_server("progress_modal_1", open_modal_from_sim_start = run_simulation_button)
 
 
   # Create a reactive value to store the background processes
