@@ -149,7 +149,7 @@ run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1
   }
 
 
-  tmepte <- callr::r_bg(run_simulation_wrapper,
+  callr::r_bg(run_simulation_wrapper,
     args = list(
       sample_size = sample_size, sample_prob = sample_prob, prob0 = prob0,
       prob1 = prob1, niter = niter, included = included,
