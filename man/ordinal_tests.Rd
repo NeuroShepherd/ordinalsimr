@@ -37,7 +37,7 @@ A metafunction that runs the statistical tests listed below, and returns the p-v
 \details{
 \itemize{
  \item{stats::wilcox.test()}
- \item{stats::fisher.test()}
+ \item{stats::fisher.test(simulate.p.value = TRUE)}
  \item{stats::chisq.test(correct = FALSE)}
  \item{stats::chisq.test(correct = TRUE)}
  \item{rms::lrm()}

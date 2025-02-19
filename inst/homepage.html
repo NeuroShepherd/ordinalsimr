@@ -11,18 +11,30 @@ group size ratio between group 1 and group 2, and the distribution
 probabilities of the ordinal endpoint for each group.</p>
 <div id="help-files" class="section level2">
 <h2>Help Files</h2>
-<p>If the Shiny application is not flexible enough for your purposes,
-this package also provides a variety of helper functions. See the
-package for vignettes for more information on coding your own simulation
-studies.</p>
-<pre class="r"><code>vignette(&quot;coding-simulations&quot;, package = &quot;ordinalsimr&quot;)
+<p>Three vignettes are included with this package:</p>
+<ol style="list-style-type: decimal">
+<li><code>ordinalsimr-options</code>: options available in the
+<code>ordinalsimr</code> package. This vignette is intended for those
+who wish to change the default settings of the Shiny app.</li>
+<li><code>coding-simulations</code>: how to code your own simulation
+studies using the <code>ordinalsimr</code> package, particularly for
+simulation scenarios that are not supported by the Shiny app.</li>
+<li><code>ordinalsimr</code>: overview of the <code>ordinalsimr</code>
+package itself, including the included tests and the Shiny app. It also
+provides some details on how to interact with objects downloaded from
+the Shiny application.</li>
+</ol>
+<p>The package vignettes can be accessed using the following code:</p>
+<pre class="r"><code>vignette(&quot;ordinalsimr-options&quot;, package = &quot;ordinalsimr&quot;)
+vignette(&quot;coding-simulations&quot;, package = &quot;ordinalsimr&quot;)
 vignette(&quot;ordinalsimr&quot;, package = &quot;ordinalsimr&quot;)</code></pre>
 </div>
 <div id="included-tests" class="section level2">
 <h2>Included Tests</h2>
 <ul>
 <li>Wilcoxon Test: <code>stats::wilcox.test()</code></li>
-<li>Fisher Test: <code>stats::fisher.test()</code></li>
+<li>Fisher Test:
+<code>stats::fisher.test(simulate.p.value = TRUE)</code></li>
 <li>Chi-Squared without Continuity Correction:
 <code>stats::chisq.test(correct = FALSE)</code></li>
 <li>Chi-Squared with Continuity Correction:
@@ -48,16 +60,14 @@ error, and associated confidence intervals for these values. The CI
 percentiles can be adjusted as well as the nominal significance level
 .</p>
 </div>
-<div id="report" class="section level3">
-<h3>Report</h3>
-<p>Experimental page: will include a report generated from the
-simulation results.</p>
-</div>
-<div id="data-download" class="section level3">
-<h3>Data Download</h3>
-<p>This page is under development, but does currently include an option
-to download the metadata (i.e. input parameters), p-values from tests,
-summary statistics, and the ggplot as an <code>.rds</code> file.</p>
+<div id="report-downloads" class="section level3">
+<h3>Report &amp; Downloads</h3>
+<p>The metadata, data, and results of the simulation can be downloaded
+here. The metadata includes the parameters used in the simulation, the
+data includes the simulated data, and the results include the p-values
+and test statistics for each iteration.</p>
+<p><strong>Experimental feature: a report can be generated in PDF
+format. This feature is still in development.</strong></p>
 </div>
 </div>
 </div>
