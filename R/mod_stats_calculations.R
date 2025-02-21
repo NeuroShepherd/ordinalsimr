@@ -171,6 +171,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     observe({
       req(reactive_bg_process$bg_process_group1_started)
       req(reactive_bg_process$group1_output_tracker_file)
+      req(parameters()$t1_error_toggle %in% c("both", "group1"))
       invalidateLater(100, session)
       if (file.exists(reactive_bg_process$group1_output_tracker_file) &&
           !is.null(reactive_bg_process$group1_output_tracker_file)) {
@@ -222,6 +223,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     observe({
       req(reactive_bg_process$bg_process_group2_started)
       req(reactive_bg_process$group2_output_tracker_file)
+      req(parameters()$t1_error_toggle %in% c("both", "group2"))
       invalidateLater(100, session)
       if (file.exists(reactive_bg_process$group2_output_tracker_file) &&
           !is.null(reactive_bg_process$group2_output_tracker_file)) {
