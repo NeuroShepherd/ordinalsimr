@@ -136,18 +136,6 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
 run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                                           .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL,
                                           tempfile = NULL) {
-  # run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
-  #                                    .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
-  #   lapply(sample_size, function(x) {
-  #     writeLines(as.character(x), con = tempfile)
-  #     ordinalsimr::run_simulations(x,
-  #       sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
-  #       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind
-  #     )
-  #   }) |>
-  #     unlist(recursive = FALSE)
-  # }
-
 
   callr::r_bg(function(sample_size, sample_prob, prob0, prob1, niter, included,
                        .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
