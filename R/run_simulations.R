@@ -156,6 +156,6 @@ run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1
       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind,
       tempfile = tempfile
     ),
-    package = TRUE
+    package = "ordinalsimr"
   )
 }
