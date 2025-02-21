@@ -22,8 +22,10 @@ jobs:
           use-public-rspm: true
           r-version: "renv"
 
-      - name: Install libgit2-dev
-        run: sudo apt-get install -y libgit2-dev
+      - name: Install system dependencies
+        run: |
+          sudo apt-get install -y libgit2-dev
+          sudo apt-get install -y libcurl4-openssl-dev
 
       - uses: r-lib/actions/setup-renv@v2
 
