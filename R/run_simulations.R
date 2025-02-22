@@ -145,7 +145,7 @@ run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1
                                          .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
         lapply(sample_size, function(x) {
           try(writeLines(as.character(x), con = tempfile))
-          ordinalsimr::run_simulations(x, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
+          run_simulations(x, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
                                        .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind
           )
         }) |>
@@ -158,7 +158,7 @@ run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1
     },
     args = list(sample_size, sample_prob, prob0, prob1, niter, included,
                  .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile),
-    package = "ordinalsimr"
+    package = TRUE
   )
 
 }
