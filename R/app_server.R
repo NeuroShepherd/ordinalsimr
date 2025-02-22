@@ -5,6 +5,10 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
+
+  # Display Modal on ShinyApps.io deployment
+  mod_shinyapps_modal_notice_server("shinyapps_modal_notice_1")
+
   # UI for data entry endpoints
   # Collect entered data
   add_row <- mod_row_add_server("row_add_1")
