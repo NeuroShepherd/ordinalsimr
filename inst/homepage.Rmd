@@ -28,7 +28,7 @@ vignette("ordinalsimr", package = "ordinalsimr")
 ## Included Tests
 
 * Wilcoxon Test: `stats::wilcox.test()`
-* Fisher Test: `stats::fisher.test()`
+* Fisher Test: `stats::fisher.test(simulate.p.value = TRUE)`
 * Chi-Squared without Continuity Correction: `stats::chisq.test(correct = FALSE)`
 * Chi-Squared with Continuity Correction: `stats::chisq.test(correct = TRUE)`
 * Proportional Odds model: `rms::lrm()`

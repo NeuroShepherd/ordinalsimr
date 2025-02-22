@@ -12,7 +12,7 @@ bibentry(
       comment = c(ORCID = "0000-0003-1769-7580")
     )
   ),
-  doi = "10.5281/zenodo.14697216",
+  doi = "10.5281/zenodo.14697215",
   year = "2025",
   month = "jan",
   url = "https://github.com/neuroshepherd/ordinalsimr",

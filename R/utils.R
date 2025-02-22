@@ -54,16 +54,32 @@ calculate_power_t2error <- function(df, alpha = 0.05, power_confidence_int = 95,
     dplyr::group_modify(
       ~ {
         lapply(., function(x) {
-          binom_power <- binom.test(sum(x < alpha), length(x), conf.level = power_confidence_int / 100)
-          tibble(
-            lower_power_bound = binom_power$conf.int[[1]],
-            upper_power_bound = binom_power$conf.int[[2]],
-            power = binom_power$estimate,
-            !!ci_power_label := paste0("[", round(lower_power_bound, 3), ", ", round(upper_power_bound, 3), "]"),
-            lower_t2error_bound = 1 - upper_power_bound,
-            upper_t2error_bound = 1 - lower_power_bound,
-            t2_error = 1 - binom_power$estimate,
-            !!ci_t2error_label := paste0("[", round(lower_t2error_bound, 3), ", ", round(upper_t2error_bound, 3), "]")
+          tryCatch(
+            expr = {
+              binom_power <- binom.test(sum(x < alpha), length(x), conf.level = power_confidence_int / 100)
+              tibble(
+                lower_power_bound = binom_power$conf.int[[1]],
+                upper_power_bound = binom_power$conf.int[[2]],
+                power = binom_power$estimate,
+                !!ci_power_label := paste0("[", round(lower_power_bound, 3), ", ", round(upper_power_bound, 3), "]"),
+                lower_t2error_bound = 1 - upper_power_bound,
+                upper_t2error_bound = 1 - lower_power_bound,
+                t2_error = 1 - binom_power$estimate,
+                !!ci_t2error_label := paste0("[", round(lower_t2error_bound, 3), ", ", round(upper_t2error_bound, 3), "]")
+              )
+            },
+            error = function(e) {
+              tibble(
+                lower_power_bound = NA_real_,
+                upper_power_bound = NA_real_,
+                power = NA_real_,
+                !!ci_power_label := NA_character_,
+                lower_t2error_bound = NA_real_,
+                upper_t2error_bound = NA_real_,
+                t2_error = NA_real_,
+                !!ci_t2error_label := NA_character_
+              )
+            }
           )
         }) %>%
           bind_rows(.id = "test")

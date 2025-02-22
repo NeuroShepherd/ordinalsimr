@@ -104,14 +104,61 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
       bind_rows() %>%
       mutate(run = row_number(), .before = .data$y)
 
-    if (shiny::isRunning()) {
-      incProgress(
-        1 / (max(sample_size) - min(sample_size)),
-        detail = paste("Sample size", sample_size_nested, "completed.")
-      )
-    }
 
     return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
   }) %>%
     magrittr::set_names(paste0("sample_size_", sample_size))
+}
+
+
+
+
+
+
+#' Run Simulations in Background
+#'
+#' This function wraps the run_simulations function, and runs it in the background using callr::r_bg while also writing the sample size to a temporary file for progress bar tracking.
+#'
+#' @param sample_size Total number of trial participants
+#' @param sample_prob a vector of probability weights for obtaining the elements of the vector being sampled.
+#' @param prob0 Vector of probabilities for control group
+#' @param prob1 Vector of probabilities for intervention group
+#' @param .rng_kind seeding info passed to withr::with_seed
+#' @param .rng_normal_kind seeding info passed to withr::with_seed
+#' @param .rng_sample_kind seeding info passed to withr::with_seed
+#' @param niter Number of simulation iterations to complete#'
+#' @param included a character vector of the tests to be included. Default is "all"
+#' @param tempfile path to a temporary file to write the sample size to
+#'
+#' @noRd
+#' @returns a list of lists; sub-list elements include `p_values` which is a matrix of p values for tests at each iteration, and `initial_groups` which is the group assignment information for each iteration
+#'
+run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
+                                          .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL,
+                                          tempfile = NULL) {
+
+  callr::r_bg(function(sample_size, sample_prob, prob0, prob1, niter, included,
+                       .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
+
+
+      run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
+                                         .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
+        lapply(sample_size, function(x) {
+          try(writeLines(as.character(x), con = tempfile))
+          run_simulations(x, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
+                                       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind
+          )
+        }) |>
+          unlist(recursive = FALSE)
+      }
+
+      run_simulation_wrapper(sample_size, sample_prob, prob0, prob1, niter, included,
+                             .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile)
+
+    },
+    args = list(sample_size, sample_prob, prob0, prob1, niter, included,
+                 .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile),
+    package = TRUE
+  )
+
 }

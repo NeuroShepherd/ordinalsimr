@@ -80,7 +80,7 @@ mod_plot_distributions_ui <- function(id) {
 #' plot_distributions Server Functions
 #'
 #' @noRd
-mod_plot_distributions_server <- function(id, p_value_table, n) {
+mod_plot_distributions_server <- function(id, p_value_table, n, reactive_bg_process) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -113,6 +113,9 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     })
 
     output$distribution_plot_results <- renderPlot({
+      validate(
+        need(nrow(p_value_reactive_table()) > 0 , "Calculation ongoing")
+      )
       distribution_plot()
     })
 
@@ -134,6 +137,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
         )
     })
     output$distribution_statistics <- DT::renderDataTable({
+      validate(need(nrow(p_value_reactive_table()) > 0 , "Calculation ongoing"))
       distribution_statistics() %>%
         select(
           -.data$lower_power_bound, -.data$upper_power_bound,
@@ -152,6 +156,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
 
     # Plot Power
     output$power_plot <- renderPlot({
+      validate(need(nrow(p_value_reactive_table()) > 0 , "Calculation ongoing"))
       distribution_statistics() %>%
         plot_power(power_threshold = input$power_value)
     })
@@ -178,7 +183,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     })
     output$t1_error_group1 <- DT::renderDataTable({
       validate(
-        need(group1_t1_reactive_table(), "No Type I error calculated for Group 1.")
+        need(group1_t1_reactive_table(), "Calculation in progress or Group 1 not selected.")
       )
 
       group1_t1_reactive_table() %>%
@@ -214,7 +219,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n) {
     })
     output$t1_error_group2 <- DT::renderDataTable({
       validate(
-        need(group2_t1_reactive_table(), "No Type I error calculated for Group 2.")
+        need(group2_t1_reactive_table(), "Calculation in progress or Group 2 not selected.")
       )
 
       group2_t1_reactive_table() %>%

@@ -23,3 +23,4 @@ $run_dev.*
 ^cran-comments\.md$
 ^CITATION\.cff$
 ^CRAN-SUBMISSION$
+^revdep$

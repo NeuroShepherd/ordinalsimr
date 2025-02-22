@@ -24,7 +24,9 @@ mod_simulation_inputs_page_ui <- function(id) {
             mod_row_add_ui("row_add_1"),
             mod_row_delete_ui("row_delete_1"),
             br(), br(), br(), br(),
-            mod_start_simulation_ui("start_simulation_1")
+            mod_start_simulation_ui("start_simulation_1"),
+            mod_kill_simulations_ui("kill_simulations_1"),
+            mod_progress_modal_ui("progress_modal_1")
           ),
           mod_data_entry_ui("data_entry_1")
         )

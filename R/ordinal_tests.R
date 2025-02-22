@@ -4,7 +4,7 @@
 #'
 #' \itemize{
 #'  \item{stats::wilcox.test()}
-#'  \item{stats::fisher.test()}
+#'  \item{stats::fisher.test(simulate.p.value = TRUE)}
 #'  \item{stats::chisq.test(correct = FALSE)}
 #'  \item{stats::chisq.test(correct = TRUE)}
 #'  \item{rms::lrm()}
@@ -79,7 +79,7 @@ ordinal_tests <- function(x, y, included = "all", ...) {
   if ("Fisher" %in% included) {
     fisher <- tryCatch(
       {
-        stats::fisher.test(x, y, simulate.p.value = FALSE, workspace = 2e7)[["p.value"]]
+        stats::fisher.test(x, y, simulate.p.value = TRUE)[["p.value"]]
       },
       error = function(e) {
         NA_real_

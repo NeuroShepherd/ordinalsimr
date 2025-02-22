@@ -71,8 +71,9 @@ test_that("ordinal_tests functions correctly on a subset of tests", {
 
 test_that("test each individual statistical test", {
   suppressWarnings({
+    set.seed(1)
     expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Wilcoxon")[[1]], 0.002205771, tolerance = 0.000001)
-    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Fisher")[[1]], 0.00157921, tolerance = 0.000001)
+    expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Fisher")[[1]], 0.00249875, tolerance = 0.000001)
     expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Chi Squared (No Correction)")[[1]], 0.00364612, tolerance = 0.000001)
     expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Chi Squared (Correction)")[[1]], 0.00364612, tolerance = 0.000001)
     expect_equal(ordinal_tests(groups[["x"]], groups[["y"]], included = "Prop. Odds")[[1]], 0.00101583, tolerance = 0.000001)
