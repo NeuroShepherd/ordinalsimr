@@ -2,7 +2,9 @@
 # To deploy, run: rsconnect::deployApp()
 # Or use the blue button on top of this file
 # library(pkgload)
-devtools::install_github("NeuroShepherd/ordinalsimr")
+current_branch <- system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
+install_branch <- paste0("NeuroShepherd/ordinalsimr@", current_branch)
+devtools::install_github(install_branch)
 # pkgload::load_all(export_all = TRUE,helpers = FALSE,attach_testthat = FALSE)
 options( "golem.app.prod" = TRUE, "is.shinyapps.deployment" = TRUE)
 ordinalsimr::run_app() # add parameters here (if any)
