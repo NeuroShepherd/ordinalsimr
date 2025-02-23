@@ -11,17 +11,29 @@ mod_stats_calculations_ui <- function(id) {
   ns <- NS(id)
 
   list(
-    nav_panel(
-      "Comparison p-values",
-      shinycssloaders::withSpinner(DT::dataTableOutput(ns("results_table")), type = 8)
-    ),
-    nav_panel(
-      "Group 1 p-values",
-      shinycssloaders::withSpinner(DT::dataTableOutput(ns("group1_pvalues")), type = 8)
-    ),
-    nav_panel(
-      "Group 2 p-values",
-      shinycssloaders::withSpinner(DT::dataTableOutput(ns("group2_pvalues")), type = 8)
+    comparison_progress = list(
+      tags$b("Comparison Progress"), br(),
+      shinyWidgets::progressBar(
+        ns("comparison_progress"),
+        value = 0,
+        display_pct = TRUE
+      )
+      ),
+    group1_progress = list(
+      tags$b("Group 1 Progress"), br(),
+      shinyWidgets::progressBar(
+        ns("group1_progress"),
+        value = 0,
+        display_pct = TRUE
+      )
+      ),
+    group2_progress = list(
+      tags$b("Group 2 Progress"), br(),
+      shinyWidgets::progressBar(
+        ns("group2_progress"),
+        value = 0,
+        display_pct = TRUE
+      )
     )
   )
 }
@@ -30,7 +42,7 @@ mod_stats_calculations_ui <- function(id) {
 #'
 #' @noRd
 mod_stats_calculations_server <- function(id, probability_data, sample_prob, iterations, sample_size, rng_info, included_tests,
-                                          run_simulation_button, t1_error_toggle) {
+                                          run_simulation_button, t1_error_toggle, kill_button, reactive_bg_process) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -48,120 +60,181 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
     })
 
 
+
+    # Kill all 3 background processes on push
+    observeEvent(kill_button(), {
+      try(cat(paste("Killing process - PID:", reactive_bg_process$bg_process_comparison$get_pid(), "\n")), silent = TRUE)
+      try(cat(paste("Killing process - PID:", reactive_bg_process$bg_process_group1$get_pid(), "\n")), silent = TRUE)
+      try(cat(paste("Killing process - PID:", reactive_bg_process$bg_process_group2$get_pid(), "\n")), silent = TRUE)
+      try(reactive_bg_process$bg_process_comparison$kill(), silent = TRUE)
+      try(reactive_bg_process$bg_process_group1$kill(), silent = TRUE)
+      try(reactive_bg_process$bg_process_group2$kill(), silent = TRUE)
+      reactive_bg_process$bg_cancelled <- TRUE
+    })
+
+
     # NOTE: the whole list is reactive, and need to subset elements after
     # calling reactivity
     # usage example: parameters()$null_probs
 
-    comparison_results <- eventReactive(run_simulation_button(), {
-      withProgress(message = "Comparisons:", value = 0, {
-        run_simulations(parameters()$sample_size,
-          prob0 = parameters()$prob0,
-          sample_prob = parameters()$sample_prob,
-          prob1 = parameters()$prob1,
-          niter = parameters()$iterations,
-          included = parameters()$included_tests,
-          .rng_kind = rng_info$rng_kind(),
-          .rng_normal_kind = rng_info$rng_normal_kind(),
-          .rng_sample_kind = rng_info$rng_sample_kind()
+    ### COMPARISONS
+
+    # Start the comparison processing
+    observeEvent(run_simulation_button(), {
+      reactive_bg_process$bg_cancelled <- FALSE
+      reactive_bg_process$comparison_output_tracker_file <- tempfile(fileext = ".txt")
+      reactive_bg_process$bg_process_comparison <- run_simulations_in_background(
+        parameters()$sample_size,
+        parameters()$sample_prob,
+        parameters()$prob0,
+        parameters()$prob1,
+        parameters()$iterations,
+        parameters()$included_tests,
+        .rng_kind = rng_info$rng_kind(),
+        .rng_normal_kind = rng_info$rng_normal_kind(),
+        .rng_sample_kind = rng_info$rng_sample_kind(),
+        tempfile = reactive_bg_process$comparison_output_tracker_file
         )
-      })
-    })
+      reactive_bg_process$bg_process_comparison_started <- TRUE
+      reactive_bg_process$bg_running_comparisons <- TRUE
 
-    group1_results <- eventReactive(run_simulation_button(), {
-      if (parameters()$t1_error_toggle %in% c("both", "group1")) {
-        withProgress(message = "Group 1:", value = 0, {
-          run_simulations(parameters()$sample_size,
-            prob0 = parameters()$prob0,
-            sample_prob = parameters()$sample_prob,
-            prob1 = parameters()$prob0,
-            niter = parameters()$iterations,
-            included = parameters()$included_tests,
-            .rng_kind = rng_info$rng_kind(),
-            .rng_normal_kind = rng_info$rng_normal_kind(),
-            .rng_sample_kind = rng_info$rng_sample_kind()
-          )
-        })
-      }
-    })
+    }, ignoreInit = TRUE)
 
-    group2_results <- eventReactive(run_simulation_button(), {
-      if (parameters()$t1_error_toggle %in% c("both", "group2")) {
-        withProgress(message = "Group 2:", value = 0, {
-          run_simulations(parameters()$sample_size,
-            prob0 = parameters()$prob1,
-            sample_prob = parameters()$sample_prob,
-            prob1 = parameters()$prob1,
-            niter = parameters()$iterations,
-            included = parameters()$included_tests,
-            .rng_kind = rng_info$rng_kind(),
-            .rng_normal_kind = rng_info$rng_normal_kind(),
-            .rng_sample_kind = rng_info$rng_sample_kind()
-          )
-        })
+
+    # Wait for and eventually return the comparison results
+    comparison_results <- reactive({
+      req(reactive_bg_process$bg_process_comparison_started)
+      if (reactive_bg_process$bg_process_comparison$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+      } else {
+        reactive_bg_process$bg_running_comparisons <- FALSE
+        reactive_bg_process$bg_process_comparison$get_result()
       }
     })
 
 
-    output$results_table <- DT::renderDataTable({
-      comp_res <- comparison_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          .data$sample_size,
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
-          ))
-        )
-
-      comp_res %>%
-        DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:ncol(comp_res), digits = 5)
+    # Check progress and update the progress bar
+    observe({
+      req(reactive_bg_process$bg_process_comparison_started)
+      # req(reactive_bg_process$comparison_output_tracker_file)
+      invalidateLater(100, session)
+      if (file.exists(reactive_bg_process$comparison_output_tracker_file) &&
+          !is.null(reactive_bg_process$comparison_output_tracker_file)) {
+        shinyWidgets::updateProgressBar(
+          session = session,
+          id = "comparison_progress",
+          value = as.numeric(readLines(reactive_bg_process$comparison_output_tracker_file)) - min(parameters()$sample_size),
+          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+          )
+      }
     })
-    outputOptions(output, "results_table", suspendWhenHidden = FALSE)
 
-    # if not keeping these output tables, use observe({group1_results()}) to
-    # ensure evaluation
-    output$group1_pvalues <- DT::renderDataTable({
-      validate(
-        need(group1_results(), "No simulations run for Group 1.")
+
+
+
+
+
+    ### GROUP 1
+
+    observeEvent(run_simulation_button(), {
+      reactive_bg_process$group1_output_tracker_file <- tempfile(fileext = ".txt")
+      reactive_bg_process$bg_process_group1 <- run_simulations_in_background(
+        parameters()$sample_size,
+        parameters()$sample_prob,
+        parameters()$prob0,
+        parameters()$prob0,
+        parameters()$iterations,
+        parameters()$included_tests,
+        .rng_kind = rng_info$rng_kind(),
+        .rng_normal_kind = rng_info$rng_normal_kind(),
+        .rng_sample_kind = rng_info$rng_sample_kind(),
+        tempfile = reactive_bg_process$group1_output_tracker_file
       )
+      reactive_bg_process$bg_process_group1_started <- TRUE
+      reactive_bg_process$bg_running_group1 <- TRUE
+    }, ignoreInit = TRUE)
 
-      g1_res <- group1_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          .data$sample_size,
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
-          ))
-        )
 
-      g1_res %>%
-        DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:ncol(g1_res), digits = 5)
+    group1_results <- reactive({
+      req(reactive_bg_process$bg_process_group1_started)
+      req(parameters()$t1_error_toggle %in% c("both", "group1"))
+
+      if (reactive_bg_process$bg_process_group1$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+      } else {
+        reactive_bg_process$bg_running_group1 <- FALSE
+        reactive_bg_process$bg_process_group1$get_result()
+      }
     })
-    outputOptions(output, "group1_pvalues", suspendWhenHidden = FALSE)
 
-    output$group2_pvalues <- DT::renderDataTable({
-      validate(
-        need(group2_results(), "No simulations run for Group 2.")
+
+    observe({
+      req(reactive_bg_process$bg_process_group1_started)
+      req(reactive_bg_process$group1_output_tracker_file)
+      req(parameters()$t1_error_toggle %in% c("both", "group1"))
+      invalidateLater(100, session)
+      if (file.exists(reactive_bg_process$group1_output_tracker_file) &&
+          !is.null(reactive_bg_process$group1_output_tracker_file)) {
+        shinyWidgets::updateProgressBar(
+          session = session,
+          id = "group1_progress",
+          value = as.numeric(readLines(reactive_bg_process$group1_output_tracker_file)) - min(parameters()$sample_size),
+          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+        )
+      }
+    })
+
+
+
+
+    #### GROUP 2
+
+    observeEvent(run_simulation_button(), {
+      reactive_bg_process$group2_output_tracker_file <- tempfile(fileext = ".txt")
+      reactive_bg_process$bg_process_group2 <- run_simulations_in_background(
+        parameters()$sample_size,
+        parameters()$sample_prob,
+        parameters()$prob1,
+        parameters()$prob1,
+        parameters()$iterations,
+        parameters()$included_tests,
+        .rng_kind = rng_info$rng_kind(),
+        .rng_normal_kind = rng_info$rng_normal_kind(),
+        .rng_sample_kind = rng_info$rng_sample_kind(),
+        tempfile = reactive_bg_process$group2_output_tracker_file
       )
+      reactive_bg_process$bg_process_group2_started <- TRUE
+      reactive_bg_process$bg_running_group2 <- TRUE
+    }, ignoreInit = TRUE)
 
-      g2_res <- group2_results() %>%
-        bind_rows() %>%
-        dplyr::select(
-          .data$sample_size,
-          dplyr::any_of(c(
-            "Wilcoxon", "Fisher", "Chi Squared (No Correction)",
-            "Chi Squared (Correction)", "Prop. Odds", "Coin Indep. Test"
-          ))
-        )
+    group2_results <- reactive({
+      req(reactive_bg_process$bg_process_group2_started)
+      req(parameters()$t1_error_toggle %in% c("both", "group2"))
 
-      g2_res %>%
-        DT::datatable(options = list(scrollX = TRUE)) %>%
-        DT::formatRound(2:ncol(g2_res), digits = 5)
+      if (reactive_bg_process$bg_process_group2$is_alive()) {
+        invalidateLater(millis = 3000, session = session)
+      } else {
+        reactive_bg_process$bg_running_group2 <- FALSE
+        reactive_bg_process$bg_process_group2$get_result()
+      }
     })
-    outputOptions(output, "group2_pvalues", suspendWhenHidden = FALSE)
+
+
+    observe({
+      req(reactive_bg_process$bg_process_group2_started)
+      req(reactive_bg_process$group2_output_tracker_file)
+      req(parameters()$t1_error_toggle %in% c("both", "group2"))
+      invalidateLater(100, session)
+      if (file.exists(reactive_bg_process$group2_output_tracker_file) &&
+          !is.null(reactive_bg_process$group2_output_tracker_file)) {
+        shinyWidgets::updateProgressBar(
+          session = session,
+          id = "group2_progress",
+          value = as.numeric(readLines(reactive_bg_process$group2_output_tracker_file)) - min(parameters()$sample_size),
+          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+        )
+      }
+    })
 
 
     return(list(
@@ -169,6 +242,7 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
       group1_results = group1_results,
       group2_results = group2_results
     ))
+
   })
 }
 

@@ -1,6 +1,6 @@
 Package: ordinalsimr
 Title: Compare Ordinal Endpoints Using Simulations
-Version: 0.1.3
+Version: 0.2.0
 Authors@R: 
     person(given = "Pat",
            family = "Callahan",
@@ -11,7 +11,8 @@ Description: Simultaneously evaluate multiple ordinal outcome measures. Applied 
 License: MIT + file LICENSE
 Imports: 
     assertthat,
-    bslib,
+    bslib (>= 0.9.0),
+    callr,
     coin,
     config (>= 0.3.1),
     dplyr,
@@ -24,7 +25,6 @@ Imports:
     rms,
     shiny (>= 1.7.4),
     shinycssloaders,
-    shinydashboard,
     shinyWidgets,
     stats,
     tidyr,
@@ -37,7 +37,6 @@ RoxygenNote: 7.3.2
 URL: https://github.com/NeuroShepherd/ordinalsimr, https://neuroshepherd.github.io/ordinalsimr/
 BugReports: https://github.com/NeuroShepherd/ordinalsimr/issues
 Suggests: 
-    callr,
     knitr,
     pkgload,
     purrr,

@@ -1,3 +1,14 @@
+# ordinalsimr 0.2.0
+
+* `callr::r_bg()` is now used for between- and within- group simulations in the Shiny application to enable the user to continue using the application while the simulation is running, and to run the processes in parallel to one another
+* A "Kill Simulations" button has been added to the Shiny application to allow the user to stop the simulation process if it is taking too long. Simulations are still killed when the application is closed
+* Progress bars have been added to the Shiny application to show the progress of the simulations, and the user can open or close the progress bars with a button
+* Additional validation checks have been added to the Shiny application to control the rendering of plots and tables that require reactive elements
+* `fisher.test()` now defaults to `simulate.p.value = TRUE`. This should reduce computational load and time particularly with larger group sizes and when simulations have a larger number of ordinal categories
+* The package now requires "bslib" version 0.9.0 or higher to use the `navbar_options` option in `page_navbar()`
+* Change the DOI in the citation file to the general Zenodo repository link
+* A modal pop-up indicating the limitations of running the app on ShinyApps.io is available, and only triggered with the option `is.shinyapps.deployment = TRUE`. This is to inform users that the app may not run as expected on ShinyApps.io due to the computational intensity of spawning multiple R processes.
+
 # ordinalsimr 0.1.3
 
 * Updates to match CRAN submission standards
