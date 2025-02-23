@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ordinalsimr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,9 +35,23 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Changelog</h1>
-      <small>Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.1.3/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
+      <small>Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="ordinalsimr-020">ordinalsimr 0.2.0<a class="anchor" aria-label="anchor" href="#ordinalsimr-020"></a></h2>
+<ul><li>
+<code><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">callr::r_bg()</a></code> is now used for between- and within- group simulations in the Shiny application to enable the user to continue using the application while the simulation is running, and to run the processes in parallel to one another</li>
+<li>A “Kill Simulations” button has been added to the Shiny application to allow the user to stop the simulation process if it is taking too long. Simulations are still killed when the application is closed</li>
+<li>Progress bars have been added to the Shiny application to show the progress of the simulations, and the user can open or close the progress bars with a button</li>
+<li>Additional validation checks have been added to the Shiny application to control the rendering of plots and tables that require reactive elements</li>
+<li>
+<code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">fisher.test()</a></code> now defaults to <code>simulate.p.value = TRUE</code>. This should reduce computational load and time particularly with larger group sizes and when simulations have a larger number of ordinal categories</li>
+<li>The package now requires “bslib” version 0.9.0 or higher to use the <code>navbar_options</code> option in <code>page_navbar()</code>
+</li>
+<li>Change the DOI in the citation file to the general Zenodo repository link</li>
+<li>A modal pop-up indicating the limitations of running the app on ShinyApps.io is available, and only triggered with the option <code>is.shinyapps.deployment = TRUE</code>. This is to inform users that the app may not run as expected on ShinyApps.io due to the computational intensity of spawning multiple R processes.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.3" id="ordinalsimr-013">ordinalsimr 0.1.3<a class="anchor" aria-label="anchor" href="#ordinalsimr-013"></a></h2><p class="text-muted">CRAN release: 2025-01-29</p>
 <ul><li>Updates to match CRAN submission standards</li>
