@@ -181,6 +181,9 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
         ggtitle("Mean p-value") +
         labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
         guides(fill = "none", linetype = "none") +
+        scale_x_continuous(
+          breaks = seq(0, max(df$sample_size), by = 1)
+        ) +
         theme_bw() +
         theme(
           axis.text = element_text(face = "bold", size = 14),
@@ -226,6 +229,9 @@ plot_power <- function(df, power_threshold = 0.80) {
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
+    scale_x_continuous(
+      breaks = seq(0, max(df$`Sample Size`), by = 1)
+    ) +
     theme_bw() +
     theme(
       axis.text = element_text(face = "bold", size = 14),
