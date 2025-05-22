@@ -18,6 +18,10 @@ mod_sample_size_ui <- function(id) {
     numericRangeInput(
       inputId = ns("sample_n"), label = "Total Sample Size Range",
       value = c(default_size_min, default_size_max), step = 1
+    ),
+    numericInput(
+      inputId = ns("sample_step_size"), label = "Step Size",
+      value = 1, min = 1, max = Inf
     )
   )
 }
@@ -31,7 +35,9 @@ mod_sample_size_server <- function(id) {
 
 
     sample_n <- reactive({
-      seq(round(input$sample_n[1]), round(input$sample_n[2]))
+      seq(round(input$sample_n[1]), round(input$sample_n[2]),
+        by = round(input$sample_step_size)
+      )
     })
 
     return(sample_n)
