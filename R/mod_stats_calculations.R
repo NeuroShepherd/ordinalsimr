@@ -123,8 +123,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         shinyWidgets::updateProgressBar(
           session = session,
           id = "comparison_progress",
-          value = as.numeric(readLines(reactive_bg_process$comparison_output_tracker_file)) - min(parameters()$sample_size),
-          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+          value = 1 + as.numeric(readLines(reactive_bg_process$comparison_output_tracker_file)) - min(parameters()$sample_size),
+          total = 1 + max(parameters()$sample_size) - min(parameters()$sample_size)
           )
       }
     })
@@ -178,8 +178,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         shinyWidgets::updateProgressBar(
           session = session,
           id = "group1_progress",
-          value = as.numeric(readLines(reactive_bg_process$group1_output_tracker_file)) - min(parameters()$sample_size),
-          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+          value = 1 + as.numeric(readLines(reactive_bg_process$group1_output_tracker_file)) - min(parameters()$sample_size),
+          total = 1 + max(parameters()$sample_size) - min(parameters()$sample_size)
         )
       }
     })
@@ -230,8 +230,8 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
         shinyWidgets::updateProgressBar(
           session = session,
           id = "group2_progress",
-          value = as.numeric(readLines(reactive_bg_process$group2_output_tracker_file)) - min(parameters()$sample_size),
-          total = max(parameters()$sample_size) - min(parameters()$sample_size)
+          value = 1 + as.numeric(readLines(reactive_bg_process$group2_output_tracker_file)) - min(parameters()$sample_size),
+          total = 1 + max(parameters()$sample_size) - min(parameters()$sample_size)
         )
       }
     })
