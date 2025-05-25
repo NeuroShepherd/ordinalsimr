@@ -239,7 +239,12 @@ plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
     scale_x_continuous(
-      breaks = seq(0, max(df$`Sample Size`), by = 1)
+      breaks = function(x) {
+        # Let ggplot pick default breaks
+        default_breaks <- pretty(x)
+        # Return only those that are integers
+        default_breaks[default_breaks == floor(default_breaks)]
+      }
     ) +
     theme_bw() +
     theme(
