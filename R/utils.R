@@ -180,9 +180,9 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
   df %>%
     pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
     mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    dplyr::filter(sample_size %in% selected_sample_sizes) %>%
+    dplyr::filter(.data[["sample_size"]] %in% selected_sample_sizes) %>%
     {
-      ggplot(., aes(x = value, y = factor(sample_size), fill = stat(x < alpha))) +
+      ggplot(., aes(x = .data[["value"]], y = factor(.data[["sample_size"]]), fill = stat(x < alpha))) +
         ggridges::geom_density_ridges_gradient(
           scale = 3,
           rel_min_height = 0.01,
@@ -209,7 +209,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
           legend.position = "top",
           strip.text = element_text(face = "bold", size = 12)
         ) +
-        facet_wrap(~ test_name, ncol = 2)
+        facet_wrap(~ .data[["test_name"]], ncol = 2)
     }
 }
 
