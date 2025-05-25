@@ -45,7 +45,7 @@ mod_distributions_page_ui <- function(id) {
             "))
           ),
           div(class = "plot-container",
-              div(class = "overlay-checkbox", checkboxInput(ns("show_confidence_interval"), "Show CI %", value = TRUE)),
+              div(class = "overlay-checkbox", checkboxInput(ns("show_confidence_interval"), "Show CI", value = TRUE)),
               mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["power_plot"]]
           ),
         ),
