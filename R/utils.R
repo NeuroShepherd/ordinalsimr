@@ -207,7 +207,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #' @return ggplot object
 #' @export
 #'
-plot_power <- function(df, power_threshold = 0.80) {
+plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
   levels <- df %>%
     group_by(.data[["test"]]) %>%
     summarize(
@@ -215,6 +215,13 @@ plot_power <- function(df, power_threshold = 0.80) {
     ) %>%
     arrange(desc(.data[["mean"]])) %>%
     pull(.data[["test"]])
+
+  ribbon <- if (ci_band) {
+    geom_ribbon(
+      aes(ymin = lower_power_bound, ymax = upper_power_bound),
+      alpha = 0.05, color = NA
+    )
+  } else {NULL}
 
   df %>%
     mutate(test = factor(.data[["test"]], levels = levels)) %>%
@@ -225,6 +232,7 @@ plot_power <- function(df, power_threshold = 0.80) {
     )) +
     geom_line(linewidth = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", linewidth = 1.5) +
+    ribbon +
     expand_limits(y = c(0, 1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +

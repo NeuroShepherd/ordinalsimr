@@ -25,6 +25,7 @@ app_server <- function(input, output, session) {
   run_simulation_button <- mod_start_simulation_server("start_simulation_1")
   t1_error_toggle <- mod_type_one_error_server("type_one_error_1")
   kill_button <- mod_kill_simulations_server("kill_simulations_1")
+  confidence_interval_toggle <- mod_distributions_page_server("distributions_page_1")
 
   mod_progress_modal_server("progress_modal_1", open_modal_from_sim_start = run_simulation_button)
 
@@ -64,7 +65,8 @@ app_server <- function(input, output, session) {
   distributions_power_error <- mod_plot_distributions_server("plot_distributions_1",
     p_value_table = results_output,
     n = data_entered_sample_size,
-    reactive_bg_process = reactive_bg_process
+    reactive_bg_process = reactive_bg_process,
+    ci_band = confidence_interval_toggle
   )
 
   # format the data and plots into a list, and make this object available for

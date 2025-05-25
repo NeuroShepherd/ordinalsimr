@@ -28,7 +28,26 @@ mod_distributions_page_ui <- function(id) {
         ),
         nav_panel(
           title = "Power",
-          mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["power_plot"]]
+          tags$head(
+            tags$style(HTML("
+              .plot-container {
+                position: relative;
+              }
+              .overlay-checkbox {
+                position: absolute;
+                top: 0px;
+                right: -150px;
+                z-index: 10;
+                background: rgba(255, 255, 255, 0.8);
+                padding: 5px 10px;
+                border-radius: 4px;
+              }
+            "))
+          ),
+          div(class = "plot-container",
+              div(class = "overlay-checkbox", checkboxInput(ns("show_confidence_interval"), "Show CI", value = TRUE)),
+              mod_plot_distributions_ui("plot_distributions_1")[["output_plots"]][["power_plot"]]
+          ),
         ),
         nav_panel(
           title = "p-values",
@@ -46,6 +65,9 @@ mod_distributions_page_ui <- function(id) {
 mod_distributions_page_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    return(reactive({input$show_confidence_interval}))
+
   })
 }
 
