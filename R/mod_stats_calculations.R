@@ -19,22 +19,8 @@ mod_stats_calculations_ui <- function(id) {
         display_pct = TRUE
       )
       ),
-    group1_progress = list(
-      tags$b("Group 1 Progress"), br(),
-      shinyWidgets::progressBar(
-        ns("group1_progress"),
-        value = 0,
-        display_pct = TRUE
-      )
-      ),
-    group2_progress = list(
-      tags$b("Group 2 Progress"), br(),
-      shinyWidgets::progressBar(
-        ns("group2_progress"),
-        value = 0,
-        display_pct = TRUE
-      )
-    )
+    group1_progress = uiOutput(ns("group1_progress_ui")),
+    group2_progress = uiOutput(ns("group2_progress_ui"))
   )
 }
 
@@ -234,6 +220,32 @@ mod_stats_calculations_server <- function(id, probability_data, sample_prob, ite
           total = 1 + max(parameters()$sample_size) - min(parameters()$sample_size)
         )
       }
+    })
+
+
+
+    output$group1_progress_ui <- renderUI({
+      req(parameters()$t1_error_toggle %in% c("both", "group1"))
+      list(
+        tags$b("Group 1 Progress"), br(),
+        shinyWidgets::progressBar(
+          ns("group1_progress"),
+          value = 0,
+          display_pct = TRUE
+        )
+      )
+    })
+
+    output$group2_progress_ui <- renderUI({
+      req(parameters()$t1_error_toggle %in% c("both", "group2"))
+      list(
+        tags$b("Group 2 Progress"), br(),
+        shinyWidgets::progressBar(
+          ns("group2_progress"),
+          value = 0,
+          display_pct = TRUE
+        )
+      )
     })
 
 
