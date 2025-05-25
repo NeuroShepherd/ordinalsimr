@@ -165,7 +165,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     pull(.data[["test_name"]])
 
   unique_sample_sizes <- df %>%
-    pull(sample_size) %>%
+    pull(.data[["sample_size"]]) %>%
     unique()
   sample_sizes_length <- length(unique_sample_sizes)
   if (sample_sizes_length < 8) {
@@ -175,14 +175,14 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     indices <- round(seq(1, sample_sizes_length, length.out = 8))
   }
   selected_sample_sizes <- unique_sample_sizes[indices]
-  label_text <- c(paste("p ≥", alpha), paste("p <", 1-alpha))
+  label_text <- c(paste("p \u2265", alpha), paste("p \u003C", 1-alpha))
 
   df %>%
     pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
     mutate(test_name = factor(.data$test_name, levels = levels)) %>%
     dplyr::filter(.data[["sample_size"]] %in% selected_sample_sizes) %>%
     {
-      ggplot(., aes(x = .data[["value"]], y = factor(.data[["sample_size"]]), fill = stat(x < alpha))) +
+      ggplot(., aes(x = .data[["value"]], y = factor(.data[["sample_size"]]), fill = stat(.data[["x"]] < alpha))) +
         ggridges::geom_density_ridges_gradient(
           scale = 3,
           rel_min_height = 0.01,
