@@ -186,8 +186,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
         ggridges::geom_density_ridges_gradient(
           scale = 3,
           rel_min_height = 0.01,
-          quantile_lines = TRUE, quantiles = 2,
-          alpha = 0.3
+          quantile_lines = TRUE, quantiles = 2
         ) +
         scale_fill_manual(values = c("TRUE" = "#FF00004D", "FALSE" = "#87CEEB4D"),
                           name = "Significance (\U003B1)",
