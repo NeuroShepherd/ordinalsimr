@@ -203,6 +203,7 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #'
 #' @param df a dataframe with p-values and a sample_size column
 #' @param power_threshold numeric. desired power threshold
+#' @param ci_band logical. whether to include a confidence interval band around the power estimate
 #'
 #' @return ggplot object
 #' @export
@@ -218,7 +219,7 @@ plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
 
   ribbon <- if (ci_band) {
     geom_ribbon(
-      aes(ymin = lower_power_bound, ymax = upper_power_bound),
+      aes(ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]]),
       alpha = 0.05, color = NA
     )
   } else {NULL}
