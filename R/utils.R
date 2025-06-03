@@ -175,41 +175,40 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     indices <- round(seq(1, sample_sizes_length, length.out = 8))
   }
   selected_sample_sizes <- unique_sample_sizes[indices]
-  label_text <- c(paste("p \u2265", alpha), paste("p \u003C", 1-alpha))
 
   df %>%
     pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
-    mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    dplyr::filter(.data[["sample_size"]] %in% selected_sample_sizes) %>%
-    {
-      ggplot(., aes(x = .data[["value"]], y = factor(.data[["sample_size"]]), fill = stat(.data[["x"]] < alpha))) +
-        ggridges::geom_density_ridges_gradient(
-          scale = 3,
-          rel_min_height = 0.01,
-          quantile_lines = TRUE, quantiles = 2
-        ) +
-        scale_fill_manual(values = c("TRUE" = "#FF00004D", "FALSE" = "#87CEEB4D"),
-                          name = "Significance (\U003B1)",
-                          labels = label_text) +
-        labs(
-          title = "P-value Distributions Across Sample Sizes",
-          x = "P-value",
-          y = "Sample Size"
-        ) +
-        theme_minimal() +
-        theme(
-          axis.text = element_text(face = "bold", size = 14),
-          axis.title = element_text(face = "bold", size = 18),
-          plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
-          axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-          axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16, face = "bold"),
-          legend.position = "top",
-          strip.text = element_text(face = "bold", size = 12)
-        ) +
-        facet_wrap(~ .data[["test_name"]], ncol = 2)
-    }
+    mutate(
+      test_name = factor(.data$test_name, levels = levels)
+    ) %>%
+    filter(.data[["sample_size"]] %in% selected_sample_sizes) %>%
+    ggplot(aes(
+      x = factor(.data[["sample_size"]]),
+      y = .data[["value"]],
+      fill = .data[["test_name"]]
+    )) +
+    geom_boxplot(outlier.alpha = 0.3) +
+    labs(
+      title = "P-value Distributions Across Sample Sizes",
+      x = "P-value",
+      y = "Sample Size",
+      fill = "Statistical Test"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text = element_text(face = "bold", size = 14),
+      axis.title = element_text(face = "bold", size = 18),
+      plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+      axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+      legend.text = element_text(size = 14),
+      legend.title = element_text(size = 16, face = "bold"),
+      legend.position = "top",
+      strip.text = element_text(face = "bold", size = 12)
+    ) +
+    facet_wrap(~ .data[["test_name"]], ncol = 2) +
+    coord_flip()
+
 }
 
 
