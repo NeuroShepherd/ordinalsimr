@@ -81,6 +81,6 @@ test_that("test the plot_distribution_results() function labels", {
 
   expect_match(plot_obj$labels$x, "P-value")
   expect_match(plot_obj$labels$y, "Sample Size")
-  expect_match(plot_obj$labels$fill, "x < alpha")
+  expect_match(plot_obj$labels$fill, "Statistical Test")
   expect_match(plot_obj$labels$title, "P-value Distributions Across Sample Sizes")
 })
