@@ -1,6 +1,6 @@
 Package: ordinalsimr
 Title: Compare Ordinal Endpoints Using Simulations
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: 
     person(given = "Pat",
            family = "Callahan",
