@@ -155,6 +155,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
+
   levels <- df %>%
     pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
     group_by(.data[["test_name"]]) %>%
@@ -217,11 +218,16 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #'
 #' @param df a dataframe with p-values and a sample_size column
 #' @param power_threshold numeric. desired power threshold
+#' @param ci_band logical. whether to include a confidence interval band around the power estimate
 #'
 #' @return ggplot object
 #' @export
 #'
 plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
+
+  unique_x <- length(unique(df[["Sample Size"]]))
+  use_points <- unique_x == 1
+
   levels <- df %>%
     group_by(.data[["test"]]) %>%
     summarize(
@@ -232,19 +238,18 @@ plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
 
   ribbon <- if (ci_band) {
     geom_ribbon(
-      aes(ymin = lower_power_bound, ymax = upper_power_bound),
+      aes(ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]]),
       alpha = 0.05, color = NA
     )
   } else {NULL}
 
-  df %>%
+  base_plot <- df %>%
     mutate(test = factor(.data[["test"]], levels = levels)) %>%
     ggplot(aes(
       x = .data[["Sample Size"]], y = .data[["power"]],
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
       color = .data[["test"]], fill = .data[["test"]]
     )) +
-    geom_line(linewidth = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", linewidth = 1.5) +
     ribbon +
     expand_limits(y = c(0, 1)) +
@@ -252,7 +257,12 @@ plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
     scale_x_continuous(
-      breaks = seq(0, max(df$`Sample Size`), by = 1)
+      breaks = function(x) {
+        # Let ggplot pick default breaks
+        default_breaks <- pretty(x)
+        # Return only those that are integers
+        default_breaks[default_breaks == floor(default_breaks)]
+      }
     ) +
     theme_minimal() +
     theme(
@@ -264,4 +274,14 @@ plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
       legend.text = element_text(size = 14),
       legend.title = element_text(size = 16, face = "bold")
     )
+
+  if (use_points) {
+    base_plot <- base_plot +
+      geom_point(size = 4, alpha = 0.6)
+  } else {
+    base_plot <- base_plot + geom_line(linewidth = 2)
+  }
+
+  base_plot
+
 }

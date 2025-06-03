@@ -20,7 +20,6 @@ Imports:
     ggplot2,
     ggridges,
     golem (>= 0.4.0),
-    magrittr,
     rhandsontable,
     rlang,
     rms,
