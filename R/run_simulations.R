@@ -107,7 +107,7 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
 
     return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
   }) %>%
-    magrittr::set_names(paste0("sample_size_", sample_size))
+    rlang::set_names(paste0("sample_size_", sample_size))
 }
 
 

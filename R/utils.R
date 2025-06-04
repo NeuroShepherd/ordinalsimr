@@ -155,6 +155,7 @@ calculate_t1_error <- function(df, alpha = 0.05, t1_error_confidence_int = 95, n
 #' @export
 #'
 plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) {
+
   levels <- df %>%
     pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
     group_by(.data[["test_name"]]) %>%
@@ -164,34 +165,51 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     arrange(.data[["mean"]]) %>%
     pull(.data[["test_name"]])
 
+  unique_sample_sizes <- df %>%
+    pull(.data[["sample_size"]]) %>%
+    unique()
+  sample_sizes_length <- length(unique_sample_sizes)
+  if (sample_sizes_length < 8) {
+    indices <- seq(1, sample_sizes_length)
+  } else {
+    # Select 8 evenly spaced sample sizes
+    indices <- round(seq(1, sample_sizes_length, length.out = 8))
+  }
+  selected_sample_sizes <- unique_sample_sizes[indices]
+
   df %>%
     pivot_longer(cols = -all_of("sample_size"), names_to = "test_name") %>%
-    mutate(test_name = factor(.data$test_name, levels = levels)) %>%
-    group_by(.data$sample_size, .data$test_name) %>%
-    summarise(value = mean(.data$value)) %>%
-    {
-      ggplot(., aes(
-        x = .data[["sample_size"]],
-        y = .data[["value"]],
-        color = .data[["test_name"]]
-      )) +
-        geom_line(linewidth = 2) +
-        geom_hline(yintercept = alpha, linetype = "dashed", linewidth = 1.5) +
-        expand_limits(y = 0) +
-        ggtitle("Mean p-value") +
-        labs(x = "Sample Size", y = "p-value", color = "Statistical Test") +
-        guides(fill = "none", linetype = "none") +
-        theme_bw() +
-        theme(
-          axis.text = element_text(face = "bold", size = 14),
-          axis.title = element_text(face = "bold", size = 18),
-          plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
-          axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
-          axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
-          legend.text = element_text(size = 14),
-          legend.title = element_text(size = 16, face = "bold")
-        )
-    }
+    mutate(
+      test_name = factor(.data$test_name, levels = levels)
+    ) %>%
+    filter(.data[["sample_size"]] %in% selected_sample_sizes) %>%
+    ggplot(aes(
+      x = factor(.data[["sample_size"]]),
+      y = .data[["value"]],
+      fill = .data[["test_name"]]
+    )) +
+    geom_boxplot(outlier.alpha = 0.3) +
+    labs(
+      title = "P-value Distributions Across Sample Sizes",
+      x = "P-value",
+      y = "Sample Size",
+      fill = "Statistical Test"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text = element_text(face = "bold", size = 14),
+      axis.title = element_text(face = "bold", size = 18),
+      plot.title = element_text(face = "bold", size = 20, hjust = 0.5),
+      axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 0, l = 0)),
+      legend.text = element_text(size = 14),
+      legend.title = element_text(size = 16, face = "bold"),
+      legend.position = "top",
+      strip.text = element_text(face = "bold", size = 12)
+    ) +
+    facet_wrap(~ .data[["test_name"]], ncol = 2) +
+    coord_flip()
+
 }
 
 
@@ -200,11 +218,16 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
 #'
 #' @param df a dataframe with p-values and a sample_size column
 #' @param power_threshold numeric. desired power threshold
+#' @param ci_band logical. whether to include a confidence interval band around the power estimate
 #'
 #' @return ggplot object
 #' @export
 #'
-plot_power <- function(df, power_threshold = 0.80) {
+plot_power <- function(df, power_threshold = 0.80, ci_band = TRUE) {
+
+  unique_x <- length(unique(df[["Sample Size"]]))
+  use_points <- unique_x == 1
+
   levels <- df %>%
     group_by(.data[["test"]]) %>%
     summarize(
@@ -213,20 +236,35 @@ plot_power <- function(df, power_threshold = 0.80) {
     arrange(desc(.data[["mean"]])) %>%
     pull(.data[["test"]])
 
-  df %>%
+  ribbon <- if (ci_band) {
+    geom_ribbon(
+      aes(ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]]),
+      alpha = 0.05, color = NA
+    )
+  } else {NULL}
+
+  base_plot <- df %>%
     mutate(test = factor(.data[["test"]], levels = levels)) %>%
     ggplot(aes(
       x = .data[["Sample Size"]], y = .data[["power"]],
       ymin = .data[["lower_power_bound"]], ymax = .data[["upper_power_bound"]],
       color = .data[["test"]], fill = .data[["test"]]
     )) +
-    geom_line(linewidth = 2) +
     geom_hline(yintercept = power_threshold, linetype = "dashed", linewidth = 1.5) +
+    ribbon +
     expand_limits(y = c(0, 1)) +
     ggtitle("Estimated Power") +
     labs(x = "Sample Size", y = "Power (1-\U03B2)", color = "Statistical Test") +
     guides(fill = "none", linetype = "none") +
-    theme_bw() +
+    scale_x_continuous(
+      breaks = function(x) {
+        # Let ggplot pick default breaks
+        default_breaks <- pretty(x)
+        # Return only those that are integers
+        default_breaks[default_breaks == floor(default_breaks)]
+      }
+    ) +
+    theme_minimal() +
     theme(
       axis.text = element_text(face = "bold", size = 14),
       axis.title = element_text(face = "bold", size = 18),
@@ -236,4 +274,14 @@ plot_power <- function(df, power_threshold = 0.80) {
       legend.text = element_text(size = 14),
       legend.title = element_text(size = 16, face = "bold")
     )
+
+  if (use_points) {
+    base_plot <- base_plot +
+      geom_point(size = 4, alpha = 0.6)
+  } else {
+    base_plot <- base_plot + geom_line(linewidth = 2)
+  }
+
+  base_plot
+
 }

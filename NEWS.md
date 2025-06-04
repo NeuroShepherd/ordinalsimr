@@ -1,3 +1,13 @@
+# ordinalsimr 0.2.1
+
+* Allow users to specify a step size in the sequence of sample sizes in the Shiny app
+* Fix bug in progress bars where they would not update if the sample size was of length 1
+* Only display progress bars if their underlying simulation is running
+* Add a confidence interval toggle button to the Shiny power plot
+* Replace distribution plots with box plots in the Shiny app to better visualize the distribution of the data
+* Remove magrittr dependency
+* Use dynamic labeling of x-axis in the Shiny app to better reflect the data being plotted
+
 # ordinalsimr 0.2.0
 
 * `callr::r_bg()` is now used for between- and within- group simulations in the Shiny application to enable the user to continue using the application while the simulation is running, and to run the processes in parallel to one another

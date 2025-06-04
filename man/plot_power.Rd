@@ -4,12 +4,14 @@
 \alias{plot_power}
 \title{Plot Test Power}
 \usage{
-plot_power(df, power_threshold = 0.8)
+plot_power(df, power_threshold = 0.8, ci_band = TRUE)
 }
 \arguments{
 \item{df}{a dataframe with p-values and a sample_size column}
 
 \item{power_threshold}{numeric. desired power threshold}
+
+\item{ci_band}{logical. whether to include a confidence interval band around the power estimate}
 }
 \value{
 ggplot object

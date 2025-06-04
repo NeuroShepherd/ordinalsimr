@@ -8,7 +8,7 @@ message: 'To cite package "ordinalsimr" in publications use:'
 type: software
 license: MIT
 title: 'ordinalsimr: Compare Ordinal Endpoints Using Simulations'
-version: 0.2.0
+version: 0.2.1
 doi: 10.5281/zenodo.14697215
 identifiers:
 - type: doi
@@ -246,21 +246,6 @@ references:
   year: '2025'
   doi: 10.32614/CRAN.package.golem
   version: '>= 0.4.0'
-- type: software
-  title: magrittr
-  abstract: 'magrittr: A Forward-Pipe Operator for R'
-  notes: Imports
-  url: https://magrittr.tidyverse.org
-  repository: https://CRAN.R-project.org/package=magrittr
-  authors:
-  - family-names: Bache
-    given-names: Stefan Milton
-    email: stefan@stefanbache.dk
-  - family-names: Wickham
-    given-names: Hadley
-    email: hadley@rstudio.com
-  year: '2025'
-  doi: 10.32614/CRAN.package.magrittr
 - type: software
   title: rhandsontable
   abstract: 'rhandsontable: Interface to the ''Handsontable.js'' Library'
@@ -551,9 +536,6 @@ references:
     email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
   year: '2025'
-  identifiers:
-  - type: url
-    value: https://docs.ropensci.org/writexl/
   doi: 10.32614/CRAN.package.writexl
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'

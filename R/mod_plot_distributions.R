@@ -80,7 +80,7 @@ mod_plot_distributions_ui <- function(id) {
 #' plot_distributions Server Functions
 #'
 #' @noRd
-mod_plot_distributions_server <- function(id, p_value_table, n, reactive_bg_process) {
+mod_plot_distributions_server <- function(id, p_value_table, n, reactive_bg_process, ci_band) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -158,7 +158,7 @@ mod_plot_distributions_server <- function(id, p_value_table, n, reactive_bg_proc
     output$power_plot <- renderPlot({
       validate(need(nrow(p_value_reactive_table()) > 0 , "Calculation ongoing"))
       distribution_statistics() %>%
-        plot_power(power_threshold = input$power_value)
+        plot_power(power_threshold = input$power_value, ci_band = ci_band())
     })
 
 
