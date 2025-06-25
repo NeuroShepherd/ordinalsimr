@@ -1,3 +1,7 @@
+# ordinalsimr 0.2.2
+
+* Update tests to fit updates to {ggplot2} package and its use of S7
+
 # ordinalsimr 0.2.1
 
 * Allow users to specify a step size in the sequence of sample sizes in the Shiny app
