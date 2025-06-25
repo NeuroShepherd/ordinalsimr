@@ -62,13 +62,13 @@ test_that("test the plot_power() function", {
     calculate_power_t2error() %>%
     plot_power()
 
-
-  expect_match(plot_obj$labels$x, "Sample Size")
-  # expect_match(plot_obj$labels$y, "Power (1-\U03B2)")
-  expect_match(plot_obj$labels$title, "Estimated Power")
-  expect_match(plot_obj$labels$colour, "Statistical Test")
-  expect_match(plot_obj$labels$ymin, "lower_power_bound")
-  expect_match(plot_obj$labels$ymax, "upper_power_bound")
+  labels <- get_labs(plot_obj)
+  expect_match(labels$x, "Sample Size")
+  # expect_match(labels$y, "Power (1-\U03B2)")
+  expect_match(labels$title, "Estimated Power")
+  expect_match(labels$colour, "Statistical Test")
+  expect_match(labels$ymin, "lower_power_bound")
+  expect_match(labels$ymax, "upper_power_bound")
 })
 
 
