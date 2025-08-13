@@ -34,3 +34,7 @@ sticker(
 
 
 golem::use_favicon("inst/app/www/favicon.png")
+
+usethis::use_logo("inst/app/www/favicon.png")
+
+pkgdown::build_favicons()

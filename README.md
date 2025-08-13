@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ordinalsimr
+# ordinalsimr <img src="inst/app/www/favicon.png" align="right" alt="" width="120" />
 
 <!-- badges: start -->
 
@@ -13,6 +13,7 @@ status](https://www.r-pkg.org/badges/version/ordinalsimr)](https://CRAN.R-projec
 [![Codecov test
 coverage](https://codecov.io/gh/NeuroShepherd/ordinalsimr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/NeuroShepherd/ordinalsimr?branch=master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14697215.svg)](https://doi.org/10.5281/zenodo.14697215)
+
 <!-- badges: end -->
 
 The {ordinalsimr} package assists in constructing simulation studies of
