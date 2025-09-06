@@ -1,3 +1,7 @@
+# ordinalsimr 0.2.3
+
+* `wilcox.test()` now defaults to `exact = FALSE` to fix failing tests on some distributions
+
 # ordinalsimr 0.2.2
 
 * Update tests to fit updates to {ggplot2} package and its use of S7
