@@ -6,6 +6,8 @@
 \alias{ordinalsimr-package}
 \title{ordinalsimr: Compare Ordinal Endpoints Using Simulations}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Simultaneously evaluate multiple ordinal outcome measures. Applied data analysts in particular are faced with uncertainty in choosing appropriate statistical tests for ordinal data. The included 'shiny' application allows users to simulate outcomes given different ordinal data distributions.
 }
 \seealso{

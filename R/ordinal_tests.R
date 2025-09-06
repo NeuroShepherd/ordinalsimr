@@ -65,7 +65,7 @@ ordinal_tests <- function(x, y, included = "all", ...) {
     wilcoxon <- tryCatch(
       {
         suppressWarnings(
-          stats::wilcox.test(x[y == 0], x[y == 1])[["p.value"]]
+          stats::wilcox.test(x[y == 0], x[y == 1], exact = FALSE)[["p.value"]]
         )
       },
       error = function(e) {

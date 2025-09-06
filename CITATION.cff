@@ -8,7 +8,7 @@ message: 'To cite package "ordinalsimr" in publications use:'
 type: software
 license: MIT
 title: 'ordinalsimr: Compare Ordinal Endpoints Using Simulations'
-version: 0.2.2
+version: 0.2.3
 doi: 10.5281/zenodo.14697215
 identifiers:
 - type: doi
@@ -178,6 +178,10 @@ references:
     email: joe@posit.co
   - family-names: Tan
     given-names: Xianying
+  - family-names: Aden-Buie
+    given-names: Garrick
+    email: garrick@posit.co
+    orcid: https://orcid.org/0000-0002-7111-0077
   year: '2025'
   doi: 10.32614/CRAN.package.DT
 - type: software
