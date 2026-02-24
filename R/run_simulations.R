@@ -28,17 +28,17 @@
 run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                             .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
   # Check equal vector lengths
-  assert_that(
+  assertthat::assert_that(
     length(prob0) == length(prob1),
     msg = "prob0 and prob1 must have the same length"
   )
   # Check probabilities for both groups sum to 1
   assertthat::assert_that(
-    near(sum(prob0), 1),
+    dplyr::near(sum(prob0), 1),
     msg = "prob0 must sum to 1"
   )
   assertthat::assert_that(
-    near(sum(prob1), 1),
+    dplyr::near(sum(prob1), 1),
     msg = "prob0 must sum to 1"
   )
   # Check included argument
@@ -88,25 +88,25 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
       )
     })
 
-    p_values <- initial_groups %>%
-      sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
+    p_values <- initial_groups |>
+      sapply(function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) |>
       matrix(byrow = TRUE, nrow = niter)
 
     colnames(p_values) <- included
 
     initial_groups_formatted <- lapply(initial_groups, function(groups) {
-      tibble(
+      dplyr::tibble(
         y = list(groups[["y"]]), x = list(groups[["x"]]),
         n_null = groups[["n_null"]], n_intervene = groups[["n_intervene"]],
         sample_size = groups[["sample_size"]], K = groups[["K"]]
       )
-    }) %>%
-      bind_rows() %>%
-      mutate(run = row_number(), .before = .data$y)
+    }) |>
+      dplyr::bind_rows() |>
+      dplyr::mutate(run = dplyr::row_number(), .before = .data$y)
 
 
-    return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
-  }) %>%
+    return(sim_results_table = dplyr::bind_cols(p_values, initial_groups_formatted))
+  }) |>
     rlang::set_names(paste0("sample_size_", sample_size))
 }
 
@@ -136,29 +136,39 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
 run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                                           .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL,
                                           tempfile = NULL) {
+  run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
+                                     .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile,
+                                     run_simulations_fn, assign_groups_fn, ordinal_tests_fn) {
+    execution_env <- new.env(parent = environment(run_simulations_fn))
+    execution_env$assign_groups <- assign_groups_fn
+    execution_env$ordinal_tests <- ordinal_tests_fn
+    environment(run_simulations_fn) <- execution_env
 
-  callr::r_bg(function(sample_size, sample_prob, prob0, prob1, niter, included,
-                       .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
-
-
-      run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
-                                         .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
-        lapply(sample_size, function(x) {
-          try(writeLines(as.character(x), con = tempfile))
-          run_simulations(x, sample_prob = sample_prob, prob0 = prob0, prob1 = prob1, niter = niter, included = included,
-                                       .rng_kind = .rng_kind, .rng_normal_kind = .rng_normal_kind, .rng_sample_kind = .rng_sample_kind
-          )
-        }) |>
-          unlist(recursive = FALSE)
+    lapply(sample_size, function(x) {
+      if (!is.null(tempfile)) {
+        try(writeLines(as.character(x), con = tempfile))
       }
+      run_simulations_fn(
+        sample_size = x,
+        sample_prob = sample_prob,
+        prob0 = prob0,
+        prob1 = prob1,
+        niter = niter,
+        included = included,
+        .rng_kind = .rng_kind,
+        .rng_normal_kind = .rng_normal_kind,
+        .rng_sample_kind = .rng_sample_kind
+      )
+    }) |>
+      unlist(recursive = FALSE)
+  }
 
-      run_simulation_wrapper(sample_size, sample_prob, prob0, prob1, niter, included,
-                             .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile)
-
-    },
+  callr::r_bg(
+    func = run_simulation_wrapper,
     args = list(sample_size, sample_prob, prob0, prob1, niter, included,
-                 .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile),
-    package = TRUE
+                .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile,
+                run_simulations, assign_groups, ordinal_tests),
+    package = FALSE
   )
 
 }
