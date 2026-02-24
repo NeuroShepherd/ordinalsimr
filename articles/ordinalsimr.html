@@ -65,7 +65,7 @@
       <img src="../logo.png" class="logo" alt=""><h1>Using {ordinalsimr}</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/v0.2.3/vignettes/ordinalsimr.Rmd" class="external-link"><code>vignettes/ordinalsimr.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/NeuroShepherd/ordinalsimr/blob/development/vignettes/ordinalsimr.Rmd" class="external-link"><code>vignettes/ordinalsimr.Rmd</code></a></small>
       <div class="d-none name"><code>ordinalsimr.Rmd</code></div>
     </div>
 
@@ -76,106 +76,108 @@
 <div class="section level2">
 <h2 id="shiny-app">Shiny App<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
 </h2>
-<p>The {ordinalsimr} package wraps a Shiny application and supporting
-functions for running simulation studies on several pre-selected
-statistical tests applicable to ordinal data. The Shiny app is
-particularly suited for calculating Power and Type II error for a
-proposed 2-group comparison of an ordinal endpoint. Available parameters
-to manipulate before running the tests include:</p>
+<p>The {ordinalsimr} package combines a Shiny interface with simulation
+functions for two-group ordinal outcomes. In practice, the app is
+designed to help users compare test performance under user-defined
+assumptions and to summarize Type I error, Type II error, and power.</p>
+<p>In the app, users can set:</p>
 <ul>
-<li>Number of simulations to run (integer)</li>
-<li>The sample size (integer)</li>
-<li>The distribution ratio between group 1 and group 2 (ratio of form
-X:X)</li>
-<li>Group 1 and Group 2 distribution probabilities for levels of the
-ordinal outcome</li>
+<li>Number of simulation iterations</li>
+<li>One or more sample sizes</li>
+<li>Allocation between groups (for example, 1:1)</li>
+<li>Outcome category probabilities for each group</li>
+<li>Which statistical tests to include</li>
 </ul>
-<p>In addition to these parameters for running the simulation, the
-following can be adjusted in the Distributions page</p>
-<ul>
-<li>Setting the alpha significance level/p-value threshold</li>
-<li>Setting the confidence intervals for the Power/T2 Error
-calculations</li>
-<li>Setting the confidence intervals (separately) for the Type I Error
-in Group 1 and Group 2</li>
-</ul>
-<p>Bug reports and feature requests can be submitted as issues at <a href="https://github.com/NeuroShepherd/ordinalsimr/issues" class="external-link">https://github.com/NeuroShepherd/ordinalsimr/issues</a></p>
-<div class="section level3">
-<h3 id="using-downloaded-data">Using Downloaded Data<a class="anchor" aria-label="anchor" href="#using-downloaded-data"></a>
-</h3>
-<p>Data downloaded after running a simulation is stored as a
-<code>.rds</code> file, and can be loaded into your R session using
-<code><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS()</a></code>. The data is structured as a named list with 3
-elements at the top level, and several sub-elements. A summary of the
-available information is available in the code below.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"data-2025-01-19-d8621b-1.rds"</span><span class="op">)</span></span>
-<span><span class="va">output</span><span class="op">$</span><span class="va">comparison_data</span><span class="op">$</span><span class="va">distribution_statistics</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 36 × 10</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># Groups:   Sample Size [6]</span></span></span>
-<span><span class="co">#&gt;    `Sample Size` test   lower_power_bound upper_power_bound power `Power 95% CI`</span></span>
-<span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>            30 Wilco…             0.452             0.736  0.6  [0.452, 0.736]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>            30 Fisher             0.337             0.626  0.48 [0.337, 0.626]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>            30 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>            30 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>            30 Prop.…             0.472             0.753  0.62 [0.472, 0.753]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>            30 Coin …             0.472             0.753  0.62 [0.472, 0.753]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>            31 Wilco…             0.512             0.788  0.66 [0.512, 0.788]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>            31 Fisher             0.337             0.626  0.48 [0.337, 0.626]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>            31 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>            31 Chi S…             0.374             0.663  0.52 [0.374, 0.663]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 26 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: lower_t2error_bound &lt;dbl&gt;, upper_t2error_bound &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   t2_error &lt;dbl&gt;, `TII Error 95% CI` &lt;chr&gt;</span></span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">output</span>, max.level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; List of 3</span></span>
-<span><span class="co">#&gt;  $ comparison_data:List of 3</span></span>
-<span><span class="co">#&gt;   ..$ run_info               : tibble [300 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   ..$ distribution_statistics: gropd_df [36 × 10] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   .. ..- attr(*, "groups")= tibble [6 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   .. .. ..- attr(*, ".drop")= logi TRUE</span></span>
-<span><span class="co">#&gt;   ..$ distribution_plot      :List of 11</span></span>
-<span><span class="co">#&gt;   .. ..- attr(*, "class")= chr [1:2] "gg" "ggplot"</span></span>
-<span><span class="co">#&gt;  $ group1_data    :List of 2</span></span>
-<span><span class="co">#&gt;   ..$ run_info      : tibble [300 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   ..$ group1_t1error: gropd_df [36 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   .. ..- attr(*, "groups")= tibble [6 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   .. .. ..- attr(*, ".drop")= logi TRUE</span></span>
-<span><span class="co">#&gt;  $ group2_data    :List of 2</span></span>
-<span><span class="co">#&gt;   ..$ run_info      : tibble [300 × 13] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   ..$ group2_t1error: gropd_df [36 × 6] (S3: grouped_df/tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   .. ..- attr(*, "groups")= tibble [6 × 2] (S3: tbl_df/tbl/data.frame)</span></span>
-<span><span class="co">#&gt;   .. .. ..- attr(*, ".drop")= logi TRUE</span></span></code></pre></div>
-<ul>
-<li>Top level items
-<ul>
-<li>
-<code>comparison_data</code> are results from comparing Group 1
-against Group 2 in the statistical tests (for TII error and power)</li>
-<li>
-<code>group1_data</code> are results from comparing Group 1 data
-against itself (for TI error of this group)</li>
-<li>
-<code>group2_data</code> are results from comparing Group 2 data
-against itself (for TI error of this group)</li>
-</ul>
-</li>
-<li>Second level items
-<ul>
-<li>
-<code>run_info</code> are tables of detailed metainformation about
-the parameters used for each run</li>
-<li>
-<code>distribution_statistics</code> are tables of computed TII
-error, power, and associated confidence intervals</li>
-<li>
-<code>group1_t1error</code> and <code>group2_t1error</code> are
-tables of TI error and associated confidence intervals</li>
-</ul>
-</li>
-</ul>
+<p>The app also provides progress tracking for longer simulation runs,
+optional Type I error runs for each group, plots, and downloadable
+outputs.</p>
 </div>
+<div class="section level2">
+<h2 id="data-generation-process">Data Generation Process<a class="anchor" aria-label="anchor" href="#data-generation-process"></a>
+</h2>
+<p>Data generation is handled by <code><a href="../reference/assign_groups.html">assign_groups()</a></code> and
+orchestrated in repeated runs by <code><a href="../reference/run_simulations.html">run_simulations()</a></code>.</p>
+<p>At each iteration:</p>
+<ol style="list-style-type: decimal">
+<li>
+<code><a href="../reference/assign_groups.html">assign_groups()</a></code> samples group membership
+(<code>y</code>) using the specified allocation probabilities.</li>
+<li>It then samples ordinal outcomes (<code>x</code>) within each group
+using <code>prob0</code> (group 0) and <code>prob1</code> (group
+1).</li>
+<li>
+<code><a href="../reference/run_simulations.html">run_simulations()</a></code> repeats this process for each
+requested sample size and iteration count.</li>
+</ol>
+<p>This design keeps the data-generating mechanism explicit and directly
+tied to user-entered assumptions.</p>
+</div>
+<div class="section level2">
+<h2 id="statistical-tests-used">Statistical Tests Used<a class="anchor" aria-label="anchor" href="#statistical-tests-used"></a>
+</h2>
+<p>For each simulated dataset, <code><a href="../reference/ordinal_tests.html">ordinal_tests()</a></code> computes
+p-values for the selected methods. By default, all implemented methods
+are run:</p>
+<ul>
+<li>Wilcoxon rank-sum test (<code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">stats::wilcox.test</a></code>)</li>
+<li>Fisher’s exact test (simulation-based p-value;
+<code><a href="https://rdrr.io/r/stats/fisher.test.html" class="external-link">stats::fisher.test</a></code>)</li>
+<li>Chi-squared test without continuity correction
+(<code>stats::chisq.test(correct = FALSE)</code>)</li>
+<li>Chi-squared test with continuity correction
+(<code>stats::chisq.test(correct = TRUE)</code>)</li>
+<li>Proportional odds model (<code><a href="https://rdrr.io/pkg/rms/man/lrm.html" class="external-link">rms::lrm</a></code>)</li>
+<li>Coin independence test (<code><a href="https://rdrr.io/pkg/coin/man/IndependenceTest.html" class="external-link">coin::independence_test</a></code> to fit
+the test, then <code><a href="https://rdrr.io/pkg/coin/man/pvalue-methods.html" class="external-link">coin::pvalue</a></code> to extract the p-value)</li>
+</ul>
+<p>The test set can be restricted in both the app and function calls,
+which is useful for targeted method comparisons.</p>
+<p>These methods provide complementary views of group differences for
+ordinal endpoints: rank-based tests focus on distributional shift,
+contingency-table tests assess association between group and category
+counts, and the proportional-odds model summarizes effects in an ordered
+logistic framework.</p>
+<p>Using them side-by-side is helpful in simulation studies because Type
+I error and power can change with sample size, allocation imbalance, and
+outcome distribution shape.</p>
+</div>
+<div class="section level2">
+<h2 id="practical-script-based-workflow">Practical Script-Based Workflow<a class="anchor" aria-label="anchor" href="#practical-script-based-workflow"></a>
+</h2>
+<p>An explanation of how to use the core simulation functions in a
+script-based workflow is provided in the <a href="https://neuroshepherd.github.io/ordinalsimr/articles/coding-simulations.html">Coding
+Simulations</a> vignette. The same functions that power the app can be
+used in scripts for more customized analyses, batch runs, or integration
+with other workflows.</p>
+<p>This workflow mirrors the app logic: generate group/outcome data
+repeatedly, compute test p-values, then summarize results across
+iterations.</p>
+</div>
+<div class="section level2">
+<h2 id="package-architecture">Package Architecture<a class="anchor" aria-label="anchor" href="#package-architecture"></a>
+</h2>
+<p>The package is structured in three connected layers:</p>
+<ul>
+<li>
+<strong>Simulation core:</strong> <code><a href="../reference/assign_groups.html">assign_groups()</a></code>,
+<code><a href="../reference/ordinal_tests.html">ordinal_tests()</a></code>, and <code><a href="../reference/run_simulations.html">run_simulations()</a></code> define
+data generation, test evaluation, and iteration over simulation
+settings. The <code>run_simulations_in_background()</code> function
+wraps <code><a href="../reference/run_simulations.html">run_simulations()</a></code> to run simulation in background
+processes for the Shiny app.</li>
+<li>
+<strong>Computation helpers:</strong> functions such as
+<code><a href="../reference/calculate_power_t2error.html">calculate_power_t2error()</a></code> and
+<code><a href="../reference/calculate_t1_error.html">calculate_t1_error()</a></code> summarize simulation results.</li>
+<li>
+<strong>Shiny modules:</strong> the app server
+(<code>app_server</code>) wires together modular components for data
+entry, simulation triggers, background execution, progress updates,
+plotting, and export/report generation.</li>
+</ul>
+<p>This separation helps keep methods transparent while allowing the app
+and script-based workflows to use the same simulation engine.</p>
+<p>Bug reports and feature requests can be submitted as issues at <a href="https://github.com/NeuroShepherd/ordinalsimr/issues" class="external-link">https://github.com/NeuroShepherd/ordinalsimr/issues</a></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -188,7 +190,7 @@ tables of TI error and associated confidence intervals</li>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

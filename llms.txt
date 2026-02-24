@@ -1,0 +1,112 @@
+# ordinalsimr ![](inst/app/www/favicon.png)
+
+The {ordinalsimr} package assists in constructing simulation studies of
+ordinal data comparing two groups. It is intended to facilitate
+translation of methodological advances into practical settings for
+e.g. applied statisticians and data analysts who want to determine an
+appropriate statistical test to apply on their data or a proposed
+distribution of data.
+
+This package is primarily developed as a Shiny application which
+abstracts away the heavier coding aspect of setting up simulation
+studies. Instead, users can simply enter parameters and data
+distributions into the application, and save the results as an `.rds`
+file. The structure of the Shiny application only allows for one
+simulation to be specified at a time as opposed to a grid of parameters.
+However, the underlying functions for running the simulations are
+accessible. See
+[`vignette("ordinalsimr")`](https://neuroshepherd.github.io/ordinalsimr/articles/ordinalsimr.md)
+for template code on setting up your own simulations manually.
+
+## Installation
+
+You can install the development version of ordinalsimr from GitHub with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github(
+  "NeuroShepherd/ordinalsimr",
+  build_vignettes = TRUE
+)
+```
+
+## Running the App
+
+The app can be started with the following code:
+
+``` r
+ordinalsimr::run_app()
+```
+
+If using the app repeatedly, it may be useful to change some of the
+options in the application to suit your needs. See the vignette
+“ordinalsimr-options” for more information,
+[`vignette("ordinalsimr-options", package = "ordinalsimr")`](https://neuroshepherd.github.io/ordinalsimr/articles/ordinalsimr-options.md).
+
+## Recommendations
+
+Simulations with 1000s of iterations *will* take minutes to hours to
+run. This should generally be ok on the Shiny app, but if you encounter
+issues, consider running the simulations in a separate R session using
+the functions provided in this package (rather than the Shiny app). See
+the vignette “coding-simulations” for more information,
+[`vignette("coding-simulations", package = "ordinalsimr")`](https://neuroshepherd.github.io/ordinalsimr/articles/coding-simulations.md).
+
+# Package index
+
+## Run Shiny App
+
+Function for activating the {ordinalsimr} Shiny application
+
+- [`run_app()`](https://neuroshepherd.github.io/ordinalsimr/reference/run_app.md)
+  : Run the Shiny Application
+
+## Simulation Functions
+
+Functions useful for running your own simulations
+
+- [`run_simulations()`](https://neuroshepherd.github.io/ordinalsimr/reference/run_simulations.md)
+  : Run Simulations
+- [`calculate_power_t2error()`](https://neuroshepherd.github.io/ordinalsimr/reference/calculate_power_t2error.md)
+  : Calculate Hypothesis Test Parameters
+- [`calculate_t1_error()`](https://neuroshepherd.github.io/ordinalsimr/reference/calculate_t1_error.md)
+  : Calculate Type 1 Error
+
+## Helper Functions
+
+Constructors and utility functions
+
+- [`set_ordinalsimr_options()`](https://neuroshepherd.github.io/ordinalsimr/reference/set_ordinalsimr_options.md)
+  : Set ordinalsimr Shiny App Default Values
+- [`get_ordinalsimr_options()`](https://neuroshepherd.github.io/ordinalsimr/reference/get_ordinalsimr_options.md)
+  : Get ordinalsimr options
+- [`ordinal_tests()`](https://neuroshepherd.github.io/ordinalsimr/reference/ordinal_tests.md)
+  : Ordinal outcome tests
+- [`plot_distribution_results()`](https://neuroshepherd.github.io/ordinalsimr/reference/plot_distribution_results.md)
+  : Plot Distribution
+- [`plot_power()`](https://neuroshepherd.github.io/ordinalsimr/reference/plot_power.md)
+  : Plot Test Power
+- [`assign_groups()`](https://neuroshepherd.github.io/ordinalsimr/reference/assign_groups.md)
+  : Randomly assign groups
+- [`parse_ratio_text()`](https://neuroshepherd.github.io/ordinalsimr/reference/parse_ratio_text.md)
+  : Parse Ratio Text
+
+## Data
+
+Example data frames/lists
+
+- [`simulation_data_one_group`](https://neuroshepherd.github.io/ordinalsimr/reference/simulation_data_one_group.md)
+  : Simulation Data for One Group
+- [`simulation_data_two_groups`](https://neuroshepherd.github.io/ordinalsimr/reference/simulation_data_two_groups.md)
+  : Simulation Data for Two Groups
+
+# Articles
+
+### Using {ordinalsimr}
+
+- [Using
+  {ordinalsimr}](https://neuroshepherd.github.io/ordinalsimr/articles/ordinalsimr.md):
+- [{ordinalsimr}
+  Options](https://neuroshepherd.github.io/ordinalsimr/articles/ordinalsimr-options.md):
+- [Coding
+  Simulations](https://neuroshepherd.github.io/ordinalsimr/articles/coding-simulations.md):
