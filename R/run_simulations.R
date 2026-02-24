@@ -28,17 +28,17 @@
 run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, included = "all",
                             .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL) {
   # Check equal vector lengths
-  assert_that(
+  assertthat::assert_that(
     length(prob0) == length(prob1),
     msg = "prob0 and prob1 must have the same length"
   )
   # Check probabilities for both groups sum to 1
   assertthat::assert_that(
-    near(sum(prob0), 1),
+    dplyr::near(sum(prob0), 1),
     msg = "prob0 must sum to 1"
   )
   assertthat::assert_that(
-    near(sum(prob1), 1),
+    dplyr::near(sum(prob1), 1),
     msg = "prob0 must sum to 1"
   )
   # Check included argument
@@ -88,8 +88,8 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
       )
     })
 
-    p_values <- initial_groups %>%
-      sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) %>%
+    p_values <- initial_groups |>
+      sapply(., function(x) ordinal_tests(x[["x"]], x[["y"]], included = included)) |>
       matrix(byrow = TRUE, nrow = niter)
 
     colnames(p_values) <- included
@@ -100,13 +100,13 @@ run_simulations <- function(sample_size, sample_prob, prob0, prob1, niter, inclu
         n_null = groups[["n_null"]], n_intervene = groups[["n_intervene"]],
         sample_size = groups[["sample_size"]], K = groups[["K"]]
       )
-    }) %>%
-      bind_rows() %>%
+    }) |>
+      bind_rows() |>
       mutate(run = row_number(), .before = .data$y)
 
 
     return(sim_results_table = bind_cols(p_values, initial_groups_formatted))
-  }) %>%
+  }) |>
     rlang::set_names(paste0("sample_size_", sample_size))
 }
 
@@ -137,8 +137,14 @@ run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1
                                           .rng_kind = NULL, .rng_normal_kind = NULL, .rng_sample_kind = NULL,
                                           tempfile = NULL) {
 
+  assign_groups = ordinalsimr::assign_groups
+  run_simulations = ordinalsimr::run_simulations
+
   callr::r_bg(function(sample_size, sample_prob, prob0, prob1, niter, included,
-                       .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile) {
+                       .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile,
+                       run_simulations, assign_groups) {
+
+    assign_groups <- assign_groups
 
 
       run_simulation_wrapper <- function(sample_size, sample_prob, prob0, prob1, niter, included,
@@ -157,7 +163,8 @@ run_simulations_in_background <- function(sample_size, sample_prob, prob0, prob1
 
     },
     args = list(sample_size, sample_prob, prob0, prob1, niter, included,
-                 .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile),
+                 .rng_kind, .rng_normal_kind, .rng_sample_kind, tempfile,
+                run_simulations, assign_groups),
     package = TRUE
   )
 
