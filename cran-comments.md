@@ -4,5 +4,6 @@
 
 ## Other
 
-* The `wilcox.test()` function has been updated to explicitly use `exact=FALSE` to prevent test warnings on the r-devel distributions as was recommended to me by email.
+* The main ordinalsimr vignette has been updated to provide a broader overview of the package and its features
+* Refactored background simulation internals to explicitly bind required helper functions in the callr subprocess environment. This fixes a breaking bug in the Shiny app.
 
