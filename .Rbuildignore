@@ -24,3 +24,4 @@ $run_dev.*
 ^CITATION\.cff$
 ^CRAN-SUBMISSION$
 ^revdep$
+^.renvignore$
