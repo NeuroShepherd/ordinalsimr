@@ -79,8 +79,8 @@ test_that("test the plot_distribution_results() function labels", {
     select(Wilcoxon:`Coin Indep. Test`, sample_size) %>%
     plot_distribution_results()
 
-  expect_match(plot_obj$labels$x, "P-value")
-  expect_match(plot_obj$labels$y, "Sample Size")
+  expect_match(plot_obj$labels$y, "P-value")
+  expect_match(plot_obj$labels$x, "Sample Size")
   expect_match(plot_obj$labels$fill, "Statistical Test")
   expect_match(plot_obj$labels$title, "P-value Distributions Across Sample Sizes")
 })
