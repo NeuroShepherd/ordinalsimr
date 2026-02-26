@@ -29,18 +29,39 @@ bibentry(
   title = "Bridging the Gap Between Methodological Research and Statistical Practice: Toward \"Translational Simulation Research\"",
   author = c(
     person(
-      given = "Pat",
+      given = "Anne-Laure",
+      family = "Boulesteix",
+      email = "boulesteix@ibe.med.uni-muenchen.de",
+      comment = c(ORCID = "0000-0002-2729-0947")
+    ),
+    person(
+      given = "Patrick",
       family = "Callahan",
+      email = "patrick.callahan@campus.lmu.de",
       comment = c(ORCID = "0000-0003-1769-7580")
     ),
     person(
-      given = "Anne-Laure",
-      family = "Boulesteix"
+      given = "Luzia",
+      family = "Hanßum",
+      email = "luzia.hanssum@campus.lmu.de",
+      comment = c(ORCID = "0009-0006-1325-4706")
+    ),
+    person(
+      given = "Vincent",
+      family = "Gärtner",
+      email = "vincent.gaertner@med.uni-muenchen.de",
+      comment = c(ORCID = "0000-0001-5330-652X")
+    ),
+    person(
+      given = "Eva",
+      family = "Hoster",
+      email = "ehoster@ibe.med.uni-muenchen.de",
+      comment = c(ORCID = "0000-0002-0749-1389")
     )
   ),
   journal = "BMC Medical Research Methodology",
   year = "2026",
-  note = "Accepted for publication; DOI pending"
+  note = "Accepted for publication; DOI pending. Authors Boulesteix and Callahan contributed equally and share first authorship/"
 )
 
 
