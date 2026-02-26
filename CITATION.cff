@@ -53,6 +53,18 @@ keywords:
 - r
 - shiny
 references:
+- type: article
+  title: 'Bridging the Gap Between Methodological Research and Statistical Practice:
+    Toward "Translational Simulation Research"'
+  authors:
+  - family-names: Callahan
+    given-names: Pat
+    orcid: https://orcid.org/0000-0003-1769-7580
+  - family-names: Boulesteix
+    given-names: Anne-Laure
+  journal: BMC Medical Research Methodology
+  year: '2026'
+  notes: Accepted for publication; DOI pending
 - type: software
   title: assertthat
   abstract: 'assertthat: Easy Pre and Post Assertions'

@@ -191,8 +191,8 @@ plot_distribution_results <- function(df, alpha = 0.05, outlier_removal = 0.10) 
     geom_boxplot(outlier.alpha = 0.3) +
     labs(
       title = "P-value Distributions Across Sample Sizes",
-      x = "P-value",
-      y = "Sample Size",
+      y = "P-value",
+      x = "Sample Size",
       fill = "Statistical Test"
     ) +
     theme_minimal() +
