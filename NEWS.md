@@ -1,3 +1,8 @@
+# ordinalsimr 0.2.4
+
+* Update the main ordinalsimr vignette to provide a broader background on the app, functions, and project
+* Fix a bug in passing the correct environment function to the `callr::r_bg()` process in the `run_simulations_in_background()` function used by the Shiny app. This bug was silently blocking simulations starting at 0.2.0
+
 # ordinalsimr 0.2.3
 
 * `wilcox.test()` now defaults to `exact = FALSE` to fix failing tests on some distributions

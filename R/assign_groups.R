@@ -25,12 +25,12 @@ assign_groups <- function(sample_size, sample_prob, prob0, prob1, seed,
   )
 
   assertthat::assert_that(
-    near(sum(prob0), 1),
+    dplyr::near(sum(prob0), 1),
     msg = "prob0 must sum to 1"
   )
 
   assertthat::assert_that(
-    near(sum(prob1), 1),
+    dplyr::near(sum(prob1), 1),
     msg = "prob1 must sum to 1"
   )
 
