@@ -9,7 +9,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/NeuroShepherd/ordinalsimr/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/NeuroShepherd/ordinalsimr/blob/v0.2.4/inst/CITATION)
 
 Callahan P (2025). “ordinalsimr.”
 [doi:10.5281/zenodo.14697215](https://doi.org/10.5281/zenodo.14697215),
